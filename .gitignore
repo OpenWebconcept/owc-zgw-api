@@ -1,0 +1,29 @@
+.*
+
+!.php_cs
+!.babelrc
+!.php-cs-fixer.php
+!.gitignore
+!.github/
+!.eslintrc
+!.eslintignore
+!.editorconfig
+!readme.md
+!.prettierrc
+
+# ignore all files that start with ~
+~*
+
+# ignore OS generated files
+ehthumbs.db
+Thumbs.db
+
+# ignore Editor files
+*.sublime-project
+*.sublime-workspace
+*.code-workspace
+*.komodoproject
+.vscode/
+
+node_modules/
+vendor/
