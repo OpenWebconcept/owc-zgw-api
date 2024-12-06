@@ -6,7 +6,7 @@ use OWC\ZGW\Entities\Zaaktype;
 
 class RoltypenFilter extends AbstractFilter
 {
-    public function byZaaktype(Zaaktype $zaaktype)
+    public function byZaaktype(Zaaktype $zaaktype): self
     {
         return $this->add('zaaktype', $zaaktype->uuid);
     }
@@ -18,17 +18,17 @@ class RoltypenFilter extends AbstractFilter
     //     return $this->add('omschrijvingGeneriek', $rolDescription->get());
     // }
 
-    public function byStatusConcept()
+    public function byStatusConcept(): self
     {
         return $this->add('status', 'concept');
     }
 
-    public function byStatusDefinitief()
+    public function byStatusDefinitief(): self
     {
         return $this->add('status', 'definitief');
     }
 
-    public function byStatusAlles()
+    public function byStatusAlles(): self
     {
         return $this->add('status', 'alles');
     }

@@ -39,7 +39,7 @@ class ZakenEndpoint extends Endpoint
     {
         $response = $this->httpClient->get(
             $this->buildUriWithExpand($this->endpoint, $filter),
-            $this->buildRequestOptions($filter)
+            $this->buildRequestOptions()
         );
 
         return $this->getPagedCollection($this->handleResponse($response));
@@ -74,10 +74,10 @@ class ZakenEndpoint extends Endpoint
         return $this->getSingleEntity($this->handleResponse($response));
     }
 
-    public function delete(string $zaakURL): Response
+    public function delete(string $identifier): Response
     {
         $response = $this->httpClient->delete(
-            $zaakURL,
+            sprintf('%s/%s', $this->endpoint, $identifier),
             $this->buildRequestOptions()
         );
 

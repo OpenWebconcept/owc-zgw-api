@@ -21,28 +21,28 @@ class ApiUrlCollection
         $this->apiVersion = $apiVersion;
     }
 
-    public function setZakenEndpoint(string $uri)
+    public function setZakenEndpoint(string $uri): self
     {
         $this->zakenEndpoint = $uri;
 
         return $this;
     }
 
-    public function setCatalogiEndpoint(string $uri)
+    public function setCatalogiEndpoint(string $uri): self
     {
         $this->catalogiEndpoint = $uri;
 
         return $this;
     }
 
-    public function setDocumentenEndpoint(string $uri)
+    public function setDocumentenEndpoint(string $uri): self
     {
         $this->documentenEndpoint = $uri;
 
         return $this;
     }
 
-    public function setApiVersion(string $version)
+    public function setApiVersion(string $version): self
     {
         $this->apiVersion = $version;
 

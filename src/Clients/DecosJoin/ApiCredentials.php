@@ -6,7 +6,7 @@ use OWC\ZGW\ApiCredentials as BaseApiCredentials;
 
 class ApiCredentials extends BaseApiCredentials
 {
-    protected $clientSecretZrc;
+    protected string $clientSecretZrc;
 
     public function getClientSecretZrc(): string
     {

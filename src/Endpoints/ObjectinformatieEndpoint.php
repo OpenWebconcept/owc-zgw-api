@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace OWC\ZGW\Endpoints;
 
-use OWC\ZGW\Entities\Objectinformatie;
 use OWC\ZGW\Support\PagedCollection;
+use OWC\ZGW\Entities\Objectinformatie;
 
 class ObjectinformatieEndpoint extends Endpoint
 {
@@ -37,7 +37,7 @@ class ObjectinformatieEndpoint extends Endpoint
     {
         $response = $this->httpClient->get(
             $this->buildUriWithExpand($this->endpoint, $filter),
-            $this->buildRequestOptions($filter)
+            $this->buildRequestOptions()
         );
 
         return $this->getPagedCollection($this->handleResponse($response));

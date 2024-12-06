@@ -15,6 +15,9 @@ abstract class AbstractClient implements Client
 {
     public const AVAILABLE_ENDPOINTS = [];
 
+    /**
+     * @var array<string, Endpoint>
+     */
     protected array $container = [];
     protected RequestClientInterface $client;
     protected TokenAuthenticator $authenticator;
@@ -31,7 +34,10 @@ abstract class AbstractClient implements Client
         $this->apiUrlCollection = $endpoints;
     }
 
-    public function __call($name, $arguments)
+    /**
+     * @param array<int. string> $arguments
+     */
+    public function __call(string $name, array $arguments): Endpoint
     {
         if (isset(static::AVAILABLE_ENDPOINTS[$name])) {
             return $this->fetchFromContainer($name);
@@ -79,6 +85,9 @@ abstract class AbstractClient implements Client
         return $this->container[$key];
     }
 
+    /**
+     * @return []string
+     */
     protected function validateEndpoint(string $key): array
     {
         $endpoint = static::AVAILABLE_ENDPOINTS[$key] ?? false;

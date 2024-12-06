@@ -45,7 +45,7 @@ class ApiClientManager
         string $client,
         ApiCredentials $credentials,
         ApiUrlCollection $endpoints
-    ) {
+    ): void {
         if (! class_exists($client)) {
             throw new \InvalidArgumentException("Unknown Client implementation");
         }
@@ -57,7 +57,7 @@ class ApiClientManager
         $this->container->get('api.endpoints')->set($name, $endpoints);
     }
 
-    public function buildClient(string $name)
+    public function buildClient(string $name): Client
     {
         $client = $this->container->get($name.'client');
         $endpoints = $this->container->get($name.'endpoints');

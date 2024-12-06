@@ -6,20 +6,29 @@ use DateTimeInterface;
 
 abstract class AbstractFilter
 {
+    /**
+     * @var array<mixed>
+     */
     protected array $parameters;
 
-    const OPERATOR_EQUALS = '=';
-    const OPERATOR_IS_NULL = 'isnull';
-    const OPERATOR_GT = 'gt';
-    const OPERATOR_GTE = 'gte';
-    const OPERATOR_LT = 'lt';
-    const OPERATOR_LTE = 'lte';
+    public const OPERATOR_EQUALS = '=';
+    public const OPERATOR_IS_NULL = 'isnull';
+    public const OPERATOR_GT = 'gt';
+    public const OPERATOR_GTE = 'gte';
+    public const OPERATOR_LT = 'lt';
+    public const OPERATOR_LTE = 'lte';
 
+    /**
+     * @param array<mixed> $parameters
+     */
     public function __construct(array $parameters = [])
     {
         $this->parameters = $parameters;
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function getParameters(): array
     {
         return array_filter($this->parameters, function ($param) {
@@ -27,11 +36,19 @@ abstract class AbstractFilter
         });
     }
 
+    /**
+     * @param mixed $default
+     *
+     * @return mixed
+     */
     public function get(string $name, $default = null)
     {
         return $this->parameters[$name] ?? $default;
     }
 
+    /**
+     * @param mixed $value
+     */
     public function add(string $name, $value): self
     {
         $this->parameters[$name] = $value;
@@ -59,7 +76,7 @@ abstract class AbstractFilter
         DateTimeInterface $date,
         string $operator = self::OPERATOR_EQUALS,
         string $dateFormat = 'Y-m-d'
-    ) {
+    ): self {
         if (! $this->isSupportedOperator($operator)) {
             throw new \InvalidArgumentException(sprintf('Invalid operator "%s" given', $operator));
         }

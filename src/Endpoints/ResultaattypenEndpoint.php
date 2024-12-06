@@ -33,11 +33,11 @@ class ResultaattypenEndpoint extends Endpoint
         return $this->getSingleEntity($this->handleResponse($response));
     }
 
-    public function filter(Filter\ResultaatTypenFilter $filter): PagedCollection
+    public function filter(Filter\ResultaattypenFilter $filter): PagedCollection
     {
         $response = $this->httpClient->get(
             $this->buildUri($this->endpoint, $filter),
-            $this->buildRequestOptions($filter)
+            $this->buildRequestOptions()
         );
 
         return $this->getPagedCollection($this->handleResponse($response));

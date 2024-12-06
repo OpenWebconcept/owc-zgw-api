@@ -39,7 +39,7 @@ abstract class Endpoint
         $this->responseHandlers = Stack::create();
     }
 
-    protected function handleResponse(Response $response)
+    protected function handleResponse(Response $response): Response
     {
         foreach ($this->responseHandlers->get() as $handler) {
             $response = $handler->handle($response);
@@ -103,11 +103,15 @@ abstract class Endpoint
     protected function getCollection(Response $response): Collection
     {
         return new Collection(
-            $this->mapEntities($response->getParsedJson()),
-            PageMeta::fromResponse($response)
+            $this->mapEntities($response->getParsedJson())
         );
     }
 
+    /**
+     * @param array<mixed> $data
+     *
+     * @return array<Entity>
+     */
     protected function mapEntities(array $data): array
     {
         return array_map(function ($item) {
@@ -115,7 +119,10 @@ abstract class Endpoint
         }, $data);
     }
 
-    protected function buildEntity($data): Entity
+    /**
+     * @param array<mixed> $data
+     */
+    protected function buildEntity(array $data): Entity
     {
         $class = $this->entityClass;
 

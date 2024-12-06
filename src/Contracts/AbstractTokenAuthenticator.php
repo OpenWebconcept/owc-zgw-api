@@ -26,6 +26,9 @@ abstract class AbstractTokenAuthenticator implements TokenAuthenticator
         return $this->encode($this->generatePayload());
     }
 
+    /**
+     * @return array<mixed>
+     */
     protected function generatePayload(): array
     {
         return [
@@ -37,6 +40,9 @@ abstract class AbstractTokenAuthenticator implements TokenAuthenticator
         ];
     }
 
+    /**
+     * @param array<mixed> $payload
+     */
     protected function encode(array $payload): string
     {
         return JWT::encode($payload, $this->credentials->getClientSecret(), 'HS256');

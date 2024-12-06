@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace OWC\ZGW\Endpoints;
 
 use Exception;
-use OWC\ZGW\Endpoints\Filter\AbstractFilter;
-use OWC\ZGW\Endpoints\Filter\ResultaattypenFilter;
 use OWC\ZGW\Entities\Zaaktype;
 use OWC\ZGW\Support\Collection;
 use OWC\ZGW\Support\PagedCollection;
+use OWC\ZGW\Endpoints\Filter\AbstractFilter;
+use OWC\ZGW\Endpoints\Filter\ResultaattypenFilter;
 
 class ZaaktypenEndpoint extends Endpoint
 {
@@ -41,7 +41,7 @@ class ZaaktypenEndpoint extends Endpoint
     {
         $response = $this->httpClient->get(
             $this->buildUri($this->endpoint, $filter),
-            $this->buildRequestOptions($filter)
+            $this->buildRequestOptions()
         );
 
         return $this->getPagedCollection($this->handleResponse($response));

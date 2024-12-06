@@ -37,7 +37,7 @@ class StatustypenEndpoint extends Endpoint
     {
         $response = $this->httpClient->get(
             $this->buildUri($this->endpoint, $filter),
-            $this->buildRequestOptions($filter)
+            $this->buildRequestOptions()
         );
 
         return $this->getPagedCollection($this->handleResponse($response));

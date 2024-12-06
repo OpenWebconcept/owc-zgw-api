@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace OWC\ZGW\Endpoints;
 
-use OWC\ZGW\Endpoints\Filter\AbstractFilter;
-use OWC\ZGW\Entities\Informatieobjecttype;
 use OWC\ZGW\Support\PagedCollection;
+use OWC\ZGW\Entities\Informatieobjecttype;
+use OWC\ZGW\Endpoints\Filter\AbstractFilter;
 
 class InformatieobjecttypenEndpoint extends Endpoint
 {
@@ -38,7 +38,7 @@ class InformatieobjecttypenEndpoint extends Endpoint
     {
         $response = $this->httpClient->get(
             $this->buildUri($this->endpoint, $filter),
-            $this->buildRequestOptions($filter)
+            $this->buildRequestOptions()
         );
 
         return $this->getPagedCollection($this->handleResponse($response));

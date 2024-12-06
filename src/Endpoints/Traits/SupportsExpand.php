@@ -12,6 +12,8 @@ trait SupportsExpand
 
     /**
      * The current resources that will be expanded
+     *
+     * @var array<string, array<int, string>>
      */
     protected array $expandCurrent = [
         ZakenEndpoint::class => ['zaaktype', 'status']
@@ -19,6 +21,8 @@ trait SupportsExpand
 
     /**
      * All supported expandable resources, subdivided by endpoint and ZGW version.
+     *
+     * @var array<string, array<string, string[]>>
      */
     protected array $expandSupport = [
         ZakenEndpoint::class => [
@@ -99,6 +103,9 @@ trait SupportsExpand
         return $this;
     }
 
+    /**
+     * @param string[] $resources
+     */
     public function expandExcept(array $resources): self
     {
         if ($this->endpointSupportsExpand() === false) {
@@ -115,6 +122,9 @@ trait SupportsExpand
         return $this;
     }
 
+    /**
+     * @param string[] $resources
+     */
     public function expandOnly(array $resources): self
     {
         if ($this->endpointSupportsExpand() === false) {
@@ -159,6 +169,9 @@ trait SupportsExpand
         return false;
     }
 
+    /**
+     * @return string[]
+     */
     protected function getExpandableResources(): array
     {
         if ($this->endpointSupportsExpand() === false) {

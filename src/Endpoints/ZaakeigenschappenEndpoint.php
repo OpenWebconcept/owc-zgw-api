@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace OWC\ZGW\Endpoints;
 
 use OWC\ZGW\Entities\Zaak;
-use OWC\ZGW\Entities\Zaakeigenschap;
 use OWC\ZGW\Support\Collection;
+use OWC\ZGW\Entities\Zaakeigenschap;
 
 class ZaakeigenschappenEndpoint extends Endpoint
 {
@@ -38,7 +38,7 @@ class ZaakeigenschappenEndpoint extends Endpoint
     {
         $response = $this->httpClient->get(
             $this->buildUri($this->endpoint, $filter),
-            $this->buildRequestOptions($filter)
+            $this->buildRequestOptions()
         );
 
         return $this->getCollection($this->handleResponse($response));

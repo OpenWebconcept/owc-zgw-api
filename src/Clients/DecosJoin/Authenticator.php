@@ -9,6 +9,7 @@ use OWC\ZGW\Contracts\AbstractTokenAuthenticator;
 
 class Authenticator extends AbstractTokenAuthenticator
 {
+    protected ApiCredentials $credentials;
     protected bool $useDefaultClientSecret = true;
 
     public function __construct(ApiCredentials $credentials)
@@ -26,6 +27,9 @@ class Authenticator extends AbstractTokenAuthenticator
         $this->useDefaultClientSecret = true;
     }
 
+    /**
+     * @param array<mixed> $payload
+     */
     public function encode(array $payload): string
     {
         $secret = $this->useDefaultClientSecret ?
