@@ -33,3 +33,4 @@ In most cases you'd:
 2. [Access an endpoint](endpoints.md)
 3. [Work with entities](entities.md)
 4. [Work with collections](collections.md)
+5. [Setup WordPress integration](wordpress.md)

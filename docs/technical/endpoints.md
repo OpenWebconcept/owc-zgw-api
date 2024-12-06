@@ -52,7 +52,7 @@ Available endpoints.
 ## ZakenEndpoint
 
 | Method | Description | Parameters | Returns |
-|--|--|--|--|--|
+|--|--|--|--|
 | `all()` | Returns all available `Zaak` entities. | none | [`PagedCollection`](../getting-started/collections.md) |
 | `get($identifier)` | Returns all single `Zaak` entity. | `<string> $identifier` | [`?Zaak`](../technical/entities.md) |
 | `filter($filter)` | Request `Zaak` entities which match the given filter. | `<ZakenFilter> $filter` | [`PagedCollection`](../getting-started/collections.md) |

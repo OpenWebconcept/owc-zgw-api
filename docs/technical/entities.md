@@ -49,7 +49,7 @@ Namespace: `OWC\ZGW\Entities\Zaak`
 ### Methods
 
 | Method | Description | Parameters | Returns |
-|--|--|--|--|--|
+|--|--|--|--|
 | `permalink()` | Returns the WordPress permalink to this entity. | none | `string` |
 | `isInitiatedBy($bsn)` | Wether or not the current Zaak is initiated by the given BSN. | `<string> $bsn` | `bool` |
 

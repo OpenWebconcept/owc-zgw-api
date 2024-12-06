@@ -13,7 +13,6 @@ class ApiClientManager
     public function __construct()
     {
         $this->setupContainer();
-        $this->setAsGloballyAccessible();
     }
 
     public function container(): Container
@@ -69,13 +68,15 @@ class ApiClientManager
 
     protected function setupContainer(): void
     {
+        if (! empty($GLOBALS['zgwApiClientManager'])) {
+            $this->container = $GLOBALS['zgwApiClientManager']->container();
+
+            return;
+        }
+
         $builder = new ContainerBuilder();
         $builder->addDefinitions(dirname(__DIR__) . '/config/container.php');
         $this->container = $builder->build();
-    }
-
-    protected function setAsGloballyAccessible(): void
-    {
         $GLOBALS['zgwApiClientManager'] = $this;
     }
 }
