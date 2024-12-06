@@ -100,23 +100,6 @@ return [
     },
 
     /**
-     * General configuration
-     */
-    'expand_enabled' => function (Container $container) {
-        return false;
-    },
-    'expand_version' => function (Container $container) {
-        // switch ($container->make('gf.setting', ['-zgw-expand'])) {
-        //     case '1':
-        //         return '1.5.0';
-        //     case '2':
-        return '1.5.1';
-
-        // }
-        return false;
-    },
-
-    /**
      * HTTP clients
      */
     'http.client' => function (Container $container) {

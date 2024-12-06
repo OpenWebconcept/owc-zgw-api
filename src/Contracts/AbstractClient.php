@@ -18,7 +18,7 @@ abstract class AbstractClient implements Client
     protected array $container = [];
     protected RequestClientInterface $client;
     protected TokenAuthenticator $authenticator;
-    protected ApiUrlCollection $endpointUrls;
+    protected ApiUrlCollection $apiUrlCollection;
 
     // Does every API require token authentication? Maybe replace with interface
     public function __construct(
@@ -28,7 +28,7 @@ abstract class AbstractClient implements Client
     ) {
         $this->client = $client;
         $this->authenticator = $authenticator;
-        $this->endpointUrls = $endpoints;
+        $this->apiUrlCollection = $endpoints;
     }
 
     public function __call($name, $arguments)
@@ -48,6 +48,16 @@ abstract class AbstractClient implements Client
     public function getAuthenticator(): TokenAuthenticator
     {
         return $this->authenticator;
+    }
+
+    public function getApiUrlCollection(): ApiUrlCollection
+    {
+        return $this->apiUrlCollection;
+    }
+
+    public function getVersion(): ?string
+    {
+        return $this->apiUrlCollection->getApiVersion();
     }
 
     public function supports(string $endpoint): bool
@@ -94,11 +104,11 @@ abstract class AbstractClient implements Client
     {
         switch ($type) {
             case 'zaken':
-                return $this->endpointUrls->getZakenEndpoint();
+                return $this->apiUrlCollection->getZakenEndpoint();
             case 'catalogi':
-                return $this->endpointUrls->getCatalogiEndpoint();
+                return $this->apiUrlCollection->getCatalogiEndpoint();
             case 'documenten':
-                return $this->endpointUrls->getDocumentenEndpoint();
+                return $this->apiUrlCollection->getDocumentenEndpoint();
             default:
                 throw new InvalidArgumentException("Unknown endpoint type {$type}");
         }

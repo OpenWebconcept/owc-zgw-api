@@ -22,7 +22,7 @@ composer require owc/zgw-api
 
 ## Usage
 
-[Please read the docs](docs/index.md).
+There is documentation available on how [to get started](docs/getting-started/index.md).
 
 ## Changelog
 

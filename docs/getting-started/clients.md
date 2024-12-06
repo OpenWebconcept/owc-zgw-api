@@ -22,6 +22,7 @@ use OWC\ZGW\ApiUrlCollection;
 $manager = new ApiClientManager();
 
 $uris = new ApiUrlCollection();
+$uris->setApiVersion('1.5.0');
 $uris->setZakenEndpoint('https://url.com/zaken/api/v1');
 $uris->setCatalogiEndpoint('https://url.com/catalogi/api/v1');
 $uris->setDocumentenEndpoint('https://url.com/documenten/api/v1');

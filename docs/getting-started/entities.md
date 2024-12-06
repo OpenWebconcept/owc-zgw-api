@@ -105,7 +105,7 @@ Additional calls to loaded entities will not cause additional HTTP requests. The
 
 ## Expand
 
-In some cases it might be more efficient to preload connected resources. Since ZGW version 1.5 this is possible on select endpoints. Not all connected resources can be expanded.
+In some cases it might be more efficient to preload connected resources. Since ZGW version 1.5.0 this is possible on select endpoints. Not all connected resources can be expanded.
 
 To expand a resource, either specify which resources to expand or to exclude from expansion:
 

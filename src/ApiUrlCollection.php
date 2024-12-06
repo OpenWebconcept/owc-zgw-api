@@ -7,15 +7,18 @@ class ApiUrlCollection
     protected ?string $zakenEndpoint;
     protected ?string $catalogiEndpoint;
     protected ?string $documentenEndpoint;
+    protected ?string $apiVersion;
 
     public function __construct(
         ?string $zakenEndpoint = null,
         ?string $catalogiEndpoint = null,
-        ?string $documentenEndpoint = null
+        ?string $documentenEndpoint = null,
+        ?string $apiVersion = null
     ) {
         $this->zakenEndpoint = $zakenEndpoint;
         $this->catalogiEndpoint = $catalogiEndpoint;
         $this->documentenEndpoint = $documentenEndpoint;
+        $this->apiVersion = $apiVersion;
     }
 
     public function setZakenEndpoint(string $uri)
@@ -39,6 +42,13 @@ class ApiUrlCollection
         return $this;
     }
 
+    public function setApiVersion(string $version)
+    {
+        $this->apiVersion = $version;
+
+        return $this;
+    }
+
     public function getZakenEndpoint(): ?string
     {
         return $this->zakenEndpoint;
@@ -52,6 +62,11 @@ class ApiUrlCollection
     public function getDocumentenEndpoint(): ?string
     {
         return $this->documentenEndpoint;
+    }
+
+    public function getApiVersion(): ?string
+    {
+        return $this->apiVersion;
     }
 
     public function get(string $register): ?string

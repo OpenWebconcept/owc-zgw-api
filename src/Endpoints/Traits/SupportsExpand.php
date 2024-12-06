@@ -6,8 +6,6 @@ namespace OWC\ZGW\Endpoints\Traits;
 
 use OWC\ZGW\Endpoints\ZakenEndpoint;
 
-use function OWC\ZGW\container;
-
 trait SupportsExpand
 {
     protected bool $expandEnabled = true;
@@ -83,19 +81,13 @@ trait SupportsExpand
     ];
 
 
-    public function expandIsEnabled(): bool
-    {
-        return $this->expandEnabled &&
-            container()->get('expand_enabled');
-    }
-
     public function expandAll(): self
     {
         $this->expandEnabled = true;
 
-        $expandVersion = container()->get('expand_version');
+        $apiVersion = $this->client->getApiVersion();
 
-        $this->expandCurrent[get_class($this)] = $this->expandSupport[get_class($this)][$expandVersion];
+        $this->expandCurrent[get_class($this)] = $this->expandSupport[get_class($this)][$apiVersion];
 
         return $this;
     }
@@ -113,10 +105,10 @@ trait SupportsExpand
             return $this;
         }
 
-        $expandVersion = container()->get('expand_version');
+        $apiVersion = $this->client->getApiVersion();
 
         $this->expandCurrent[get_class($this)] = array_diff(
-            $this->expandSupport[get_class($this)][$expandVersion],
+            $this->expandSupport[get_class($this)][$apiVersion],
             $resources
         );
 
@@ -129,20 +121,42 @@ trait SupportsExpand
             return $this;
         }
 
-        $expandVersion = container()->get('expand_version');
+        $apiVersion = $this->client->getApiVersion();
 
         $this->expandCurrent[get_class($this)] = array_intersect(
-            $this->expandSupport[get_class($this)][$expandVersion],
+            $this->expandSupport[get_class($this)][$apiVersion],
             $resources
         );
 
         return $this;
     }
 
+    protected function expandIsEnabled(): bool
+    {
+        return $this->expandEnabled;
+    }
+
     protected function endpointSupportsExpand(): bool
     {
+        if (! $this->clientSupportsExpand()) {
+            return false;
+        }
+
         return isset($this->expandSupport[get_class($this)])
             && ! empty($this->expandSupport[get_class($this)]);
+    }
+
+    protected function clientSupportsExpand(): bool
+    {
+        $apiVersion = $this->client->getApiVersion();
+
+        switch ($apiVersion) {
+            case '1.5.0':
+            case '1.5.1':
+                return true;
+        }
+
+        return false;
     }
 
     protected function getExpandableResources(): array

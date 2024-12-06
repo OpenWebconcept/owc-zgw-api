@@ -46,3 +46,7 @@ This should be implemented in the application using this package.
 ## Entities require the full ZGW client
 
 Before, all/most entities required the client (pretty) name for initialization. The constructor of those entities now require a `Client` entity.
+
+## Expand is automatically enabled
+
+If the ZGW version of a client is 1.5.0 or later, expand is automatically enabled. 
