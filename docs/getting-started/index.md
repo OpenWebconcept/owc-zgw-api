@@ -29,7 +29,7 @@ In most cases you'd:
 
 ## Usuage
 
-1. [Setup a client](docs/clients.md)
-2. [Access an endpoint](docs/endpoints.md)
-3. [Work with entities](docs/entities.md)
-4. [Work with collections](docs/collections.md)
+1. [Setup and use a client](clients.md)
+2. [Access an endpoint](endpoints.md)
+3. [Work with entities](entities.md)
+4. [Work with collections](collections.md)

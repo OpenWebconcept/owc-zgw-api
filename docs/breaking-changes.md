@@ -1,6 +1,6 @@
 # Breaking changes
 
-These are breaking changes compared to the [Zaaksysteem plugin](https://github.com/openwebconcept/plugin-owc-gravityforms-zaaksysteem).
+There are breaking changes compared to the [Zaaksysteem plugin](https://github.com/openwebconcept/plugin-owc-gravityforms-zaaksysteem).
 
 ## Removed default client names
 

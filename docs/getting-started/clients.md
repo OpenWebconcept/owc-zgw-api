@@ -10,19 +10,23 @@ Zaaksysteem clients are easily configured and resolved through the `OWC\ZGW\ApiC
 2. `OWC\ZGW\ApiCredentials`: contains credentials and (optionally!) SSL certificates
 
 > [!IMPORTANT]
-> Decos JOIN has a custom implementation of the `ApiCredentials` class.
+> Decos JOIN has a custom implementation of the `ApiCredentials` class. Use the `OWC\ZGW\Clients\DecosJoin\ApiCredentials` class to correctly set the client secret for the ZRC component.
 
 Add any Zaaksysteem client through the `addClient()` method on the `ApiClientManager`. It requires an unique name, a fully qualified class name and both `ApiUrlCollection` and `ApiCredentials` classes. For example:
 
 ```php
-$manager = new \OWC\ZGW\ApiClientManager();
+use OWC\ZGW\ApiCredentials;
+use OWC\ZGW\ApiClientManager;
+use OWC\ZGW\ApiUrlCollection;
 
-$uris = new \OWC\ZGW\ApiUrlCollection(/*...*/);
+$manager = new ApiClientManager();
+
+$uris = new ApiUrlCollection();
 $uris->setZakenEndpoint('https://url.com/zaken/api/v1');
 $uris->setCatalogiEndpoint('https://url.com/catalogi/api/v1');
 $uris->setDocumentenEndpoint('https://url.com/documenten/api/v1');
 
-$credentials = new \OWC\ZGW\ApiCredentials();
+$credentials = new ApiCredentials();
 $credentials->setClientId('client_id');
 $credentials->setClientSecret('client_secret');
 
@@ -38,7 +42,7 @@ $client = $manager->getClient('my-oz-client');
 ```
 
 ## Using helper functions
-The `ApiClientManager` class has some helper functions which can be accessed after initializing the class. These helper functions are within the `OWC\ZGW` namespace(!).
+The `ApiClientManager` class has some helper functions which can be accessed after initializing the class. These helper functions are within the `OWC\ZGW` namespace.
 
 1. `container()`: returns the internal `DI\Container` instance
 2. `resolve(string $name)`: quickly access any definition in the container
@@ -49,7 +53,9 @@ The `ApiClientManager` class has some helper functions which can be accessed aft
 The easiest way to build any configured zaaksysteem client:
 
 ```php
-OWC\ZGW\apiClient(string $name): OWC\ZGW\Contracts\AbstractClient
+use function OWC\ZGW\apiClient;
+
+apiClient(string $name): OWC\ZGW\Contracts\AbstractClient
 ```
 
 All clients inherit from `OWC\ZGW\Contracts\AbstractClient`. 
@@ -57,7 +63,9 @@ All clients inherit from `OWC\ZGW\Contracts\AbstractClient`.
 ### ApiClientManager access
 
 ```php
-OWC\ZGW\apiClientManager(): OWC\ZGW\ApiClientManger
+use function OWC\ZGW\apiClientManager;
+
+apiClientManager(): OWC\ZGW\ApiClientManger
 ```
 
 ### Container access
@@ -65,11 +73,13 @@ OWC\ZGW\apiClientManager(): OWC\ZGW\ApiClientManger
 Use the `container()` function to access the `DI\Container` instance. This container is used to easily resolve classes. 
 
 ```php
-OWC\ZGW\container(): Di\Container
+use function OWC\ZGW\container;
+
+container(): Di\Container
 ```
 
-[View the documentation of DI\Container](https://php-di.org/doc/container.html)
+[View the documentation of the PHP-DI container.](https://php-di.org/doc/container.html)
 
 ## Endpoints
 
-We've added our client(s). [Now lets access an endpoint](docs/endpoints.md)
+We've added our client(s). [Now lets access an endpoint](endpoints.md)

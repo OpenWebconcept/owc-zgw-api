@@ -1,4 +1,3 @@
-
 # Endpoints
 
 The ZGW standard has several endpoints which can be accessed. This will show you how to access them. We'll be using OpenZaak with the 'zaken' endpoint in this example, but it can be exchanged with any of the supported ZGW clients or endpoints.
@@ -7,16 +6,18 @@ The ZGW standard has several endpoints which can be accessed. This will show you
 
 The easiest way to access any endpoint is through any Client instance. All (supported) endpoints are available as a method on the Client class. For example:
 ```php
-$openzaak = OWC\ZGW\apiClient('my-oz-cient');
+use function OWC\ZGW\ApiClient;
 
-$zakenEndpoint = $openzaak->zaken();
+$openzaakClient = apiClient('my-oz-client');
+
+$zakenEndpoint = $openzaakClient->zaken();
 ```
 
 ### Available endpoints
 
 At the time of writing, the following endpoints are available to most (but not all!) ZGW clients.
 
-| ZRC | ZTC | DRC |
+| 📥 ZRC | 🗂️ ZTC | 📄 DRC |
 |--|--|--|
 | zaken | zaaktypen | objectinformatieobjecten |
 | statussen | statustypen | enkelvoudiginformatieobjecten |
@@ -29,11 +30,9 @@ At the time of writing, the following endpoints are available to most (but not a
 All of these endpoints are callable as a method on your client. It will return an `OWC\ZGW\Endpoints\Endpoint` instance.
 
 ```php
-$openzaak = OWC\ZGW\apiClient('my-oz-cient');
-
-$zakenEndpoint = $openzaak->zaaktypen();
-$zakenEndpoint = $openzaak->objectinformatieobjecten();
-$zakenEndpoint = $openzaak->catalogussen();
+$zakenEndpoint = $openzaakClient->zaaktypen();
+$zakenEndpoint = $openzaakClient->objectinformatieobjecten();
+$zakenEndpoint = $openzaakClient->catalogussen();
 // etc.
 ```
 
@@ -42,9 +41,7 @@ $zakenEndpoint = $openzaak->catalogussen();
 Not every ZGW client supports every endpoint, so it's a good habit to check for its support:
 
 ```php
-$openzaak = OWC\ZGW\apiClient('my-oz-cient');
-
-if ($openzaak->supports('zaken')) {
+if ($openzaakClient->supports('zaken')) {
     // here be magic
 }
 ```
@@ -55,45 +52,42 @@ Most endpoints support three basic operations: `all()`, `filter()` and `get()`.
 
 ### All entities
 
-Requesting all entities through the `all()` method:
+Request all entities through the `all()` method:
 
 ```php
-$openzaak = OWC\ZGW\apiClient('my-oz-cient');
-$zakenEndpoint = $openzaak->zaken();
+$zakenEndpoint = $openzaakClient->zaken();
 
 $zaken = $zakenEndpoint->all();
 ```
 
-The result will be a `OWC\ZGW\Support\PagedCollection` [(read more)](docs/collections.md). 
+The result will be a `OWC\ZGW\Support\PagedCollection` [(read more about collections)](collections.md). 
 
 ### Single entity
 
-Requesting a single entity through the `get()` method:
+Request a single entity through the `get()` method:
 
 ```php
-$openzaak = OWC\ZGW\apiClient('my-oz-cient');
-$zakenEndpoint = $openzaak->zaken();
+$zakenEndpoint = $openzaakClient->zaken();
 
 $zaak = $zakenEndpoint->get('unique-identifier-here');
 ```
 
-The result will be a `OWC\ZGW\Entities\Entity` [(read more)](docs/entities.md).
+The result will be a `OWC\ZGW\Entities\Entity` [(read more about entities)](entities.md).
 
 ### Filtering entities
 
 Request entities which match a given filter. 
 
 ```php
-use OWC\ZGW\Endpoints\Filter\ZakenFilter;
-
 $filteredZaken = $zakenEndpoint->filter($filter);
 ```
 
 The `$filter` has to be of type `OWC\ZGW\Endpoints\Filter\AbstractFilter`. This will give any filter a few basic operations:
 
 ```php
+use OWC\ZGW\Endpoints\Filter\ZakenFilter;
 
-$filter = new OWC\ZGW\Endpoints\Filter\ZakenFilter();
+$filter = new ZakenFilter();
 
 // Add any parameter
 $filter->add('myparameter', 'myvalue');
@@ -125,5 +119,5 @@ Other endpoints might support different methods. Check the [technical docs]() to
 
 Most operations on an endpoint either return an Entity or a Collection. 
 
-- [Read more about Entities](docs/entities.md)
-- [Read more about Collections](docs/collections.md)
+- [Read more about Entities](entities.md)
+- [Read more about Collections](collections.md)

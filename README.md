@@ -30,6 +30,6 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 
 ## Breaking changes
 
-These are breaking changes compared to the [Zaaksysteem plugin](https://github.com/openwebconcept/plugin-owc-gravityforms-zaaksysteem).
+There are breaking changes compared to the [Zaaksysteem plugin](https://github.com/openwebconcept/plugin-owc-gravityforms-zaaksysteem).
 
 [View breaking changes](docs/breaking-changes.md).

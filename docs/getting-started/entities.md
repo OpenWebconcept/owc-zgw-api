@@ -107,22 +107,22 @@ Additional calls to loaded entities will not cause additional HTTP requests. The
 
 In some cases it might be more efficient to preload connected resources. Since ZGW version 1.5 this is possible on select endpoints. Not all connected resources can be expanded.
 
+To expand a resource, either specify which resources to expand or to exclude from expansion:
 
-Expand specific resources, or all resources with one or more exceptions:
 ```php
 $zaak = $client->zaken()->expandExcept(['status.statustype'])->get('aaabbbbccc');
 $zaak = $client->zaken()->expandOnly(['zaaktype'])->get('aaabbbbccc');
 ```
 
-Disable expand completely:
+It's also possible to disable expand completely or enable it for all possible resources:
 ```php
 $zaak = $client->zaken()->expandNone()->get('aaabbbbccc');
-```
 
-Expand all possible resources:
-```php
 $zaak = $client->zaken()->expandAll()->get('aaabbbbccc');
 ```
+
+> [!IMPORTANT]
+> If expand is enabled, it will try to expand the 'zaaktype' and 'status' by default.
 
 ### Supported expandable resources
 
