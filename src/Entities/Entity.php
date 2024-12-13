@@ -16,6 +16,7 @@ abstract class Entity implements
     Contracts\Arrayable
 {
     use Traits\Arrayable;
+    use Traits\Macroable;
     use Traits\HasCastableAttributes;
 
     protected Client $client;

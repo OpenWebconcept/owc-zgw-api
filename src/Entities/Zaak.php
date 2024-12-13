@@ -47,20 +47,6 @@ class Zaak extends Entity
         'rollen' => Casts\Related\Rollen::class,
     ];
 
-    public function permalink(): string
-    {
-        if (! function_exists('get_site_url')) {
-            return '';
-        }
-
-        return sprintf(
-            '%s/zaak/%s/%s',
-            get_site_url(),
-            $this->getValue('identificatie', ''),
-            $this->getValue('leverancier', '')
-        );
-    }
-
     /**
      * Wether or not the current Zaak is initiated by the given BSN.
      */

@@ -1,10 +1,14 @@
 # Entities
 
-Data returned by an endpoint is wrapped in an `Entity` class. If there are multiple entities, a `Collection` of entities is returned.
+Data from an endpoint is wrapped in its own entity class (e.g. `Zaak`, `Zaaktype`, `Informatieobjecttype`, etc.). All entities are derived from the `OWC\ZGW\Entities\Entity` class. This way accessing data from a `Zaak` entity works the same as with any other entity.
 
-## Accessing properties
+## Available data
 
-All entities are derived from the `OWC\ZGW\Entities\Entity` class. This class stores all properties in an internal array. These properties are accessible:
+View the [technical documentation](../technical/entities.md) (WIP) to see which properties are available. Alternatively, use the [Gemma standard](https://vng-realisatie.github.io/gemma-zaken/standaard/zaken/#releases) documentation. All property names are equal to the standard.
+
+## Accessing data
+
+All data is exposed through class properties and can be accessed as such.
 
 ```php
 $zaak = $zakenEndpoint->get('aabbbccddeeff');
@@ -12,7 +16,17 @@ $zaak = $zakenEndpoint->get('aabbbccddeeff');
 var_dump($zaak->omschrijving); // (string) 'aabbbcc'
 ```
 
-Please view the [Gemma standard](https://vng-realisatie.github.io/gemma-zaken/standaard/zaken/#releases) to see which properties are available. All property names are equal to the standard.
+Alternatively use the `getValue(string $name, $default = null)` method. It alows for a default return value if the property is not available.
+
+```php
+var_dump($zaak->getValue('this-does-not-exist', false)); // (boolean) false
+```
+
+Use the `getAttributeValue(string $name, $default = null)` method if you want to access the _raw_ value, without casting applied (see below).
+
+```php
+var_dump($zaak->getAttributeValue('zaaktype')); // (string) 'aaaaa-bbbbb-ccccc'
+```
 
 ## Castable properties
 
@@ -34,6 +48,8 @@ if ($zaak->startdatum) {
 // PHP 8.0 and up
 echo $zaak->startdatum?->format('Y-m-d');
 ```
+
+View the [technical documentation](../technical/entities.md) (WIP) to see which properties are casted to different data types.
 
 ## Defined castable properties
 
@@ -57,6 +73,69 @@ class Zaak extends Entity
 ```
 
 The `NullableDate` makes sure the value is cast to a `DateTimeImmutable` instance whenever it is accessed if it has a valid date value. If not, it's value will be `null`. 
+
+## Adding functionality
+
+All entities support custom functionality through macros. This makes it easy to add additional methods to entities at run time. A macro is a closure that will be executed when it's called. The closure can access the entity through `$this` just like any other method.
+
+```php
+use OWC\ZGW\Entities\Zaak;
+
+Zaak::macro('permalink', function () {
+    return sprintf(
+        '%s/zaak/%s',
+        get_site_url(),
+        $this->getValue('identificatie', '')
+    );
+});
+
+var_dump($zaak->permalink()); // (string) 'https://...'
+```
+
+### Macro parameters
+
+If needed, additional parameters are also supported:
+
+```php
+Zaak::macro('isRegisteredBefore', function (DateTime $date) {
+    $registrationDate = $this->registratiedatum;
+    if (! $registrationDate) {
+        return false;
+    }
+
+    return $registrationDate < $date;
+});
+
+$date = new DateTime('2012-12-12');
+
+var_dump($zaak->isRegisteredBefore($date));
+```
+
+### Static macros
+
+In some cases a static method may be prefered. For example when creating a new entity from a specific set of data. Adding one works exactly the same as a 'normal' macro. The difference is that the closure has no access to `$this` in a static context. 
+
+```php
+use OWC\ZGW\Entities\Zaak;
+use OWC\ZGW\Contracts\Client;
+
+Zaak::macro('fromSpecificData', function (array $data, Client $client) {
+    // Do some form of preparation here, for example:
+    $zaakData = [
+        'bronorganisatie' => 'Foo Bar',
+        'zaaktype' => $data['field.4.1'],
+        'verantwoordelijkeOrganisatie' => 'Baz Foo',
+        // More data preparation...
+    ];
+
+    return new Zaak($zaakData, $client);
+});
+
+$zaak = Zaak::fromSpecificData(
+    ['field.4.1' => 'asdfasdf'],
+    apiClientManager()->getClient('my-registered-client')
+);
+```
 
 ## Lazy loadable entities
 
