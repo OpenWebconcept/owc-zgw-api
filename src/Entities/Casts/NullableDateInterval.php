@@ -6,11 +6,14 @@ namespace OWC\ZGW\Entities\Casts;
 
 use Throwable;
 use DateInterval;
-use InvalidArgumentException;
 use OWC\ZGW\Entities\Entity;
+use InvalidArgumentException;
 
 class NullableDateInterval extends AbstractCast
 {
+    /**
+     * @param mixed $value
+     */
     public function set(Entity $model, string $key, $value): ?DateInterval
     {
         if (is_null($value) || (is_object($value) && $value instanceof Dateinterval)) {
@@ -24,6 +27,9 @@ class NullableDateInterval extends AbstractCast
         }
     }
 
+    /**
+     * @param mixed $value
+     */
     public function get(Entity $model, string $key, $value): ?DateInterval
     {
         if (is_null($value) || (is_object($value) && $value instanceof Dateinterval)) {
@@ -35,6 +41,8 @@ class NullableDateInterval extends AbstractCast
 
     /**
      * @see https://news-web.php.net/php.internals/113336
+     *
+     * @param mixed $value
      */
     public function serialize(string $name, $value)
     {

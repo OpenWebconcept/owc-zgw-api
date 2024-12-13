@@ -20,16 +20,22 @@ abstract class Entity implements
     use Traits\HasCastableAttributes;
 
     protected Client $client;
+
+    /** @var array<mixed> */
     protected array $data = [];
+
+    /** @var array<string, class-string> */
     protected array $casts = [];
 
+    /** @param array<mixed> $itemData */
     public function __construct(array $itemData, Client $client)
     {
         $this->client = $client;
         $this->hydrate($itemData);
     }
 
-    public function __get($name)
+    /** @return mixed */
+    public function __get(string $name)
     {
         try {
             return $this->getValue($name);
@@ -38,11 +44,21 @@ abstract class Entity implements
         }
     }
 
-    public function __set($name, $value)
+    /**
+     * @param mixed $value
+     *
+     * @return mixed
+     */
+    public function __set(string $name, $value)
     {
         return $this->setValue($name, $value);
     }
 
+    /**
+     * @param mixed $default
+     *
+     * @return mixed
+     */
     public function getValue(string $name, $default = null)
     {
         $value = $this->getAttributeValue($name, $default);
@@ -56,7 +72,10 @@ abstract class Entity implements
         return $value;
     }
 
-    public function setValue(string $name, $value)
+    /**
+     * @param mixed $value
+     */
+    public function setValue(string $name, $value): void
     {
         if ($this->hasCast($name)) {
             $caster = $this->getCaster($name);
@@ -71,6 +90,7 @@ abstract class Entity implements
         return $this->setAttributeValue($name, $value);
     }
 
+    /** @return mixed */
     public function toArray(): array
     {
         $data = [];
@@ -81,6 +101,7 @@ abstract class Entity implements
         return $data;
     }
 
+    /** @return mixed */
     public function attributesToArray(): array
     {
         return $this->data;
@@ -102,6 +123,7 @@ abstract class Entity implements
         return $this->client;
     }
 
+    /** @return mixed */
     protected function serializeAttribute(string $name)
     {
         if (! $this->hasCast($name)) {
@@ -111,14 +133,14 @@ abstract class Entity implements
         return $this->getCaster($name)->serialize($name, $this->getAttributeValue($name));
     }
 
-    protected function hydrate(array $data)
+    protected function hydrate(array $data): void
     {
         foreach ($data as $name => $value) {
             $this->setValue($name, $value);
         }
     }
 
-    public function __debugInfo()
+    public function __debugInfo(): array
     {
         return ['data' => $this->data];
     }

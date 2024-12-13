@@ -18,7 +18,7 @@ class Confidentiality extends EnumAttribute
         return $this->is('zaakvertrouwelijk');
     }
 
-    public function isConfidential()
+    public function isConfidential(): bool
     {
         return $this->is('vertrouwelijk');
     }

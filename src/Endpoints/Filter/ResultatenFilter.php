@@ -7,12 +7,12 @@ use OWC\ZGW\Entities\Resultaattype;
 
 class ResultatenFilter extends AbstractFilter
 {
-    public function byZaak(Zaak $zaak): self
+    public function byZaak(Zaak $zaak): parent
     {
         return $this->add('zaak', $zaak->url);
     }
 
-    public function byResultaattype(Resultaattype $resultaattype): self
+    public function byResultaattype(Resultaattype $resultaattype): parent
     {
         return $this->add('resultaattype', $resultaattype->url);
     }

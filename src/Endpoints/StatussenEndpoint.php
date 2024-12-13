@@ -33,7 +33,7 @@ class StatussenEndpoint extends Endpoint
         return $this->getSingleEntity($this->handleResponse($response));
     }
 
-    public function filter(Filter\StatussenFilter $filter): PagedCollection
+    public function filter(Filter\AbstractFilter $filter): PagedCollection
     {
         $response = $this->httpClient->get(
             $this->buildUri($this->endpoint, $filter),

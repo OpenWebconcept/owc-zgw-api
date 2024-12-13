@@ -89,7 +89,7 @@ trait SupportsExpand
     {
         $this->expandEnabled = true;
 
-        $apiVersion = $this->client->getApiVersion();
+        $apiVersion = $this->client->getVersion();
 
         $this->expandCurrent[get_class($this)] = $this->expandSupport[get_class($this)][$apiVersion];
 
@@ -112,7 +112,7 @@ trait SupportsExpand
             return $this;
         }
 
-        $apiVersion = $this->client->getApiVersion();
+        $apiVersion = $this->client->getVersion();
 
         $this->expandCurrent[get_class($this)] = array_diff(
             $this->expandSupport[get_class($this)][$apiVersion],
@@ -131,7 +131,7 @@ trait SupportsExpand
             return $this;
         }
 
-        $apiVersion = $this->client->getApiVersion();
+        $apiVersion = $this->client->getVersion();
 
         $this->expandCurrent[get_class($this)] = array_intersect(
             $this->expandSupport[get_class($this)][$apiVersion],
@@ -158,7 +158,7 @@ trait SupportsExpand
 
     protected function clientSupportsExpand(): bool
     {
-        $apiVersion = $this->client->getApiVersion();
+        $apiVersion = $this->client->getVersion();
 
         switch ($apiVersion) {
             case '1.5.0':

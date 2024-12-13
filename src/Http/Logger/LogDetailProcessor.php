@@ -15,6 +15,11 @@ class LogDetailProcessor implements ProcessorInterface
         $this->messageDetailLevel = $messageDetailLevel;
     }
 
+    /**
+     * @param array<mixed> $record
+     *
+     * @return array<mixed>
+     */
     public function __invoke(array $record): array
     {
         $record = $this->addExecutionTime($record);
@@ -36,6 +41,10 @@ class LogDetailProcessor implements ProcessorInterface
 
     /**
      * Returns the URL and body text
+     *
+     * @param array<mixed> $record
+     *
+     * @return array<mixed>
      */
     protected function blackBoxRecord(array $record): array
     {
@@ -47,6 +56,10 @@ class LogDetailProcessor implements ProcessorInterface
 
     /**
      * Returns the URL, request parameters and body text
+     *
+     * @param array<mixed> $record
+     *
+     * @return array<mixed>
      */
     protected function grayBoxRecord(array $record): array
     {
@@ -57,6 +70,10 @@ class LogDetailProcessor implements ProcessorInterface
 
     /**
      * Returns the full unaltered record and adds a stacktrace
+     *
+     * @param array<mixed> $record
+     *
+     * @return array<mixed>
      */
     protected function whiteBoxRecord(array $record): array
     {
@@ -66,6 +83,11 @@ class LogDetailProcessor implements ProcessorInterface
         return $record;
     }
 
+    /**
+     * @param array<mixed> $record
+     *
+     * @return array<mixed>
+     */
     protected function urlOnlyRecord(array $record): array
     {
         unset($record['context']['arguments']);
@@ -74,6 +96,11 @@ class LogDetailProcessor implements ProcessorInterface
         return $record;
     }
 
+    /**
+     * @param array<mixed> $record
+     *
+     * @return array<mixed>
+     */
     protected function addExecutionTime(array $record): array
     {
         $time = microtime(true) - $record['context']['arguments']['headers']['_owc_request_logging'];

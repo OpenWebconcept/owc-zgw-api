@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace OWC\ZGW\Http\Errors;
 
-use OWC\ZGW\Http\RequestError;
 use OWC\ZGW\Http\Response;
+use OWC\ZGW\Http\RequestError;
 
 class BadRequestError extends RequestError
 {
+    /** @var array<mixed> */
     protected array $invalidParameters = [];
 
-    public static function fromResponse(Response $response)
+    public static function fromResponse(Response $response): parent
     {
         $error = parent::fromResponse($response);
 
@@ -27,13 +28,15 @@ class BadRequestError extends RequestError
         return $error;
     }
 
-    public function setInvalidParameters(array $parameters)
+    /** @param array<mixed> $parameters */
+    public function setInvalidParameters(array $parameters): self
     {
         $this->invalidParameters = $parameters;
 
         return $this;
     }
 
+    /** @return array<mixed> */
     public function getInvalidParameters(): array
     {
         return $this->invalidParameters;

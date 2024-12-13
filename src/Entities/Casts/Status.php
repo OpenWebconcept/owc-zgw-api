@@ -11,6 +11,9 @@ use OWC\ZGW\Entities\Attributes\Status as StatusAttribute;
 
 class Status extends AbstractCast
 {
+    /**
+     * @param mixed $value
+     */
     public function set(Entity $model, string $key, $value): ?string
     {
         if (! StatusAttribute::isValidValue($value)) {
@@ -20,11 +23,17 @@ class Status extends AbstractCast
         return $value;
     }
 
+    /**
+     * @param mixed $value
+     */
     public function get(Entity $model, string $key, $value): ?StatusAttribute
     {
         return is_string($value) ? new StatusAttribute($value) : null;
     }
 
+    /**
+     * @param mixed $value
+     */
     public function serialize(string $name, $value): string
     {
         return (is_object($value) && $value instanceof EnumAttribute) ? $value->get() : $value;

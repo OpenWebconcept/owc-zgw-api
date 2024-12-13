@@ -35,7 +35,7 @@ abstract class AbstractClient implements Client
     }
 
     /**
-     * @param array<int. string> $arguments
+     * @param array<int, string> $arguments
      */
     public function __call(string $name, array $arguments): Endpoint
     {
@@ -73,7 +73,7 @@ abstract class AbstractClient implements Client
 
     protected function fetchFromContainer(string $key): Endpoint
     {
-        if (! isset($this->container[$key]) || empty($this->container[$key])) {
+        if (empty($this->container[$key])) {
             $endpoint = $this->validateEndpoint($key); // Throws exception when validation fails.
 
             [$class, $type] = $endpoint;
@@ -86,7 +86,7 @@ abstract class AbstractClient implements Client
     }
 
     /**
-     * @return []string
+     * @return string[]
      */
     protected function validateEndpoint(string $key): array
     {

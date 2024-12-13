@@ -29,6 +29,7 @@ class WordPressRequestClient implements RequestClientInterface
         return $this->handleResponse($response);
     }
 
+    /** @param mixed $body */
     public function post(string $uri, $body, ?RequestOptions $options = null): Response
     {
         $options = $this->mergeRequestOptions($options)->set('body', $body);
@@ -75,6 +76,9 @@ class WordPressRequestClient implements RequestClientInterface
         return $this;
     }
 
+    /**
+     * @param \WP_Error|array<mixed> $response
+     */
     protected function handleResponse($response): Response
     {
         if (is_wp_error($response)) {
@@ -95,7 +99,7 @@ class WordPressRequestClient implements RequestClientInterface
         return $this->options->clone()->merge($options);
     }
 
-    protected function buildUri($uri): string
+    protected function buildUri(string $uri): string
     {
         if ($this->options->has('base_uri')) {
             $uri = rtrim($this->options->get('base_uri'), '/') . '/' . $uri;

@@ -34,7 +34,7 @@ class ZaakeigenschappenEndpoint extends Endpoint
         return $this->getSingleEntity($this->handleResponse($response));
     }
 
-    public function filter(Filter\ZaakeigenschappenFilter $filter): Collection
+    public function filter(Filter\AbstractFilter $filter): Collection
     {
         $response = $this->httpClient->get(
             $this->buildUri($this->endpoint, $filter),

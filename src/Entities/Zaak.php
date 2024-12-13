@@ -4,6 +4,46 @@ declare(strict_types=1);
 
 namespace OWC\ZGW\Entities;
 
+/**
+ * @property ?string $url
+ * @property ?string $uuid
+ * @property ?string $identificatie
+ * @property ?string $bronorganisatie
+ * @property ?string $omschrijving
+ * @property ?string $toelichting
+ * @property ?\OWC\ZGW\Entities\Zaaktype $zaaktype
+ * @property ?\DateTimeImmutable $registratiedatum
+ * @property ?string $verantwoordelijkeOrganisatie
+ * @property ?\DateTimeImmutable $startdatum
+ * @property ?\DateTimeImmutable $einddatum
+ * @property ?\DateTimeImmutable $einddatumGepland
+ * @property ?\DateTimeImmutable $uiterlijkeEinddatumAfdoening
+ * @property ?\DateTimeImmutable $publicatiedatum
+ * @property ?string $communicatiekanaal
+ * @property ?string $productenOfDiensten
+ * @property \OWC\ZGW\Entities\Attributes\Confidentiality $vertrouwelijkheidaanduiding
+ * @property ?string $betalingsindicatie
+ * @property ?string $betalingsindicatieWeergave
+ * @property ?\DateTimeImmutable $laatsteBetaaldatum
+ * @property ?string $zaakgeometrie
+ * @property ?string $verlenging
+ * @property ?string $opschorting
+ * @property ?string $selectielijstklasse
+ * @property ?\OWC\ZGW\Entities\Zaak $hoofdzaak
+ * @property ?\OWC\ZGW\Support\Collection $deelzaken
+ * @property ?string $relevanteAndereZaken
+ * @property ?string $eigenschappen
+ * @property ?\OWC\ZGW\Entities\Status $status
+ * @property ?string $kenmerken
+ * @property ?string $archiefnominatie
+ * @property ?string $archiefstatus
+ * @property ?\DateTimeImmutable $archiefactiedatum
+ * @property ?\OWC\ZGW\Entities\Resultaat $resultaat
+ * @property ?string $opdrachtgevendeOrganisatie
+ * @property ?\OWC\ZGW\Support\Collection $statussen
+ * @property ?\OWC\ZGW\Support\Collection $zaakinformatieobjecten
+ * @property ?\OWC\ZGW\Support\Collection $rollen
+ */
 class Zaak extends Entity
 {
     protected array $casts = [

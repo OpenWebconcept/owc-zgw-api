@@ -6,11 +6,17 @@ use OWC\ZGW\Entities\Casts\CastsAttributes;
 
 trait HasCastableAttributes
 {
+    /**
+     * @param mixed $default
+     *
+     * @return mixed
+     */
     public function getAttributeValue(string $name, $default = null)
     {
         return $this->data[$name] ?? $default;
     }
 
+    /** @param mixed $value */
     public function setAttributeValue(string $name, $value): void
     {
         $this->data[$name] = $value;
@@ -21,6 +27,7 @@ trait HasCastableAttributes
         return isset($this->data[$name]);
     }
 
+    /** @return string[] */
     public function getAttributeNames(): array
     {
         return array_keys($this->data);

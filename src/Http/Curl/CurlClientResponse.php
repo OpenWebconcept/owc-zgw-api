@@ -8,13 +8,16 @@ use OWC\ZGW\Http\Response;
 
 class CurlClientResponse extends Response
 {
-    public static function fromResponse($response, $handle): self
+    /**
+     * @param resource $handle
+     */
+    public static function fromResponse(string $response, $handle): self
     {
         return new self(
             [], // No headers
             [
-                'code'      => curl_getinfo($handle, CURLINFO_HTTP_CODE),
-                'message'   => '',
+                'code' => curl_getinfo($handle, CURLINFO_HTTP_CODE),
+                'message' => '',
             ],
             $response,
             [], // No cookies

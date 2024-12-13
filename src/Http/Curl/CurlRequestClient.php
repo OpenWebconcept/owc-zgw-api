@@ -29,6 +29,7 @@ class CurlRequestClient implements RequestClientInterface
         return $this->handleResponse($response, $handle);
     }
 
+    /** @param mixed $body */
     public function post(string $uri, $body, ?RequestOptions $options = null): Response
     {
         $handle = $this->buildHandle($uri, $options);
@@ -73,6 +74,7 @@ class CurlRequestClient implements RequestClientInterface
         return $this;
     }
 
+    /** @return resource */
     protected function buildHandle(string $uri, RequestOptions $options)
     {
         $options = $this->mergeRequestOptions($options);
@@ -85,7 +87,10 @@ class CurlRequestClient implements RequestClientInterface
         return $this->applyCertificates($handle);
     }
 
-    protected function handleResponse($response, $handle): Response
+    /**
+     * @param resource $handle
+     */
+    protected function handleResponse(string $response, $handle): Response
     {
         $error = curl_error($handle);
 
@@ -107,7 +112,7 @@ class CurlRequestClient implements RequestClientInterface
         return $this->options->clone()->merge($options);
     }
 
-    protected function buildUri($uri): string
+    protected function buildUri(string $uri): string
     {
         if ($this->options->has('base_uri')) {
             $uri = rtrim($this->options->get('base_uri'), '/') . '/' . $uri;
@@ -116,6 +121,7 @@ class CurlRequestClient implements RequestClientInterface
         return $uri;
     }
 
+    /** @return string[] */
     protected function buildHeaders(RequestOptions $options): array
     {
         $formatted = [];
@@ -128,6 +134,11 @@ class CurlRequestClient implements RequestClientInterface
         return $formatted;
     }
 
+    /**
+     * @param resource $handle
+     *
+     * @return resource
+     */
     protected function applyCertificates($handle)
     {
         if (isset($this->certificates)) {

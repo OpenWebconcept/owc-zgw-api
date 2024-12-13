@@ -7,6 +7,9 @@ use BadMethodCallException;
 
 trait Macroable
 {
+    /**
+     * @var array<string, \Closure>
+     */
     protected static array $macros = [];
 
     public static function macro(string $name, Closure $macro): void
@@ -25,6 +28,8 @@ trait Macroable
     }
 
     /**
+     * @param array<mixed> $parameters
+     *
      * @return mixed
      */
     public static function __callStatic(string $method, array $parameters)
@@ -44,6 +49,8 @@ trait Macroable
     }
 
     /**
+     * @param array<mixed> $parameters
+     *
      * @return mixed
      */
     public function __call(string $method, array $parameters)

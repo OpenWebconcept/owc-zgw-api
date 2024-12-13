@@ -25,12 +25,12 @@ class ZakenFilter extends AbstractFilter
     // rol__betrokkeneIdentificatie__organisatorischeEenheid__identificatie
     // ordering
 
-    public function byZaaktype(Zaaktype $zaaktype): self
+    public function byZaaktype(Zaaktype $zaaktype): parent
     {
         return $this->add('zaaktype', $zaaktype->url);
     }
 
-    public function orderBy(string $orderBy): self
+    public function orderBy(string $orderBy): parent
     {
         /**
          * Might be used in other places, in that case
@@ -52,12 +52,12 @@ class ZakenFilter extends AbstractFilter
         return $this->add('ordering', $orderBy);
     }
 
-    public function byZaaktypeIdentification(Zaaktype $zaaktype): self
+    public function byZaaktypeIdentification(Zaaktype $zaaktype): parent
     {
         return $this->add('identificatie', $zaaktype->identificatie);
     }
 
-    public function byBsn(string $bsn): self
+    public function byBsn(string $bsn): parent
     {
         return $this->add(
             'rol__betrokkeneIdentificatie__natuurlijkPersoon__inpBsn',
@@ -65,12 +65,12 @@ class ZakenFilter extends AbstractFilter
         );
     }
 
-    public function byStartDate(DateTimeInterface $startDate, string $operator = self::OPERATOR_EQUALS): self
+    public function byStartDate(DateTimeInterface $startDate, string $operator = self::OPERATOR_EQUALS): parent
     {
         return $this->addDateFilter('startdatum', $startDate, $operator, 'Y-m-d');
     }
 
-    public function byArchiveActionDate(DateTimeInterface $endDate, string $operator = self::OPERATOR_EQUALS): self
+    public function byArchiveActionDate(DateTimeInterface $endDate, string $operator = self::OPERATOR_EQUALS): parent
     {
         return $this->addDateFilter('archiefactiedatum', $endDate, $operator, 'Y-m-d');
     }

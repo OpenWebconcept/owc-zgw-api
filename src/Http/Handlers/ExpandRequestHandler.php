@@ -23,6 +23,11 @@ class ExpandRequestHandler implements HandlerInterface
         return $response;
     }
 
+    /**
+     * @param array<mixed> $data
+     *
+     * @return array<mixed>
+     */
     protected function mergeExpandData(array $data): array
     {
         if (! isset($data['_expand'])) {
@@ -54,6 +59,7 @@ class ExpandRequestHandler implements HandlerInterface
         return $data;
     }
 
+    /** @param array<mixed> $data */
     protected function hasExpandedEntities(array $data): bool
     {
         return ! empty($data['_expand']);

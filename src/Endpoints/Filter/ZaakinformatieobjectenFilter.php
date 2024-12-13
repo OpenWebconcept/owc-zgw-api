@@ -6,7 +6,7 @@ use OWC\ZGW\Entities\Zaak;
 
 class ZaakinformatieobjectenFilter extends AbstractFilter
 {
-    public function byZaak(Zaak $zaak): self
+    public function byZaak(Zaak $zaak): parent
     {
         return $this->add('zaak', $zaak->url);
     }

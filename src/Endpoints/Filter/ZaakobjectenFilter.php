@@ -7,7 +7,7 @@ use OWC\ZGW\Entities\Attributes\ObjectType;
 
 class ZaakobjectenFilter extends AbstractFilter
 {
-    public function byZaak(Zaak $zaak): self
+    public function byZaak(Zaak $zaak): parent
     {
         return $this->add('zaak', $zaak->url);
     }
@@ -21,7 +21,7 @@ class ZaakobjectenFilter extends AbstractFilter
     //     return $this->add('object', $object->url);
     // }
 
-    public function byObjectType(ObjectType $objectType): self
+    public function byObjectType(ObjectType $objectType): parent
     {
         return $this->add('objecttype', $objectType->get());
     }

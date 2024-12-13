@@ -21,6 +21,7 @@ class Response
         $this->json = $this->parseAsJson($this->body);
     }
 
+    /** @return array<mixed> */
     public function getHeaders(): array
     {
         return $this->headers;
@@ -31,6 +32,7 @@ class Response
         return $this->headers['content-type'] ?? '';
     }
 
+    /** @return array<mixed> */
     public function getResponse(): array
     {
         return $this->response;
@@ -51,6 +53,7 @@ class Response
         return $this->body;
     }
 
+    /** @param array<mixed> $json */
     public function modify(array $json): self
     {
         $this->json = $json;
@@ -58,11 +61,13 @@ class Response
         return $this;
     }
 
+    /** @return array<mixed> */
     public function getParsedJson(): array
     {
         return $this->json;
     }
 
+    /** @return array<mixed> */
     protected function parseAsJson(string $body): array
     {
         $decoded = json_decode($body, true, 512);
@@ -74,6 +79,7 @@ class Response
         return $decoded;
     }
 
+    /** @return array<mixed> */
     public function getCookies(): array
     {
         return $this->cookies;

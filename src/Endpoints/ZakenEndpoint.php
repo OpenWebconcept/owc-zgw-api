@@ -35,7 +35,7 @@ class ZakenEndpoint extends Endpoint
         return $this->getSingleEntity($this->handleResponse($response));
     }
 
-    public function filter(Filter\ZakenFilter $filter): PagedCollection
+    public function filter(Filter\AbstractFilter $filter): PagedCollection
     {
         $response = $this->httpClient->get(
             $this->buildUriWithExpand($this->endpoint, $filter),

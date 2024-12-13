@@ -4,16 +4,22 @@ declare(strict_types=1);
 
 namespace OWC\ZGW\Entities\Casts\Related;
 
-use OWC\ZGW\Endpoints\Filter\ZaakinformatieobjectenFilter;
-use OWC\ZGW\Entities\Enkelvoudiginformatieobject;
+use OWC\ZGW\Entities\Zaak;
 use OWC\ZGW\Entities\Entity;
-use OWC\ZGW\Entities\Zaakinformatieobject;
+use InvalidArgumentException;
 use OWC\ZGW\Support\Collection;
+use OWC\ZGW\Entities\Zaakinformatieobject;
+use OWC\ZGW\Entities\Enkelvoudiginformatieobject;
+use OWC\ZGW\Endpoints\Filter\ZaakinformatieobjectenFilter;
 
 class Zaakinformatieobjecten extends ResourceCollection
 {
     public function resolveRelatedResourceCollection(Entity $entity): Collection
     {
+        if (! $entity instanceof Zaak) {
+            throw new InvalidArgumentException("A Zaak entity is required to resolve Rollen");
+        }
+
         $statussenEndpoint = $entity->client()->zaakinformatieobjecten();
         $filter = new ZaakinformatieobjectenFilter();
 
@@ -24,7 +30,8 @@ class Zaakinformatieobjecten extends ResourceCollection
                 return false;
             }
 
-            return ! $object->informatieobject->isClassified() && $object->informatieobject->hasFinalStatus();
+            return ! $object->informatieobject->vertrouwelijkheidaanduiding->isClassified()
+                && $object->informatieobject->status->hasFinalStatus();
         });
     }
 }

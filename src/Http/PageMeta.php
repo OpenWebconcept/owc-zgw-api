@@ -19,7 +19,7 @@ class PageMeta
         $this->previousUri = $previousUri;
     }
 
-    public static function fromResponse(Response $response)
+    public static function fromResponse(Response $response): self
     {
         $data = $response->getParsedJson();
 

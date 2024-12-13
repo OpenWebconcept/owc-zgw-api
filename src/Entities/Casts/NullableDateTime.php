@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace OWC\ZGW\Entities\Casts;
 
-use DateTimeInterface;
 use DateTimeImmutable;
-use InvalidArgumentException;
+use DateTimeInterface;
 use OWC\ZGW\Entities\Entity;
+use InvalidArgumentException;
 
 class NullableDateTime extends AbstractCast
 {
@@ -18,6 +18,9 @@ class NullableDateTime extends AbstractCast
         $this->format = $format;
     }
 
+    /**
+     * @param mixed $value
+     */
     public function set(Entity $model, string $key, $value): ?string
     {
         if (is_null($value)) {
@@ -35,11 +38,17 @@ class NullableDateTime extends AbstractCast
         return $value->format($this->format);
     }
 
+    /**
+     * @param mixed $value
+     */
     public function get(Entity $model, string $key, $value): ?DateTimeImmutable
     {
         return is_string($value) ? new DateTimeImmutable($value) : null;
     }
 
+    /**
+     * @param mixed $value
+     */
     public function serialize(string $name, $value)
     {
         return is_object($value) && $value instanceof DateTimeInterface ?

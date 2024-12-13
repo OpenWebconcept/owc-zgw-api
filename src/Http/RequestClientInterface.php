@@ -11,6 +11,7 @@ interface RequestClientInterface
     public function getRequestOptions(): RequestOptions;
     public function addSslCertificates(SslCertificatesStore $store): self;
     public function get(string $url, ?RequestOptions $options = null): Response;
+    /** @param mixed $body */
     public function post(string $url, $body, ?RequestOptions $options = null): Response;
     public function delete(string $url, ?RequestOptions $options = null): Response;
 }

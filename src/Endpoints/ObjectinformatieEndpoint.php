@@ -33,7 +33,7 @@ class ObjectinformatieEndpoint extends Endpoint
         return $this->getSingleEntity($this->handleResponse($response));
     }
 
-    public function filter(Filter\ObjectinformatieobjectenFilter $filter): PagedCollection
+    public function filter(Filter\AbstractFilter $filter): PagedCollection
     {
         $response = $this->httpClient->get(
             $this->buildUriWithExpand($this->endpoint, $filter),

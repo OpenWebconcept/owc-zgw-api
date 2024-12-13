@@ -75,6 +75,7 @@ abstract class Resource extends AbstractCast
 
     abstract protected function resolveResource(Client $client, string $uuid): ?Entity;
 
+    /** @param array<mixed> $itemData */
     protected function buildResource(array $itemData, Entity $model): Entity
     {
         return new $this->resourceType($itemData, $model->client());

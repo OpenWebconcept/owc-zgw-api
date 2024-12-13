@@ -6,6 +6,9 @@ namespace OWC\ZGW\Http\Handlers;
 
 class Stack
 {
+    /**
+     * @var array<string, HandlerInterface>
+     */
     protected array $handlers = [];
 
     public static function create(): self
@@ -20,6 +23,7 @@ class Stack
         return $stack;
     }
 
+    /** @return array<string, HandlerInterface> */
     public function get(): array
     {
         return $this->handlers;

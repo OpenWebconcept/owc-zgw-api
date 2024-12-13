@@ -47,7 +47,7 @@ class ZaakinformatieobjectenEndpoint extends Endpoint
     //     return $this->getSingleEntity($this->handleResponse($response));
     // }
 
-    public function filter(Filter\ZaakinformatieobjectenFilter $filter): Collection
+    public function filter(Filter\AbstractFilter $filter): Collection
     {
         $response = $this->httpClient->get(
             $this->buildUri($this->endpoint, $filter),

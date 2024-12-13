@@ -10,7 +10,7 @@ class RequestError extends Exception
 {
     protected ?Response $response = null;
 
-    public static function fromResponse(Response $response)
+    public static function fromResponse(Response $response): self
     {
         try {
             $json = $response->getParsedJson();
@@ -20,8 +20,6 @@ class RequestError extends Exception
             $message = 'A request error occurred. Additionally, no error message could be retrieved.';
             $status = 0;
         }
-
-        var_dump($message, $status);
 
         $error = new static($message, $status);
         $error->setResponse($response);
