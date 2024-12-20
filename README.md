@@ -14,7 +14,7 @@ This PHP packages offers an implementation of the 'Zaakgericht Werken' (ZGW) API
 
 ## Installation
 
-Via Composer:
+Use [composer](https://getcomposer.org/) to install this package.
 
 ```sh
 composer require owc/zgw-api
@@ -22,7 +22,7 @@ composer require owc/zgw-api
 
 ## Usage
 
-There is documentation available on how [to get started](docs/getting-started/index.md).
+Read the documentation on [how to get started](docs/getting-started/index.md).
 
 ## Changelog
 

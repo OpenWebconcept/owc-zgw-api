@@ -7,22 +7,27 @@ namespace OWC\ZGW\Http\Logger;
 use OWC\Zaaksysteem\Contracts\ServiceProvider;
 use OWC\ZGW\GravityForms\GravityFormsSettings;
 
+/**
+ * Currently broken. Do not use.
+ *
+ * @todo fix WordPress integration
+ */
 class WordPressLoggerService extends ServiceProvider
 {
     protected string $settingsPrefix = OWC_GZ_PLUGIN_SLUG;
 
     public function boot(): void
     {
-        $this->setLoggingLevel();
+        // $this->setLoggingLevel();
     }
 
     public function register(): void
     {
-        if ($this->isEnabled()) {
-            add_action('http_api_debug', [$this, 'logHttpMessage'], 10, 5);
-        }
+        // if ($this->isEnabled()) {
+        //     add_action('http_api_debug', [$this, 'logHttpMessage'], 10, 5);
+        // }
 
-        add_filter('owc_gravityforms_zaaksysteem_gf_settings', [$this, 'addLoggingOptions']);
+        // add_filter('owc_gravityforms_zaaksysteem_gf_settings', [$this, 'addLoggingOptions']);
     }
 
     public function isEnabled(): bool
