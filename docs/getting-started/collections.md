@@ -1,6 +1,6 @@
 # Collections
 
-Collections are like an array, but with builtin functions. They implement the `ArrayAccess` and `Iterator` interfaces, which means it's possible to use a collection like you would use an array.
+Collections are like an array, but with builtin functions. They implement the `ArrayAccess` and `Iterator` interfaces, which means it's possible to use a collection in a `foreach()` loop or access values like you would with an array (`$collection['array-key']`).
 
 The following methods are builtin:
 
@@ -130,7 +130,7 @@ $collection->flattenAndAssign(Closure $callback, $initial = null)
 $collection->groupBy(Closure $callback): CollectionInterface
 ```
 
-Group the collection by any value. For example group a collection of Zaken by their Zaaktype identificatie:
+Group the collection by any value.
 
 ## sorting
 

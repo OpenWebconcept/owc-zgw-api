@@ -12,7 +12,12 @@ Zaaksysteem clients are easily configured and resolved through the `OWC\ZGW\ApiC
 > [!IMPORTANT]
 > Decos JOIN has a custom implementation of the `ApiCredentials` class. Use the `OWC\ZGW\Clients\DecosJoin\ApiCredentials` class to correctly set the client secret for the ZRC component.
 
-Add any Zaaksysteem client through the `addClient()` method on the `ApiClientManager`. It requires an unique name, a fully qualified class name and both `ApiUrlCollection` and `ApiCredentials` classes. For example:
+Add any Zaaksysteem client through the `addClient()` method on the `ApiClientManager`. It requires:
+
+- a unique name, e.g. 'my-oz-client',
+- a fully qualified class name of the client implementation,
+- the `ApiUrlCollection` instance,
+- and the `ApiCredentials` instance.
 
 ```php
 use OWC\ZGW\ApiCredentials;
@@ -38,17 +43,17 @@ $manager->addClient('my-oz-client', OWC\ZGW\Clients\OpenZaak\Client::class, $cre
 After adding a client, you'll be able to access a fully built client through the `getClient(string $name)` method!
 
 ```php
-// Resolve it with it's name
+// Resolve it by it's name
 $client = $manager->getClient('my-oz-client');
 ```
 
 ## Using helper functions
 The `ApiClientManager` class has some helper functions which can be accessed after initializing the class. These helper functions are within the `OWC\ZGW` namespace.
 
-1. `container()`: returns the internal `DI\Container` instance
-2. `resolve(string $name)`: quickly access any definition in the container
-3. `apiClientManager()`: returns the `ApiClientManager` class
-4. `apiClient(string $name)`: returns any defined client
+1. `apiClient(string $name)`: returns any defined client
+2. `apiClientManager()`: returns the `ApiClientManager` class
+3. `resolve(string $name)`: quickly access any definition in the container
+4. `container()`: returns the internal `DI\Container` instance
 
 ### Build a client
 The easiest way to build any configured zaaksysteem client:
@@ -80,6 +85,10 @@ container(): Di\Container
 ```
 
 [View the documentation of the PHP-DI container.](https://php-di.org/doc/container.html)
+
+## WordPress
+
+This package offers a WordPress settings page integration. With it, clients can be configured by filling in some fields. [View the WordPress documentation](wordpress.md).
 
 ## Endpoints
 

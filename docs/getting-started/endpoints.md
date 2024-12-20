@@ -4,7 +4,7 @@ The ZGW standard has several endpoints which can be accessed. This will show you
 
 ## Accessing endpoints
 
-The easiest way to access any endpoint is through any Client instance. All (supported) endpoints are available as a method on the Client class. For example:
+The easiest way to access any endpoint is through a Client instance. All (supported) endpoints are available as a method on the Client class. For example:
 ```php
 use function OWC\ZGW\ApiClient;
 
@@ -15,7 +15,7 @@ $zakenEndpoint = $openzaakClient->zaken();
 
 ### Available endpoints
 
-At the time of writing, the following endpoints are available to most (but not all!) ZGW clients.
+At the time of writing, the following endpoints are available to most (but not all!) ZGW clients. Remember: the endpoints are available as methods on a client instance.
 
 | 📥 ZRC | 🗂️ ZTC | 📄 DRC |
 |--|--|--|
@@ -27,7 +27,7 @@ At the time of writing, the following endpoints are available to most (but not a
 | zaakinformatieobjecten | informatieobjecttypen |  |
 | zaakobjecten | eigenschappen |  |
 
-All of these endpoints are callable as a method on your client. It will return an `OWC\ZGW\Endpoints\Endpoint` instance.
+All of these endpoints are callable as a method on your client. It will return an subtype of the `OWC\ZGW\Endpoints\Endpoint` class.
 
 ```php
 $zakenEndpoint = $openzaakClient->zaaktypen();
