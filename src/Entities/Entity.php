@@ -87,7 +87,7 @@ abstract class Entity implements
             }
         }
 
-        return $this->setAttributeValue($name, $value);
+        $this->setAttributeValue($name, $value);
     }
 
     /** @return mixed */
