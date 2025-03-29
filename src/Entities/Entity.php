@@ -17,6 +17,7 @@ abstract class Entity implements
 {
     use Traits\Arrayable;
     use Traits\Macroable;
+    use Traits\HasSchemaValidation;
     use Traits\HasCastableAttributes;
 
     protected Client $client;
@@ -26,6 +27,9 @@ abstract class Entity implements
 
     /** @var array<string, class-string> */
     protected array $casts = [];
+
+    /** @var array */
+    protected array $validationSchema = [];
 
     /** @param array<mixed> $itemData */
     public function __construct(array $itemData, Client $client)
