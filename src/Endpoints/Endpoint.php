@@ -66,7 +66,7 @@ abstract class Endpoint
         );
 
         if ($filter) {
-            $uri = \add_query_arg($filter->getParameters(), $uri);
+            $uri = \OWC\ZGW\add_query_arg($filter->getParameters(), $uri);
         }
 
         return $uri;
@@ -77,7 +77,7 @@ abstract class Endpoint
         $uri = $this->buildUri($uri, $filter);
 
         if ($this->endpointSupportsExpand() && $this->expandIsEnabled()) {
-            $uri = add_query_arg([
+            $uri = \OWC\ZGW\add_query_arg([
                 'expand' => implode(',', $this->getExpandableResources())
             ], $uri);
         }
