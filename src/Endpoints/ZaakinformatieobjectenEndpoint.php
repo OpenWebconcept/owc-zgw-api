@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace OWC\ZGW\Endpoints;
 
-use OWC\ZGW\Support\Collection;
 use OWC\ZGW\Entities\Zaakinformatieobject;
+use OWC\ZGW\Support\Collection;
 
 class ZaakinformatieobjectenEndpoint extends Endpoint
 {
@@ -34,18 +34,19 @@ class ZaakinformatieobjectenEndpoint extends Endpoint
     }
 
     /**
-     * @todo
+     * @temp
+	 * This method was previously marked as todo, repository owner should look into it.
      */
-    // public function create(Zaakinformatieobject $model): Zaakinformatieobject
-    // {
-    //     $response = $this->httpClient->post(
-    //         $this->buildUri($this->endpoint),
-    //         $model->toArray(),
-    //         $this->buildRequestOptions()
-    //     );
+    public function create(Zaakinformatieobject $model): Zaakinformatieobject
+    {
+        $response = $this->httpClient->post(
+            $this->buildUri($this->endpoint),
+            $model->prepareCreateJsonArgs(),
+            $this->buildRequestOptions()
+        );
 
-    //     return $this->getSingleEntity($this->handleResponse($response));
-    // }
+        return $this->getSingleEntity($this->handleResponse($response));
+    }
 
     public function filter(Filter\AbstractFilter $filter): Collection
     {
