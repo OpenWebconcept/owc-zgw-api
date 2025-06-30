@@ -17,7 +17,9 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns the parameters.
+     *
      * @param string|null $key The name of the parameter to return or null to get them all
+     *
      * @return array
      */
     public function all(/*string $key = null*/)
@@ -28,7 +30,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
             return $this->parameters;
         }
 
-        if (!\is_array($value = $this->parameters[$key] ?? [])) {
+        if (! \is_array($value = $this->parameters[$key] ?? [])) {
             throw new RuntimeException(sprintf(
                 'Unexpected value for parameter "%s": expecting "array", got "%s".',
                 (string) $key,
@@ -41,6 +43,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns the parameter keys.
+     *
      * @return array
      */
     public function keys(): array
@@ -66,7 +69,9 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns a parameter by name.
+     *
      * @param mixed $default The default value if the parameter key does not exist
+     *
      * @return mixed
      */
     public function get(string $key, $default = null)
@@ -76,6 +81,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Sets a parameter by name.
+     *
      * @param mixed $value The value
      */
     public function set(string $key, $value): void
@@ -85,6 +91,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns true if the parameter is defined.
+     *
      * @return bool
      */
     public function has(string $key): bool
@@ -102,6 +109,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns the alphabetic characters of the parameter value.
+     *
      * @return string
      */
     public function getAlpha(string $key, string $default = ''): string
@@ -111,6 +119,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns the alphabetic characters and digits of the parameter value.
+     *
      * @return string
      */
     public function getAlnum(string $key, string $default = ''): string
@@ -120,6 +129,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns the digits of the parameter value.
+     *
      * @return string
      */
     public function getDigits(string $key, string $default = ''): string
@@ -130,6 +140,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns the parameter value converted to integer.
+     *
      * @return int
      */
     public function getInt(string $key, int $default = 0): int
@@ -139,6 +150,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns the parameter value converted to boolean.
+     *
      * @return bool
      */
     public function getBoolean(string $key, bool $default = false): bool
@@ -148,9 +160,11 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Filter key.
+     *
      * @param mixed $default Default = null
      * @param int   $filter  FILTER_* constant
      * @param mixed $options Filter options
+     *
      * @return mixed
      */
     public function filter(string $key, $default = null, int $filter = \FILTER_DEFAULT, $options = [])
@@ -158,16 +172,16 @@ class ParameterBag implements \IteratorAggregate, \Countable
         $value = $this->get($key, $default);
 
         // Always turn $options into an array - this allows filter_var option shortcuts.
-        if (!\is_array($options) && $options) {
+        if (! \is_array($options) && $options) {
             $options = ['flags' => $options];
         }
 
         // Add a convenience check for arrays.
-        if (\is_array($value) && !isset($options['flags'])) {
+        if (\is_array($value) && ! isset($options['flags'])) {
             $options['flags'] = \FILTER_REQUIRE_ARRAY;
         }
 
-        if ((\FILTER_CALLBACK & $filter) && !(($options['options'] ?? null) instanceof \Closure)) {
+        if ((\FILTER_CALLBACK & $filter) && ! (($options['options'] ?? null) instanceof \Closure)) {
             throw new \InvalidArgumentException(sprintf(
                 'A Closure must be passed to "%s()" when FILTER_CALLBACK is used, "%s" given.',
                 __METHOD__,
@@ -180,6 +194,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns an iterator for parameters.
+     *
      * @return \ArrayIterator
      */
     public function getIterator(): \ArrayIterator
@@ -189,6 +204,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns the number of parameters.
+     *
      * @return int
      */
     public function count(): int

@@ -6,8 +6,8 @@ namespace OWC\ZGW\Http\Logger;
 
 class MessageDetail
 {
-    const WHITE_BOX = 'white_box';
-    const GRAY_BOX = 'gray_box';
-    const BLACK_BOX = 'black_box';
-    const URL_LOGGING = 'url_logging';
+    public const WHITE_BOX = 'white_box';
+    public const GRAY_BOX = 'gray_box';
+    public const BLACK_BOX = 'black_box';
+    public const URL_LOGGING = 'url_logging';
 }

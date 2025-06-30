@@ -7,15 +7,15 @@ namespace OWC\ZGW\Entities;
 class Resultaattype extends Entity
 {
     protected array $casts = [
-    // 'url' => "http://example.com",
-    'zaaktype' => Casts\Lazy\Zaaktype::class,
-    // 'omschrijving' => "string",
-    // 'resultaattypeomschrijving' => "http://example.com",
-    // 'omschrijvingGeneriek' => "string",
-    // 'selectielijstklasse' => "http://example.com",
-    // 'toelichting' => "string",
-    // 'archiefnominatie' => "blijvend_bewaren",
-    // 'archiefactietermijn' => "string",
-    // 'brondatumArchiefprocedure' =>
+        // 'url' => "http://example.com",
+        'zaaktype' => Casts\Lazy\Zaaktype::class,
+        // 'omschrijving' => "string",
+        // 'resultaattypeomschrijving' => "http://example.com",
+        // 'omschrijvingGeneriek' => "string",
+        // 'selectielijstklasse' => "http://example.com",
+        // 'toelichting' => "string",
+        // 'archiefnominatie' => "blijvend_bewaren",
+        // 'archiefactietermijn' => "string",
+        // 'brondatumArchiefprocedure' =>
     ];
 }
