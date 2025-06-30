@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace OWC\ZGW\Support;
 
-use ArrayAccess;
 use Iterator;
+use ArrayAccess;
 
 abstract class Enumerable implements ArrayAccess, Iterator
 {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace OWC\ZGW\Entities\Casts\Lazy;
 
+use Exception;
 use OWC\ZGW\Entities\Entity;
 use OWC\ZGW\Contracts\Client;
 use OWC\ZGW\Support\Collection;
@@ -24,7 +25,7 @@ abstract class ResourceCollection extends AbstractCast
             ));
         }
 
-        // This check will be redundant from PHP 8.2 onward as array_fillter
+        // This check will be redundant from PHP 8.2 onward as array_filter
         // will then accept both arrays and Iterable objects.
         if (! is_array($value)) {
             $value = iterator_to_array($value);
@@ -56,7 +57,6 @@ abstract class ResourceCollection extends AbstractCast
 
             if ($this->isUrl($item)) {
                 $client = apiClientManager()->clientFromUrl($item, $this->registryType);
-
                 $item = $this->getUuidFromUrl($item);
             }
 
@@ -66,7 +66,13 @@ abstract class ResourceCollection extends AbstractCast
                 );
             }
 
-            return $this->resolveResource($client, $item);
+            try {
+                return $this->resolveResource($client, $item);
+            } catch (Exception $e) {
+                return null;
+            }
+        })->filter(function ($item) {
+            return $item instanceof Entity;
         });
 
         // Assign the resolved zaaktype back to the model, so we won't

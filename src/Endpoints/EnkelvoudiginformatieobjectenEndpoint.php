@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace OWC\ZGW\Endpoints;
 
-use OWC\ZGW\Entities\Enkelvoudiginformatieobject;
 use OWC\ZGW\Http\Response;
+use OWC\ZGW\Entities\Enkelvoudiginformatieobject;
 
 class EnkelvoudiginformatieobjectenEndpoint extends Endpoint
 {
