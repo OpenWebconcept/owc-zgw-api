@@ -7,7 +7,7 @@ namespace OWC\ZGW\Entities\Casts\Lazy;
 use OWC\ZGW\Contracts\Client;
 use OWC\ZGW\Entities\Catalogus as CatalogusEntity;
 
-class Catalogus extends Resource
+class Catalogus extends AbstractResource
 {
     protected string $registryType = 'catalogi';
     protected string $resourceType = CatalogusEntity::class;

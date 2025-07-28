@@ -7,7 +7,7 @@ namespace OWC\ZGW\Entities\Casts\Lazy;
 use OWC\ZGW\Contracts\Client;
 use OWC\ZGW\Entities\Status as StatusEntity;
 
-class Status extends Resource
+class Status extends AbstractResource
 {
     protected string $registryType = 'zaken';
     protected string $resourceType = StatusEntity::class;

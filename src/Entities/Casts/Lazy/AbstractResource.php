@@ -10,7 +10,7 @@ use OWC\ZGW\Entities\Casts\AbstractCast;
 
 use function OWC\ZGW\apiClientManager;
 
-abstract class Resource extends AbstractCast
+abstract class AbstractResource extends AbstractCast
 {
     protected string $registryType = 'registry';
     protected string $resourceType = Entity::class;
