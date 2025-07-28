@@ -4,21 +4,28 @@ declare(strict_types=1);
 
 namespace OWC\ZGW\Entities\Attributes;
 
-class Status extends EnumAttribute
+enum Status: string
 {
-    public const VALID_MEMBERS = [
-        'in_bewerking', 'ter_vaststelling', 'definitief', 'gearchiveerd'
-    ];
+    case IN_BEWERKING = 'in_bewerking';
+    case TER_VASTSTELLING = 'ter_vaststelling';
+    case DEFINITIEF = 'definitief';
+    case GEARCHIVEERD = 'gearchiveerd';
 
-    protected string $name = 'confidentiality level';
+    public function is(Status $status): bool
+    {
+        return $this->value === $status;
+    }
+
+    public function isnt(Status $status): bool
+    {
+        return $this->value !== $status;
+    }
 
     public function hasFinalStatus(): bool
     {
-        $finalStatusses = [
-            'definitief',
-            'gearchiveerd',
-        ];
-
-        return in_array($this->get(), $finalStatusses);
+        return match ($this->value) {
+            self::DEFINITIEF, self::GEARCHIVEERD => true,
+            default => false,
+        };
     }
 }

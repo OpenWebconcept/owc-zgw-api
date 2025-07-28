@@ -23,6 +23,6 @@ class ZaakobjectenFilter extends AbstractFilter
 
     public function byObjectType(ObjectType $objectType): parent
     {
-        return $this->add('objecttype', $objectType->get());
+        return $this->add('objecttype', $objectType->value);
     }
 }

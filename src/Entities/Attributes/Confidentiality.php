@@ -4,34 +4,46 @@ declare(strict_types=1);
 
 namespace OWC\ZGW\Entities\Attributes;
 
-class Confidentiality extends EnumAttribute
+enum Confidentiality: string
 {
-    public const VALID_MEMBERS = [
-        'openbaar', 'beperkt_openbaar', 'intern', 'zaakvertrouwelijk',
-        'vertrouwelijk', 'confidentieel', 'geheim', 'zeer_geheim',
-    ];
+    case OPENBAAR = 'openbaar';
+    case BEPERKT_OPENBAAR = 'beperkt_openbaar';
+    case INTERN = 'intern';
+    case ZAAKVERTROUWELIJK = 'zaakvertrouwelijk';
+    case VERTROUWELIJK = 'vertrouwelijk';
+    case CONFIDENTIEEL = 'confidentieel';
+    case GEHEIM = 'geheim';
+    case ZEER_GEHEIM = 'zeer_geheim';
 
-    protected string $name = 'confidentiality level';
+    public function is(Confidentiality $level): bool
+    {
+        return $this === $level;
+    }
+
+    public function isnt(Confidentiality $level): bool
+    {
+        return $this !== $level;
+    }
 
     public function isCaseConfidential(): bool
     {
-        return $this->is('zaakvertrouwelijk');
+        return $this === self::ZAAKVERTROUWELIJK;
     }
 
     public function isConfidential(): bool
     {
-        return $this->is('vertrouwelijk');
+        return $this === self::VERTROUWELIJK;
     }
 
     public function isClassified(): bool
     {
-        $classifiedDesignations = [
-            'intern',
-            'confidentieel',
-            'geheim',
-            'zeer_geheim',
-        ];
-
-        return in_array($$this->get(), $classifiedDesignations);
+        return match ($this) {
+            self::INTERN,
+            self::CONFIDENTIEEL,
+            self::GEHEIM,
+            self::ZEER_GEHEIM => true,
+            default => false,
+        };
     }
+
 }
