@@ -9,11 +9,9 @@ use OWC\ZGW\ApiCredentials;
 
 abstract class AbstractTokenAuthenticator implements TokenAuthenticator
 {
-    protected ApiCredentials $credentials;
-
-    public function __construct(ApiCredentials $credentials)
-    {
-        $this->credentials = $credentials;
+    public function __construct(
+        protected ApiCredentials $credentials
+    ) {
     }
 
     public function getAuthString(): string

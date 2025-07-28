@@ -6,17 +6,13 @@ namespace OWC\ZGW\Http;
 
 class PageMeta
 {
-    protected int $count;
-    protected ?string $nextUri;
-    protected ?string $previousUri;
-
     protected string $pageArgumentName = 'page';
 
-    public function __construct(int $count, ?string $nextUri, ?string $previousUri)
-    {
-        $this->count = $count;
-        $this->nextUri = $nextUri;
-        $this->previousUri = $previousUri;
+    public function __construct(
+        protected int $count,
+        protected ?string $nextUri,
+        protected ?string $previousUri
+    ) {
     }
 
     public static function fromResponse(Response $response): self

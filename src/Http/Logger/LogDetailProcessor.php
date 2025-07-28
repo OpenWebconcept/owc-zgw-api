@@ -8,11 +8,9 @@ use Monolog\Processor\ProcessorInterface;
 
 class LogDetailProcessor implements ProcessorInterface
 {
-    protected string $messageDetailLevel;
-
-    public function __construct(string $messageDetailLevel)
-    {
-        $this->messageDetailLevel = $messageDetailLevel;
+    public function __construct(
+        protected string $messageDetailLevel
+    ) {
     }
 
     /**

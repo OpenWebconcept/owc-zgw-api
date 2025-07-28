@@ -6,13 +6,10 @@ namespace OWC\ZGW\Http;
 
 class SslCertificatesStore
 {
-    protected string $publicKeyPath;
-    protected string $privateKeyPath;
-
-    public function __construct(string $publicKeyPath, string $privateKeyPath)
-    {
-        $this->publicKeyPath = $publicKeyPath;
-        $this->privateKeyPath = $privateKeyPath;
+    public function __construct(
+        protected string $publicKeyPath,
+        protected string $privateKeyPath
+    ) {
     }
 
     public function getPublicCertificatePath(): string

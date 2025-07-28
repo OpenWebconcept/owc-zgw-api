@@ -9,12 +9,11 @@ use OWC\ZGW\Contracts\AbstractTokenAuthenticator;
 
 class Authenticator extends AbstractTokenAuthenticator
 {
-    protected ApiCredentials $credentials;
     protected bool $useDefaultClientSecret = true;
 
-    public function __construct(ApiCredentials $credentials)
-    {
-        $this->credentials = $credentials;
+    public function __construct(
+        protected ApiCredentials $credentials
+    ) {
     }
 
     public function useZrcClientSecret(): void

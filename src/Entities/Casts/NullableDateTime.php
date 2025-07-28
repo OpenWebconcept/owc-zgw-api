@@ -11,11 +11,9 @@ use InvalidArgumentException;
 
 class NullableDateTime extends AbstractCast
 {
-    protected string $format;
-
-    public function __construct(string $format = 'Y-m-d\\TH:i:sp')
-    {
-        $this->format = $format;
+    public function __construct(
+        protected string $format = 'Y-m-d\\TH:i:sp'
+    ) {
     }
 
     public function set(Entity $model, string $key, mixed $value): ?string
