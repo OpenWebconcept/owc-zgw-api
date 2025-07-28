@@ -11,10 +11,7 @@ use InvalidArgumentException;
 
 class NullableDateInterval extends AbstractCast
 {
-    /**
-     * @param mixed $value
-     */
-    public function set(Entity $model, string $key, $value): ?DateInterval
+    public function set(Entity $model, string $key, mixed $value): ?DateInterval
     {
         if (is_null($value) || (is_object($value) && $value instanceof Dateinterval)) {
             return $value;
@@ -27,10 +24,7 @@ class NullableDateInterval extends AbstractCast
         }
     }
 
-    /**
-     * @param mixed $value
-     */
-    public function get(Entity $model, string $key, $value): ?DateInterval
+    public function get(Entity $model, string $key, mixed $value): ?DateInterval
     {
         if (is_null($value) || (is_object($value) && $value instanceof Dateinterval)) {
             return $value;
@@ -41,10 +35,8 @@ class NullableDateInterval extends AbstractCast
 
     /**
      * @see https://news-web.php.net/php.internals/113336
-     *
-     * @param mixed $value
      */
-    public function serialize(string $name, $value)
+    public function serialize(string $name, mixed $value): mixed
     {
         return rtrim(str_replace(
             ['M0S', 'H0M', 'DT0H', 'M0D', 'P0Y', 'Y0M', 'P0M'],

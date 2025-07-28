@@ -29,8 +29,7 @@ class WordPressRequestClient implements RequestClientInterface
         return $this->handleResponse($response);
     }
 
-    /** @param mixed $body */
-    public function post(string $uri, $body, ?RequestOptions $options = null): Response
+    public function post(string $uri, mixed $body, ?RequestOptions $options = null): Response
     {
         $options = $this->mergeRequestOptions($options)->set('body', $body);
         $response = wp_remote_post($this->buildUri($uri), $options->toArray());

@@ -23,8 +23,7 @@ trait Arrayable
         unset($this->data[$offset]);
     }
 
-    #[\ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->getValue($offset);
     }

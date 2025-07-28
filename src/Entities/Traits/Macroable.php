@@ -29,10 +29,8 @@ trait Macroable
 
     /**
      * @param array<mixed> $parameters
-     *
-     * @return mixed
      */
-    public static function __callStatic(string $method, array $parameters)
+    public static function __callStatic(string $method, array $parameters): mixed
     {
         if (! static::hasMacro($method)) {
             throw new BadMethodCallException(sprintf(
@@ -50,10 +48,8 @@ trait Macroable
 
     /**
      * @param array<mixed> $parameters
-     *
-     * @return mixed
      */
-    public function __call(string $method, array $parameters)
+    public function __call(string $method, array $parameters): mixed
     {
         if (! static::hasMacro($method)) {
             throw new BadMethodCallException(sprintf(

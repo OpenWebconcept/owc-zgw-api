@@ -29,8 +29,7 @@ class CurlRequestClient implements RequestClientInterface
         return $this->handleResponse($response, $handle);
     }
 
-    /** @param mixed $body */
-    public function post(string $uri, $body, ?RequestOptions $options = null): Response
+    public function post(string $uri, mixed $body, ?RequestOptions $options = null): Response
     {
         $handle = $this->buildHandle($uri, $options);
         curl_setopt($handle, CURLOPT_POST, true);

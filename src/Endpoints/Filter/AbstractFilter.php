@@ -36,20 +36,12 @@ abstract class AbstractFilter
         });
     }
 
-    /**
-     * @param mixed $default
-     *
-     * @return mixed
-     */
-    public function get(string $name, $default = null)
+    public function get(string $name, mixed $default = null): mixed
     {
         return $this->parameters[$name] ?? $default;
     }
 
-    /**
-     * @param mixed $value
-     */
-    public function add(string $name, $value): self
+    public function add(string $name, mixed $value): self
     {
         $this->parameters[$name] = $value;
 

@@ -18,10 +18,7 @@ class NullableDateTime extends AbstractCast
         $this->format = $format;
     }
 
-    /**
-     * @param mixed $value
-     */
-    public function set(Entity $model, string $key, $value): ?string
+    public function set(Entity $model, string $key, mixed $value): ?string
     {
         if (is_null($value)) {
             return $value;
@@ -38,18 +35,12 @@ class NullableDateTime extends AbstractCast
         return $value->format($this->format);
     }
 
-    /**
-     * @param mixed $value
-     */
-    public function get(Entity $model, string $key, $value): ?DateTimeImmutable
+    public function get(Entity $model, string $key, mixed $value): ?DateTimeImmutable
     {
         return is_string($value) ? new DateTimeImmutable($value) : null;
     }
 
-    /**
-     * @param mixed $value
-     */
-    public function serialize(string $name, $value)
+    public function serialize(string $name, mixed $value): mixed
     {
         return is_object($value) && $value instanceof DateTimeInterface ?
             $value->format($this->format) :

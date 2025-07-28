@@ -57,8 +57,7 @@ abstract class Enumerable implements ArrayAccess, Iterator
         }
     }
 
-    #[\ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->offsetExists($offset) ? $this->data[$offset] : null;
     }
@@ -68,14 +67,12 @@ abstract class Enumerable implements ArrayAccess, Iterator
         reset($this->data);
     }
 
-    #[\ReturnTypeWillChange]
-    public function current()
+    public function current(): mixed
     {
         return current($this->data);
     }
 
-    #[\ReturnTypeWillChange]
-    public function key()
+    public function key(): mixed
     {
         return key($this->data);
     }

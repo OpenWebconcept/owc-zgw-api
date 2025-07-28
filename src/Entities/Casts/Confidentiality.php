@@ -11,10 +11,7 @@ use OWC\ZGW\Entities\Attributes\Confidentiality as ConfidentialityAttribute;
 
 class Confidentiality extends AbstractCast
 {
-    /**
-     * @param mixed $value
-     */
-    public function set(Entity $model, string $key, $value): ?string
+    public function set(Entity $model, string $key, mixed $value): ?string
     {
         if (! ConfidentialityAttribute::isValidValue($value)) {
             throw new InvalidArgumentException("Invalid confidentiality level for {$key} given");
@@ -23,18 +20,12 @@ class Confidentiality extends AbstractCast
         return $value;
     }
 
-    /**
-     * @param mixed $value
-     */
-    public function get(Entity $model, string $key, $value): ?ConfidentialityAttribute
+    public function get(Entity $model, string $key, mixed $value): ?ConfidentialityAttribute
     {
         return is_string($value) ? new ConfidentialityAttribute($value) : null;
     }
 
-    /**
-     * @param mixed $value
-     */
-    public function serialize(string $name, $value): string
+    public function serialize(string $name, mixed $value): string
     {
         return (is_object($value) && $value instanceof EnumAttribute) ? $value->get() : $value;
     }
