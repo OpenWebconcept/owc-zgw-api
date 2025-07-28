@@ -10,12 +10,12 @@ use OWC\ZGW\Entities\Casts\AbstractCast;
 
 use function OWC\ZGW\apiClientManager;
 
-abstract class Resource extends AbstractCast
+abstract class AbstractResource extends AbstractCast
 {
     protected string $registryType = 'registry';
     protected string $resourceType = Entity::class;
 
-    public function set(Entity $model, string $key, $value)
+    public function set(Entity $model, string $key, mixed $value): mixed
     {
         if (is_null($value) || is_string($value) || (is_object($value) && $value instanceof Entity)) {
             return $value;
@@ -64,7 +64,7 @@ abstract class Resource extends AbstractCast
         return $entity;
     }
 
-    public function serialize(string $name, $value)
+    public function serialize(string $name, mixed $value): mixed
     {
         if (is_object($value) && $value instanceof Entity) {
             return $value->url;

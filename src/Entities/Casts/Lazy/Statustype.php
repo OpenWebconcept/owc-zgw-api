@@ -7,7 +7,7 @@ namespace OWC\ZGW\Entities\Casts\Lazy;
 use OWC\ZGW\Contracts\Client;
 use OWC\ZGW\Entities\Statustype as StatustypeEntity;
 
-class Statustype extends Resource
+class Statustype extends AbstractResource
 {
     protected string $registryType = 'catalogi';
     protected string $resourceType = StatustypeEntity::class;

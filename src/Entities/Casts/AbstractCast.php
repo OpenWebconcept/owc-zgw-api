@@ -8,32 +8,17 @@ use OWC\ZGW\Entities\Entity;
 
 abstract class AbstractCast implements CastsAttributes
 {
-    /**
-     * @param mixed $value
-     *
-     * @return mixed
-     */
-    public function get(Entity $model, string $key, $value)
+    public function get(Entity $model, string $key, mixed $value): mixed
     {
         return $value;
     }
 
-    /**
-     * @param mixed $value
-     *
-     * @return mixed
-     */
-    public function set(Entity $model, string $key, $value)
+    public function set(Entity $model, string $key, mixed $value): mixed
     {
         return $value;
     }
 
-    /**
-     * @param mixed $value
-     *
-     * @return mixed
-     */
-    public function serialize(string $name, $value)
+    public function serialize(string $name, mixed $value): mixed
     {
         return $value;
     }

@@ -7,7 +7,7 @@ namespace OWC\ZGW\Entities\Casts\Lazy;
 use OWC\ZGW\Contracts\Client;
 use OWC\ZGW\Entities\Roltype as RoltypeEntity;
 
-class Roltype extends Resource
+class Roltype extends AbstractResource
 {
     protected string $registryType = 'catalogi';
     protected string $resourceType = RoltypeEntity::class;

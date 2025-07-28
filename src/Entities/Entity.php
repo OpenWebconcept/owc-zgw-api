@@ -34,8 +34,7 @@ abstract class Entity implements
         $this->hydrate($itemData);
     }
 
-    /** @return mixed */
-    public function __get(string $name)
+    public function __get(string $name): mixed
     {
         try {
             return $this->getValue($name);
@@ -44,22 +43,17 @@ abstract class Entity implements
         }
     }
 
-    /**
-     * @param mixed $value
-     *
-     * @return mixed
-     */
-    public function __set(string $name, $value)
+    public function __set(string $name, mixed $value): void
     {
-        return $this->setValue($name, $value);
+        $this->setValue($name, $value);
     }
 
-    /**
-     * @param mixed $default
-     *
-     * @return mixed
-     */
-    public function getValue(string $name, $default = null)
+    public function __debugInfo(): array
+    {
+        return ['data' => $this->data];
+    }
+
+    public function getValue(string $name, mixed $default = null): mixed
     {
         $value = $this->getAttributeValue($name, $default);
 
@@ -72,10 +66,7 @@ abstract class Entity implements
         return $value;
     }
 
-    /**
-     * @param mixed $value
-     */
-    public function setValue(string $name, $value): void
+    public function setValue(string $name, mixed $value): void
     {
         if ($this->hasCast($name)) {
             $caster = $this->getCaster($name);
@@ -90,7 +81,6 @@ abstract class Entity implements
         $this->setAttributeValue($name, $value);
     }
 
-    /** @return mixed */
     public function toArray(): array
     {
         $data = [];
@@ -101,14 +91,12 @@ abstract class Entity implements
         return $data;
     }
 
-    /** @return mixed */
     public function attributesToArray(): array
     {
         return $this->data;
     }
 
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return $this->toArray();
     }
@@ -123,8 +111,7 @@ abstract class Entity implements
         return $this->client;
     }
 
-    /** @return mixed */
-    protected function serializeAttribute(string $name)
+    protected function serializeAttribute(string $name): mixed
     {
         if (! $this->hasCast($name)) {
             return $this->getValue($name);
@@ -138,10 +125,5 @@ abstract class Entity implements
         foreach ($data as $name => $value) {
             $this->setValue($name, $value);
         }
-    }
-
-    public function __debugInfo(): array
-    {
-        return ['data' => $this->data];
     }
 }

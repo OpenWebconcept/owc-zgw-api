@@ -11,10 +11,7 @@ use OWC\ZGW\Entities\Attributes\SubjectType as SubjectTypeAttribute;
 
 class SubjectType extends AbstractCast
 {
-    /**
-     * @param mixed $value
-     */
-    public function set(Entity $model, string $key, $value): ?string
+    public function set(Entity $model, string $key, mixed $value): ?string
     {
         if (! SubjectTypeAttribute::isValidValue($value)) {
             throw new InvalidArgumentException("Invalid subject type for {$key} given");
@@ -23,18 +20,12 @@ class SubjectType extends AbstractCast
         return $value;
     }
 
-    /**
-     * @param mixed $value
-     */
-    public function get(Entity $model, string $key, $value): ?SubjectTypeAttribute
+    public function get(Entity $model, string $key, mixed $value): ?SubjectTypeAttribute
     {
         return new SubjectTypeAttribute($value);
     }
 
-    /**
-     * @param mixed $value
-     */
-    public function serialize(string $name, $value): string
+    public function serialize(string $name, mixed $value): string
     {
         return (is_object($value) && $value instanceof EnumAttribute) ? $value->get() : $value;
     }

@@ -16,4 +16,19 @@ class Zaakinformatieobject extends Entity
         // 'beschrijving' => "string",
         'registratiedatum' => Casts\NullableDateTime::class,
     ];
+
+	/**
+     * @temp
+     */
+	public function prepareCreateJsonArgs()
+    {
+        $args = [
+            'informatieobject' => $this->getValue('url', ''),
+            'zaak' => $this->getValue('zaak', ''),
+            'titel' => $this->getValue('titel', ''),
+            'beschrijving' => $this->getValue('beschrijving', ''),
+        ];
+
+        return json_encode(array_filter($args));
+    }
 }

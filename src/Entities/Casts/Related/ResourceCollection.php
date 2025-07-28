@@ -10,7 +10,7 @@ use OWC\ZGW\Entities\Casts\AbstractCast;
 
 abstract class ResourceCollection extends AbstractCast
 {
-    public function set(Entity $model, string $key, $value)
+    public function set(Entity $model, string $key, mixed $value): mixed
     {
         return null; // Don't allow setting related models.
     }
@@ -30,7 +30,7 @@ abstract class ResourceCollection extends AbstractCast
         return $collection;
     }
 
-    public function serialize(string $name, $value)
+    public function serialize(string $name, mixed $value): mixed
     {
         return null;
     }

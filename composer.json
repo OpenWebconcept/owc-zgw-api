@@ -16,16 +16,18 @@
   ],
   "type": "library",
   "require": {
-    "php": "^7.4|^8.0",
-    "php-di/php-di": "^6.0",
+    "php": "^8.1",
+    "php-di/php-di": "^7.0",
     "firebase/php-jwt": "^6.1",
-    "monolog/monolog": "^2"
+    "monolog/monolog": "^3.0"
   },
   "require-dev": {
     "mockery/mockery": "^1.0",
     "phpunit/phpunit": "^9.0",
     "friendsofphp/php-cs-fixer": "^3.0",
-    "szepeviktor/phpstan-wordpress": "^1.0"
+    "szepeviktor/phpstan-wordpress": "^1.0",
+    "phpcompatibility/php-compatibility": "^9.3",
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.7.1"
   },
   "suggest": {
       "cmb2/cmb2": "Adds a settings page in WordPress for configuring clients"
@@ -46,6 +48,13 @@
   "scripts": {
     "test": "clear && ./vendor/bin/phpunit --testsuite 'main' --colors=always",
     "format": "vendor/bin/php-cs-fixer fix",
-    "phpstan": "./vendor/bin/phpstan analyse -c phpstan.neon --memory-limit 1g"
+    "phpstan": "./vendor/bin/phpstan analyse -c phpstan.neon --memory-limit 1g",
+    "phpcompatibility": "./vendor/bin/phpcs -p ./src/ --standard=PHPCompatibility --runtime-set testVersion 8.1-"
+  },
+  "config": {
+      "sort-packages": true,
+      "allow-plugins": {
+          "dealerdirect/phpcodesniffer-composer-installer": true
+      }
   }
 }

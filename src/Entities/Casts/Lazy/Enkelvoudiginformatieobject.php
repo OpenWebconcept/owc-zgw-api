@@ -7,7 +7,7 @@ namespace OWC\ZGW\Entities\Casts\Lazy;
 use OWC\ZGW\Contracts\Client;
 use OWC\ZGW\Entities\Enkelvoudiginformatieobject as EnkelvoudiginformatieobjectEntity;
 
-class Enkelvoudiginformatieobject extends Resource
+class Enkelvoudiginformatieobject extends AbstractResource
 {
     protected string $registryType = 'documenten';
     protected string $resourceType = EnkelvoudiginformatieobjectEntity::class;

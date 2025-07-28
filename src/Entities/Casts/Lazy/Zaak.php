@@ -7,7 +7,7 @@ namespace OWC\ZGW\Entities\Casts\Lazy;
 use OWC\ZGW\Contracts\Client;
 use OWC\ZGW\Entities\Zaak as ZaakEntity;
 
-class Zaak extends Resource
+class Zaak extends AbstractResource
 {
     protected string $registryType = 'zaken';
     protected string $resourceType = ZaakEntity::class;

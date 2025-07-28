@@ -19,22 +19,14 @@ class RequestOptions
         $this->options = $options;
     }
 
-    /**
-     * @param mixed $value
-     */
-    public function set(string $name, $value): self
+    public function set(string $name, mixed $value): self
     {
         $this->options[$name] = $value;
 
         return $this;
     }
 
-    /**
-     * @param mixed $default
-     *
-     * @return mixed
-     */
-    public function get(string $name, $default = null)
+    public function get(string $name, mixed $default = null): mixed
     {
         return $this->options[$name] ?? $default;
     }
@@ -44,50 +36,31 @@ class RequestOptions
         return isset($this->options[$name]);
     }
 
-    /**
-     * @param mixed $value
-     */
-    public function addHeader(string $name, $value): self
+    public function addHeader(string $name, mixed $value): self
     {
         $this->options['headers'][$name] = $value;
 
         return $this;
     }
 
-    /**
-     * @param mixed $default
-     *
-     * @return mixed
-     */
-    public function getHeader(string $name, $default = null)
+    public function getHeader(string $name, mixed $default = null): mixed
     {
         return $this->options['headers'][$name] ?? $default;
     }
 
-    /**
-     * @return array<mixed>
-     */
     public function getHeaders(): array
     {
         return $this->options['headers'];
     }
 
-    /**
-     * @param mixed $value
-     */
-    public function addCookie(string $name, $value): self
+    public function addCookie(string $name, mixed $value): self
     {
         $this->options['cookies'][$name] = $value;
 
         return $this;
     }
 
-    /**
-     * @param mixed $default
-     *
-     * @return mixed
-     */
-    public function getCookie(string $name, $default = null)
+    public function getCookie(string $name, mixed $default = null): mixed
     {
         return $this->options['cookies'][$name] ?? $default;
     }

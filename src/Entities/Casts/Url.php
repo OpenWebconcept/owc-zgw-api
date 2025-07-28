@@ -9,10 +9,7 @@ use InvalidArgumentException;
 
 class Url extends AbstractCast
 {
-    /**
-     * @param mixed $value
-     */
-    public function set(Entity $model, string $key, $value)
+    public function set(Entity $model, string $key, mixed $value): mixed
     {
         if (filter_var($value, FILTER_VALIDATE_URL) === false) {
             throw new InvalidArgumentException("Invalid URL given");
@@ -21,10 +18,7 @@ class Url extends AbstractCast
         return $value;
     }
 
-    /**
-     * @param mixed $value
-     */
-    public function get(Entity $model, string $key, $value)
+    public function get(Entity $model, string $key, mixed $value): mixed
     {
         return $value;
     }

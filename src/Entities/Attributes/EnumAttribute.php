@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace OWC\ZGW\Entities\Attributes;
 
+use Stringable;
 use InvalidArgumentException;
 
-abstract class EnumAttribute
+abstract class EnumAttribute implements Stringable
 {
     public const VALID_MEMBERS = [];
 
@@ -22,14 +23,14 @@ abstract class EnumAttribute
         $this->value = $value;
     }
 
+    public function __toString(): string
+    {
+        return $this->get();
+    }
+
     public static function isValidValue(?string $value): bool
     {
         return in_array($value, static::VALID_MEMBERS);
-    }
-
-    public function __toString()
-    {
-        return $this->get();
     }
 
     public function get(): string

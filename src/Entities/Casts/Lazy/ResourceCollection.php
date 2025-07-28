@@ -16,7 +16,7 @@ abstract class ResourceCollection extends AbstractCast
 {
     protected string $registryType = 'registry';
 
-    public function set(Entity $model, string $key, $value)
+    public function set(Entity $model, string $key, mixed $value): mixed
     {
         if (! is_iterable($value)) {
             throw new InvalidResourceValue(sprintf(
@@ -82,7 +82,7 @@ abstract class ResourceCollection extends AbstractCast
         return $collection;
     }
 
-    public function serialize(string $name, $value)
+    public function serialize(string $name, mixed $value): mixed
     {
         return array_map(function ($item) {
             if (is_object($item) && $item instanceof Entity) {
