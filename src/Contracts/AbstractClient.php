@@ -19,19 +19,12 @@ abstract class AbstractClient implements Client
      * @var array<string, Endpoint>
      */
     protected array $container = [];
-    protected RequestClientInterface $client;
-    protected TokenAuthenticator $authenticator;
-    protected ApiUrlCollection $apiUrlCollection;
 
-    // Does every API require token authentication? Maybe replace with interface
     public function __construct(
-        RequestClientInterface $client,
-        TokenAuthenticator $authenticator,
-        ApiUrlCollection $endpoints
+        protected RequestClientInterface $client,
+        protected TokenAuthenticator $authenticator,
+        protected ApiUrlCollection $apiUrlCollection
     ) {
-        $this->client = $client;
-        $this->authenticator = $authenticator;
-        $this->apiUrlCollection = $endpoints;
     }
 
     /**

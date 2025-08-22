@@ -6,18 +6,13 @@ namespace OWC\ZGW\Http;
 
 class Response
 {
-    protected array $headers;
-    protected array $response;
-    protected string $body;
-    protected array $cookies;
-    protected array $json;
-
-    public function __construct(array $headers, array $response, string $body, array $cookies = [])
-    {
-        $this->headers = $headers;
-        $this->response = $response;
-        $this->body = $body;
-        $this->cookies = $cookies;
+    public function __construct(
+        protected array $headers,
+        protected array $response,
+        protected string $body,
+        protected array $cookies = [],
+        protected array $json = []
+    ) {
         $this->json = $this->parseAsJson($this->body);
     }
 

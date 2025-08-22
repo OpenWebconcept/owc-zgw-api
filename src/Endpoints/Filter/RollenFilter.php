@@ -19,7 +19,7 @@ class RollenFilter extends AbstractFilter
 
     public function bySubjectType(SubjectType $subjectType): parent
     {
-        return $this->add('betrokkeneType', $subjectType->get());
+        return $this->add('betrokkeneType', $subjectType->value);
     }
 
     public function bySubjectBsn(string $bsn): parent

@@ -4,21 +4,12 @@ namespace OWC\ZGW;
 
 class ApiUrlCollection
 {
-    protected ?string $zakenEndpoint;
-    protected ?string $catalogiEndpoint;
-    protected ?string $documentenEndpoint;
-    protected ?string $apiVersion;
-
     public function __construct(
-        ?string $zakenEndpoint = null,
-        ?string $catalogiEndpoint = null,
-        ?string $documentenEndpoint = null,
-        ?string $apiVersion = null
+        protected ?string $zakenEndpoint = null,
+        protected ?string $catalogiEndpoint = null,
+        protected ?string $documentenEndpoint = null,
+        protected ?string $apiVersion = null
     ) {
-        $this->zakenEndpoint = $zakenEndpoint;
-        $this->catalogiEndpoint = $catalogiEndpoint;
-        $this->documentenEndpoint = $documentenEndpoint;
-        $this->apiVersion = $apiVersion;
     }
 
     public function setZakenEndpoint(string $uri): self
