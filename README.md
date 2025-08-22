@@ -20,6 +20,9 @@ Use [composer](https://getcomposer.org/) to install this package.
 composer require owc/zgw-api
 ```
 
+> [!IMPORTANT]
+> Version 2 of this package requires PHP >= 8.1.
+
 ## Usage
 
 Read the documentation on [how to get started](docs/getting-started/index.md).
@@ -30,6 +33,10 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 
 ## Breaking changes
 
-There are breaking changes compared to the [Zaaksysteem plugin](https://github.com/openwebconcept/plugin-owc-gravityforms-zaaksysteem).
+### Version 1
 
-[View breaking changes](docs/breaking-changes.md).
+There are breaking changes compared to the [Zaaksysteem plugin](https://github.com/openwebconcept/plugin-owc-gravityforms-zaaksysteem). [View breaking changes](docs/breaking-changes.md).
+
+### Version 2
+
+The package requires PHP >= 8.1. 
