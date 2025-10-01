@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace OWC\ZGW\Clients\DecosJoin;
 
 use OWC\ZGW\ApiUrlCollection;
+use OWC\ZGW\Contracts\TokenAuthenticator;
 use OWC\ZGW\Endpoints\Endpoint;
 use OWC\ZGW\Endpoints\ZakenEndpoint;
 use OWC\ZGW\Contracts\AbstractClient;
@@ -77,11 +78,11 @@ class Client extends AbstractClient
     /**
      * Narrow-er definition than parent class.
      */
-    protected Authenticator $authenticator;
+    protected TokenAuthenticator $authenticator;
 
     public function __construct(
         RequestClientInterface $client,
-        Authenticator $authenticator,
+        TokenAuthenticator $authenticator,
         ApiUrlCollection $endpoints
     ) {
         parent::__construct($client, $authenticator, $endpoints);
@@ -106,8 +107,6 @@ class Client extends AbstractClient
 
     protected function setClientSecretByType(string $type): self
     {
-        $credentials = resolve('dj.credentials');
-
         if ('zaken' === $type || 'documenten' === $type) {
             $this->authenticator->useZrcClientSecret();
         } else {

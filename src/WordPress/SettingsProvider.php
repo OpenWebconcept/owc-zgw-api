@@ -108,5 +108,24 @@ class SettingsProvider extends ServiceProvider
             'type' => 'text',
             'attributes' => ['type' => 'password'],
         ]);
+
+        $options->add_group_field($clients, [
+            'name' => 'Client secret (ZRC)',
+            'id' => 'client_secret_zrc',
+            'type' => 'text',
+            'attributes' => ['type' => 'password'],
+            'show_on_cb' => function($field) {
+                $groups = (array) $field->group->value();
+
+                if (!preg_match('/_(\d+)_client_secret_zrc$/', $field->args('id'), $matches)) {
+                    return false;
+                }
+
+                $index = (int) $matches[1];
+                $client_type = $groups[$index]['client_type'] ?? '';
+
+                return $client_type === 'decosjoin';
+            },
+        ]);
     }
 }

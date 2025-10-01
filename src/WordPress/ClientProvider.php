@@ -11,6 +11,7 @@ use OWC\ZGW\Support\ServiceProvider;
 use OWC\ZGW\Clients\Xxllnc\Client as XXLLNC;
 use OWC\ZGW\Clients\Procura\Client as Procura;
 use OWC\ZGW\Clients\OpenZaak\Client as OpenZaak;
+use OWC\ZGW\Clients\DecosJoin\ApiCredentials as DecosJoinApiCredentials;
 use OWC\ZGW\Clients\DecosJoin\Client as DecosJoin;
 use OWC\ZGW\Clients\RxMission\Client as RxMission;
 
@@ -44,7 +45,17 @@ class ClientProvider extends ServiceProvider
 
     protected function registerClient(array $config)
     {
-        $credentials = new ApiCredentials();
+        switch ($config['client_type'] ?? '') {
+            case 'decosjoin':
+                $credentials = new DecosJoinApiCredentials();
+                $credentials->setClientSecretZrc($config['client_secret_zrc'] ?? '');
+                break;
+
+            default:
+                $credentials = new ApiCredentials();
+                break;
+        }
+
         $credentials->setClientId($config['client_id'] ?? '');
         $credentials->setClientSecret($config['client_secret'] ?? '');
 

@@ -11,11 +11,6 @@ class Authenticator extends AbstractTokenAuthenticator
 {
     protected bool $useDefaultClientSecret = true;
 
-    public function __construct(
-        protected ApiCredentials $credentials
-    ) {
-    }
-
     public function useZrcClientSecret(): void
     {
         $this->useDefaultClientSecret = false;
