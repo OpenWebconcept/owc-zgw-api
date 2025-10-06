@@ -153,4 +153,24 @@ return [
 
         return $logger;
     },
+
+    'mime.mapping' => function () {
+        return [
+            'application/pdf' => 'pdf',
+            'application/msword' => 'doc',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'docx',
+            'application/vnd.ms-excel' => 'xls',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => 'xlsx',
+            'text/plain' => 'txt',
+            'text/csv' => 'csv',
+            'image/jpeg' => 'jpg', // Includes .jpg and .jpeg.
+            'image/png' => 'png',
+            'image/tiff' => 'tif', // Includes .tif and .tiff.
+            'application/vnd.oasis.opendocument.text' => 'odt',
+            'application/vnd.oasis.opendocument.spreadsheet' => 'ods',
+            'application/vnd.oasis.opendocument.presentation' => 'odp',
+            'application/vnd.ms-powerpoint' => 'ppt',
+            'application/vnd.openxmlformats-officedocument.presentationml.presentation' => 'pptx',
+        ];
+    },
 ];

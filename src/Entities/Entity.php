@@ -8,6 +8,7 @@ use Exception;
 use ArrayAccess;
 use JsonSerializable;
 use OWC\ZGW\Contracts\Client;
+use OWC\ZGW\Traits\ZaakIdentification;
 
 abstract class Entity implements
     ArrayAccess,
@@ -18,6 +19,7 @@ abstract class Entity implements
     use Traits\Arrayable;
     use Traits\Macroable;
     use Traits\HasCastableAttributes;
+    use ZaakIdentification;
 
     protected Client $client;
 

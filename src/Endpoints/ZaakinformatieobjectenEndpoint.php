@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace OWC\ZGW\Endpoints;
 
-use OWC\ZGW\Entities\Zaakinformatieobject;
 use OWC\ZGW\Support\Collection;
+use OWC\ZGW\Entities\Zaakinformatieobject;
 
 class ZaakinformatieobjectenEndpoint extends Endpoint
 {
@@ -35,7 +35,7 @@ class ZaakinformatieobjectenEndpoint extends Endpoint
 
     /**
      * @temp
-	 * This method was previously marked as todo, repository owner should look into it.
+     * This method was previously marked as todo, repository owner should look into it.
      */
     public function create(Zaakinformatieobject $model): Zaakinformatieobject
     {

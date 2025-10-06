@@ -17,10 +17,41 @@ class Statustype extends Entity
         // 'informeren' => true
     ];
 
+    public function statusExplanation(): string
+    {
+        return $this->getValue('omschrijving', '');
+    }
+
     public function volgnummer(): string
     {
         $volgnummer = (string) $this->getValue('volgnummer', '');
 
         return ltrim($volgnummer, '0');
+    }
+
+    public function processStatus(): string
+    {
+        return (string) $this->getValue('processStatus', '');
+    }
+
+    public function isCurrent(): bool
+    {
+        $status = $this->processStatus();
+
+        return 'current' === $status;
+    }
+
+    public function isPast(): bool
+    {
+        $status = $this->processStatus();
+
+        return 'past' === $status;
+    }
+
+    public function isFuture(): bool
+    {
+        $status = $this->processStatus();
+
+        return 'future' === $status;
     }
 }

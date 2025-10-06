@@ -7,6 +7,8 @@ namespace OWC\ZGW\Endpoints;
 use OWC\ZGW\Entities\Zaak;
 use OWC\ZGW\Http\Response;
 use OWC\ZGW\Entities\Entity;
+use OWC\ZGW\Support\Collection;
+use OWC\ZGW\Entities\Statustype;
 use OWC\ZGW\Support\PagedCollection;
 
 class ZakenEndpoint extends Endpoint
@@ -48,8 +50,81 @@ class ZakenEndpoint extends Endpoint
     protected function buildEntity($data): Entity
     {
         $class = $this->entityClass;
+        $zaak = new $class($data, $this->client);
+        $statusToelichting = is_object($zaak->status) && $zaak->status->statustype instanceof StatusType ? $zaak->status->statustype->statusExplanation() : '';
+        $zaak->setValue('steps', $this->handleProcessStatusses($this->getStatussenSorted($zaak), $statusToelichting));
+        $zaak->setValue('status_history', $zaak->statussen);
+        $zaak->setValue('information_objects', $zaak->zaakinformatieobjecten);
+        $zaak->setValue('status_explanation', $statusToelichting);
+        $zaak->setValue('result', $zaak->resultaat);
+        $zaak->setValue('zaaktype_description', $zaak->zaaktype->omschrijvingGeneriek ?? '');
 
-        return new $class($data, $this->client);
+        return $zaak;
+    }
+
+    protected function getStatussenSorted(Entity $zaak): Collection
+    {
+        $zaakType = $zaak->zaaktype;
+        $statusTypen = is_object($zaakType) ? $zaakType->statustypen : null;
+
+        if (! $statusTypen instanceof Collection) {
+            return Collection::collect([]);
+        }
+
+        return $statusTypen->sortByAttribute('volgnummer')->mapWithKeys(function ($key, $statusType) {
+            /**
+             * Ensures uniform usage of 'volgnummers' across different clients.
+             * Set the 'volgnummer' attribute of the statustype to its position in the collection (1-based index).
+             */
+            $statusType->setValue('volgnummer', $key + 1);
+
+            return $statusType;
+        });
+    }
+
+    protected function handleProcessStatusses(Collection $statussen, string $statusToelichting): Collection
+    {
+        if ($statussen->isEmpty()) {
+            return $statussen;
+        }
+
+        // Not possible to match with a status connected to a 'Zaak', set the first status as current.
+        if (empty($statusToelichting)) {
+            $currentVolgnummer = $statussen->first()->volgnummer();
+
+            return $this->addProcessStatusses($statussen, $currentVolgnummer);
+        }
+
+        // Get the current status which matches with the status connected to a 'Zaak'.
+        $filtered = $statussen->filter(function ($status) use ($statusToelichting) {
+            return strtolower($status->statusExplanation()) === strtolower($statusToelichting);
+        });
+
+        $currentVolgnummer = $filtered->first() ? $filtered->first()->volgnummer() : null;
+
+        if (empty($currentVolgnummer)) {
+            return $statussen;
+        }
+
+        return $this->addProcessStatusses($statussen, $currentVolgnummer);
+    }
+
+    protected function addProcessStatusses(Collection $statussen, string $currentVolgnummer)
+    {
+        return $statussen->map(function ($status) use ($currentVolgnummer) {
+            $volgnummer = (int) $status->volgnummer();
+            $currentNum = (int) $currentVolgnummer;
+
+            if ($volgnummer < $currentNum) {
+                $status->setValue('processStatus', 'past');
+            } elseif ($volgnummer === $currentNum) {
+                $status->setValue('processStatus', 'current');
+            } else {
+                $status->setValue('processStatus', 'future');
+            }
+
+            return $status;
+        });
     }
 
     public function create(Zaak $model): Zaak
