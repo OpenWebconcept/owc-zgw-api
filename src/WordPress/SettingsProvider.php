@@ -114,10 +114,10 @@ class SettingsProvider extends ServiceProvider
             'id' => 'client_secret_zrc',
             'type' => 'text',
             'attributes' => ['type' => 'password'],
-            'show_on_cb' => function($field) {
+            'show_on_cb' => function (\CMB2_Field $field) {
                 $groups = (array) $field->group->value();
 
-                if (!preg_match('/_(\d+)_client_secret_zrc$/', $field->args('id'), $matches)) {
+                if (!preg_match('/_(\d+)_client_secret_zrc$/', $field->id(), $matches)) {
                     return false;
                 }
 

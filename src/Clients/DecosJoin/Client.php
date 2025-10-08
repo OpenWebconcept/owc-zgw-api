@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace OWC\ZGW\Clients\DecosJoin;
 
-use OWC\ZGW\ApiUrlCollection;
-use OWC\ZGW\Contracts\TokenAuthenticator;
 use OWC\ZGW\Endpoints\Endpoint;
 use OWC\ZGW\Endpoints\ZakenEndpoint;
 use OWC\ZGW\Contracts\AbstractClient;
@@ -13,7 +11,6 @@ use OWC\ZGW\Endpoints\RollenEndpoint;
 use OWC\ZGW\Endpoints\RoltypenEndpoint;
 use OWC\ZGW\Endpoints\StatussenEndpoint;
 use OWC\ZGW\Endpoints\ZaaktypenEndpoint;
-use OWC\ZGW\Http\RequestClientInterface;
 use OWC\ZGW\Endpoints\StatustypenEndpoint;
 use OWC\ZGW\Endpoints\EigenschappenEndpoint;
 use OWC\ZGW\Endpoints\ObjectinformatieEndpoint;
@@ -21,8 +18,6 @@ use OWC\ZGW\Endpoints\ZaakeigenschappenEndpoint;
 use OWC\ZGW\Endpoints\InformatieobjecttypenEndpoint;
 use OWC\ZGW\Endpoints\ZaakinformatieobjectenEndpoint;
 use OWC\ZGW\Endpoints\EnkelvoudiginformatieobjectenEndpoint;
-
-use function OWC\ZGW\resolve;
 
 /**
  * @method \OWC\ZGW\Endpoints\CatalogussenEndpoint catalogussen()
@@ -75,19 +70,6 @@ class Client extends AbstractClient
         // 'zgw.zaakverzoeken' => Endpoint::class,
     ];
 
-    /**
-     * Narrow-er definition than parent class.
-     */
-    protected TokenAuthenticator $authenticator;
-
-    public function __construct(
-        RequestClientInterface $client,
-        TokenAuthenticator $authenticator,
-        ApiUrlCollection $endpoints
-    ) {
-        parent::__construct($client, $authenticator, $endpoints);
-    }
-
     protected function fetchFromContainer(string $key): Endpoint
     {
         if (! isset($this->container[$key]) || empty($this->container[$key])) {
@@ -115,6 +97,4 @@ class Client extends AbstractClient
 
         return $this;
     }
-
-
 }
