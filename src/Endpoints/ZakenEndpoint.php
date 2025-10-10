@@ -47,19 +47,43 @@ class ZakenEndpoint extends Endpoint
         return $this->getPagedCollection($this->handleResponse($response));
     }
 
+    public function create(Zaak $model): Zaak
+    {
+        /**
+         * @todo add field validation
+         * These fields are required on a Zaak model:
+         * - bronorganisatie
+         * - zaaktype (URI)
+         * - verantwoordelijkeOrganisatie
+         * - startdatum
+         * Additionally, these rules are required to pass:
+         * - zaaktype != concept
+         * - laatsteBetaaldatum > NOW
+         */
+        $response = $this->httpClient->post(
+            $this->buildUri($this->endpoint),
+            $model->toJson(),
+            $this->buildRequestOptions()
+        );
+
+        return $this->getSingleEntity($this->handleResponse($response));
+    }
+
+    public function delete(string $identifier): Response
+    {
+        $response = $this->httpClient->delete(
+            sprintf('%s/%s', $this->endpoint, $identifier),
+            $this->buildRequestOptions()
+        );
+
+        return $this->handleResponse($response);
+    }
+
     protected function buildEntity($data): Entity
     {
         $class = $this->entityClass;
-        $zaak = new $class($data, $this->client);
-        $statusToelichting = is_object($zaak->status) && $zaak->status->statustype instanceof StatusType ? $zaak->status->statustype->statusExplanation() : '';
-        $zaak->setValue('steps', $this->handleProcessStatusses($this->getStatussenSorted($zaak), $statusToelichting));
-        $zaak->setValue('status_history', $zaak->statussen);
-        $zaak->setValue('information_objects', $zaak->zaakinformatieobjecten);
-        $zaak->setValue('status_explanation', $statusToelichting);
-        $zaak->setValue('result', $zaak->resultaat);
-        $zaak->setValue('zaaktype_description', $zaak->zaaktype->omschrijvingGeneriek ?? '');
 
-        return $zaak;
+        return new $class($data, $this->client);
     }
 
     protected function getStatussenSorted(Entity $zaak): Collection
@@ -125,37 +149,5 @@ class ZakenEndpoint extends Endpoint
 
             return $status;
         });
-    }
-
-    public function create(Zaak $model): Zaak
-    {
-        /**
-         * @todo add field validation
-         * These fields are required on a Zaak model:
-         * - bronorganisatie
-         * - zaaktype (URI)
-         * - verantwoordelijkeOrganisatie
-         * - startdatum
-         * Additionally, these rules are required to pass:
-         * - zaaktype != concept
-         * - laatsteBetaaldatum > NOW
-         */
-        $response = $this->httpClient->post(
-            $this->buildUri($this->endpoint),
-            $model->toJson(),
-            $this->buildRequestOptions()
-        );
-
-        return $this->getSingleEntity($this->handleResponse($response));
-    }
-
-    public function delete(string $identifier): Response
-    {
-        $response = $this->httpClient->delete(
-            sprintf('%s/%s', $this->endpoint, $identifier),
-            $this->buildRequestOptions()
-        );
-
-        return $this->handleResponse($response);
     }
 }
