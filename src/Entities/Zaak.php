@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace OWC\ZGW\Entities;
 
-use DateTimeImmutable;
 use OWC\ZGW\Support\Collection;
-use OWC\ZGW\Support\PagedCollection;
 use OWC\ZGW\Traits\ZaakIdentification;
 
 /**
@@ -16,7 +14,7 @@ use OWC\ZGW\Traits\ZaakIdentification;
  * @property ?string $bronorganisatie
  * @property ?string $omschrijving
  * @property ?string $toelichting
- * @property ?\OWC\ZGW\Entities\Zaaktype $zaaktype
+ * @property ?Zaaktype $zaaktype
  * @property ?\DateTimeImmutable $registratiedatum
  * @property ?string $verantwoordelijkeOrganisatie
  * @property ?\DateTimeImmutable $startdatum
@@ -26,7 +24,7 @@ use OWC\ZGW\Traits\ZaakIdentification;
  * @property ?\DateTimeImmutable $publicatiedatum
  * @property ?string $communicatiekanaal
  * @property ?string $productenOfDiensten
- * @property \OWC\ZGW\Entities\Attributes\Confidentiality $vertrouwelijkheidaanduiding
+ * @property Attributes\Confidentiality $vertrouwelijkheidaanduiding
  * @property ?string $betalingsindicatie
  * @property ?string $betalingsindicatieWeergave
  * @property ?\DateTimeImmutable $laatsteBetaaldatum
@@ -34,20 +32,21 @@ use OWC\ZGW\Traits\ZaakIdentification;
  * @property ?string $verlenging
  * @property ?string $opschorting
  * @property ?string $selectielijstklasse
- * @property ?\OWC\ZGW\Entities\Zaak $hoofdzaak
- * @property ?\OWC\ZGW\Support\Collection $deelzaken
+ * @property ?Zaak $hoofdzaak
+ * @property ?Collection $deelzaken
  * @property ?string $relevanteAndereZaken
  * @property ?string $eigenschappen
- * @property ?\OWC\ZGW\Entities\Status $status
+ * @property ?Status $status
  * @property ?string $kenmerken
  * @property ?string $archiefnominatie
  * @property ?string $archiefstatus
  * @property ?\DateTimeImmutable $archiefactiedatum
- * @property ?\OWC\ZGW\Entities\Resultaat $resultaat
+ * @property ?Resultaat $resultaat
  * @property ?string $opdrachtgevendeOrganisatie
- * @property ?\OWC\ZGW\Support\Collection $statussen
- * @property ?\OWC\ZGW\Support\Collection $zaakinformatieobjecten
- * @property ?\OWC\ZGW\Support\Collection $rollen
+ * @property ?Collection $statussen
+ * @property ?Collection $zaakinformatieobjecten
+ * @property ?Collection $rollen
+ * @property ?Collection $steps
  */
 class Zaak extends Entity
 {
@@ -92,6 +91,7 @@ class Zaak extends Entity
         'statussen' => Casts\Related\Statussen::class,
         'zaakinformatieobjecten' => Casts\Related\Zaakinformatieobjecten::class,
         'rollen' => Casts\Related\Rollen::class,
+        'steps' => Casts\ZaakSteps::class,
     ];
 
     /**
@@ -99,134 +99,17 @@ class Zaak extends Entity
      */
     public function title(): string
     {
-        return $this->getValue('omschrijving', '') ?: $this->getValue('identificatie', '');
-    }
-
-    public function clarification(): string
-    {
-        return $this->getValue('toelichting', '');
-    }
-
-    public function identification(): string
-    {
-        return $this->getValue('identificatie', '');
-    }
-
-    public function permalink(): string
-    {
-        $identification = $this->getValue('identificatie', '');
-
-        if ('' === $identification) {
-            return '';
-        }
-
-        $supplier = $this->getSupplier();
-
-        if ('' === $supplier) {
-            return sprintf('%s/zaak/%s', get_home_url(), $this->encodeZaakIdentification($identification));
-        }
-
-        return sprintf('%s/zaak/%s/%s', get_home_url(), $this->encodeZaakIdentification($identification), $supplier);
-    }
-
-    public function getSupplier(): string
-    {
-        return $this->getValue('supplier', '');
-    }
-
-    public function steps(): array
-    {
-        if (! $this->steps instanceof Collection) {
-            return [];
-        }
-
-        return (array) $this->steps->toArray();
-    }
-
-    public function statusHistory(): ?PagedCollection
-    {
-        return $this->getValue('status_history');
-    }
-
-    public function informationObjects(): ?Collection
-    {
-        return $this->getValue('information_objects');
-    }
-
-    public function hasNoStatus(): bool
-    {
-        return $this->statusExplanation() === 'Niet beschikbaar';
-    }
-
-    public function statusExplanation(): string
-    {
-        return $this->getValue('status_explanation', '');
-    }
-
-    public function result(): ?Resultaat
-    {
-        return $this->getValue('result');
-    }
-
-    public function resultExplanation(): string
-    {
-        return $this->result()->toelichting ?? '';
-    }
-
-    public function startDate(string $format = 'j F Y'): string
-    {
-        $startDate = $this->getValue('startdatum', null);
-
-        if (! $startDate instanceof DateTimeImmutable) {
-            return '';
-        }
-
-        return date_i18n($format, $startDate->getTimestamp());
-    }
-
-    public function registerDate(string $format = 'j F Y'): string
-    {
-        $registerDate = $this->getValue('registratiedatum', null);
-
-        if (! $registerDate instanceof DateTimeImmutable) {
-            return '';
-        }
-
-        return date_i18n($format, $registerDate->getTimestamp());
-    }
-
-    public function endDate(string $format = 'j F Y'): string
-    {
-        $startDate = $this->getValue('einddatum', null);
-
-        if (! $startDate instanceof DateTimeImmutable) {
-            return '';
-        }
-
-        return date_i18n($format, $startDate->getTimestamp());
+        return $this->getValue('omschrijving', $this->getValue('identificatie', ''));
     }
 
     public function hasEndDate(): bool
     {
-        $endDate = $this->getValue('einddatum', null);
-
-        return $endDate instanceof DateTimeImmutable;
+        return (bool) $this->getValue('einddatum', false);
     }
 
-    public function zaaktypeDescription(): string
+    public function hasPlannedEndDate(): bool
     {
-        return $this->getValue('zaaktype_description', '');
-    }
-
-    public function endDatePlanned(string $format = 'j F Y')
-    {
-        $endDatePlanned = $this->getValue('einddatumGepland', null);
-
-        if (! $endDatePlanned instanceof DateTimeImmutable) {
-            return '';
-        }
-
-        return date_i18n($format, $endDatePlanned->getTimestamp());
+        return (bool) $this->getValue('einddatumGepland', false);
     }
 
     /**
