@@ -123,34 +123,37 @@ class SettingsProvider extends ServiceProvider
         $screen = get_current_screen();
 
         if ($screen && $screen->id === 'settings_page_zgw_api_settings') {
-            ?>
-            <script>
+            wp_enqueue_script('jquery');
+
+            wp_register_script('zgw-api-settings', '', [], false, true);
+            wp_enqueue_script('zgw-api-settings');
+
+            wp_add_inline_script('zgw-api-settings', <<<JS
                 (function($) {
                     'use strict';
-
-                    function toggleClientSecretZRC($group) {
-                        const clientType = $group.find('[name*="[client_type]"]').val();
-                        const $secretRow = $group.find('[name*="[client_secret_zrc]"]').closest('.cmb-row');
-                        $secretRow.toggle(clientType === 'decosjoin');
+                    
+                    function toggleClientSecretZRC(group) {
+                        const clientType = group.find('[name*="[client_type]"]').val();
+                        const secretRow = group.find('[name*="[client_secret_zrc]"]').closest('.cmb-row');
+                        secretRow.toggle(clientType === 'decosjoin');
                     }
-
+                    
                     function initializeClientSecrets() {
                         $('.cmb-repeatable-grouping').each(function() {
                             toggleClientSecretZRC($(this));
                         });
                     }
-
+                    
                     // Initialize when DOM is ready.
                     $(document).ready(initializeClientSecrets);
-
-                    // Watch for changes to client type fields.
+                    
+                     // Watch for changes to client type fields.
                     $(document).on('change', '[name*="[client_type]"]', function() {
-                        const $group = $(this).closest('.cmb-repeatable-grouping');
-                        toggleClientSecretZRC($group);
+                        const group = $(this).closest('.cmb-repeatable-grouping');
+                        toggleClientSecretZRC(group);
                     });
                 })(jQuery);
-            </script>
-            <?php
+            JS);
         }
     }
 }
