@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace OWC\ZGW\Entities;
 
 use OWC\ZGW\Support\Collection;
-use OWC\ZGW\Traits\ZaakIdentification;
 
 /**
  * @property ?string $url
@@ -50,8 +49,6 @@ use OWC\ZGW\Traits\ZaakIdentification;
  */
 class Zaak extends Entity
 {
-    use ZaakIdentification;
-
     protected array $casts = [
         'url' => Casts\Url::class,
         // 'uuid'  => SomeClass::class,
