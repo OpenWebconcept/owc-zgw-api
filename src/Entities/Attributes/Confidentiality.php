@@ -14,7 +14,7 @@ enum Confidentiality: string
     case CONFIDENTIEEL = 'confidentieel';
     case GEHEIM = 'geheim';
     case ZEER_GEHEIM = 'zeer_geheim';
-
+    
     public function is(Confidentiality $level): bool
     {
         return $this === $level;
@@ -42,6 +42,17 @@ enum Confidentiality: string
             self::CONFIDENTIEEL,
             self::GEHEIM,
             self::ZEER_GEHEIM => true,
+            default => false,
+        };
+    }
+
+    public function isDisplayAllowed(): bool
+    {
+        return match ($this) {
+            self::OPENBAAR,
+            self::BEPERKT_OPENBAAR,
+            self::INTERN,
+            self::ZAAKVERTROUWELIJK => true,
             default => false,
         };
     }
