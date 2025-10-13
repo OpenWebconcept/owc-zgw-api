@@ -14,7 +14,7 @@ enum Confidentiality: string
     case CONFIDENTIEEL = 'confidentieel';
     case GEHEIM = 'geheim';
     case ZEER_GEHEIM = 'zeer_geheim';
-    
+
     public function is(Confidentiality $level): bool
     {
         return $this === $level;

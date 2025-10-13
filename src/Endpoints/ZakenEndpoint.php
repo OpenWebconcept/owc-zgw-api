@@ -8,7 +8,6 @@ use OWC\ZGW\Entities\Zaak;
 use OWC\ZGW\Http\Response;
 use OWC\ZGW\Entities\Entity;
 use OWC\ZGW\Support\Collection;
-use OWC\ZGW\Entities\Statustype;
 use OWC\ZGW\Support\PagedCollection;
 
 class ZakenEndpoint extends Endpoint

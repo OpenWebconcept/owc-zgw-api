@@ -61,7 +61,7 @@ class Enkelvoudiginformatieobject extends Entity
         return $this->vertrouwelijkheidaanduiding->is(Confidentiality::VERTROUWELIJK);
     }
 
-    public function displayAllowedByConfidentialityDesignation(): bool
+    public function isDisplayAllowed(): bool
     {
         return $this->vertrouwelijkheidaanduiding->isDisplayAllowed();
     }

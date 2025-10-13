@@ -20,10 +20,8 @@ class Zaakinformatieobjecten extends ResourceCollection
             throw new InvalidArgumentException("A Zaak entity is required to resolve Rollen");
         }
 
-        $statussenEndpoint = $entity->client()->zaakinformatieobjecten();
         $filter = new ZaakinformatieobjectenFilter();
-
-        $objects = $statussenEndpoint->filter($filter->byZaak($entity));
+        $objects = $entity->client()->zaakinformatieobjecten()->filter($filter->byZaak($entity));
 
         return $objects->filter(function ($object) {
             if (! $object instanceof Zaakinformatieobject || ! $object->informatieobject instanceof Enkelvoudiginformatieobject) {

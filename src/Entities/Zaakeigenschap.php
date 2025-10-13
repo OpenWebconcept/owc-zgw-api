@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace OWC\ZGW\Entities;
 
+use OWC\ZGW\Entities\Attributes\Confidentiality;
+
 class Zaakeigenschap extends Entity
 {
     protected array $casts = [
         // 'url' => "http://example.com",
         // 'uuid' => "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
+        'vertrouwelijkheidaanduiding' => Casts\Confidentiality::class,
+        'status' => Casts\Status::class,
         'zaak' => Casts\Lazy\Zaak::class,
         // 'eigenschap' => "http://example.com",
         // 'naam' => "string",
@@ -33,43 +37,21 @@ class Zaakeigenschap extends Entity
 
     public function isCaseConfidential(): bool
     {
-        $designation = (string) $this->vertrouwelijkheidaanduiding;
-
-        return 'zaakvertrouwelijk' === $designation;
+        return $this->vertrouwelijkheidaanduiding->is(Confidentiality::ZAAKVERTROUWELIJK);
     }
 
     public function isConfidential(): bool
     {
-        $designation = (string) $this->vertrouwelijkheidaanduiding;
-
-        return 'vertrouwelijk' === $designation;
+        return $this->vertrouwelijkheidaanduiding->is(Confidentiality::VERTROUWELIJK);
     }
 
-    public function displayAllowedByConfidentialityDesignation(): bool
+    public function isDisplayAllowed(): bool
     {
-        $designation = (string) $this->vertrouwelijkheidaanduiding;
-
-        $allowedDesignations = [
-            'openbaar',
-            'beperkt_openbaar',
-            'intern',
-            'zaakvertrouwelijk',
-        ];
-
-        return in_array(strtolower($designation), $allowedDesignations, true);
+        return $this->vertrouwelijkheidaanduiding->isDisplayAllowed();
     }
 
     public function isClassified(): bool
     {
-        $designation = (string) $this->vertrouwelijkheidaanduiding;
-
-        $classifiedDesignations = [
-            'intern',
-            'confidentieel',
-            'geheim',
-            'zeer_geheim',
-        ];
-
-        return in_array($designation, $classifiedDesignations);
+        return $this->vertrouwelijkheidaanduiding->isClassified();
     }
 }

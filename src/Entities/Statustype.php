@@ -18,13 +18,6 @@ class Statustype extends Entity
         // 'processStatus' => "string" // This is a custom added attribute
     ];
 
-    public function volgnummer(): string
-    {
-        $volgnummer = (string) $this->getValue('volgnummer', '');
-
-        return ltrim($volgnummer, '0');
-    }
-
     public function isCurrent(): bool
     {
         return (string) $this->processStatus === 'current';

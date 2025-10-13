@@ -117,7 +117,7 @@ class SettingsProvider extends ServiceProvider
             'show_on_cb' => function (\CMB2_Field $field) {
                 $groups = (array) $field->group->value();
 
-                if (!preg_match('/_(\d+)_client_secret_zrc$/', $field->id(), $matches)) {
+                if (! preg_match('/_(\d+)_client_secret_zrc$/', $field->id(), $matches)) {
                     return false;
                 }
 

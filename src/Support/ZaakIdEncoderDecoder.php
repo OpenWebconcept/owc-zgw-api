@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OWC\ZGW\Traits;
+namespace OWC\ZGW\Support;
 
 class ZaakIdEncoderDecoder
 {
