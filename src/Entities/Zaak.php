@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace OWC\ZGW\Entities;
 
+use OWC\ZGW\Support\Collection;
+
 /**
  * @property ?string $url
  * @property ?string $uuid
@@ -11,7 +13,7 @@ namespace OWC\ZGW\Entities;
  * @property ?string $bronorganisatie
  * @property ?string $omschrijving
  * @property ?string $toelichting
- * @property ?\OWC\ZGW\Entities\Zaaktype $zaaktype
+ * @property ?Zaaktype $zaaktype
  * @property ?\DateTimeImmutable $registratiedatum
  * @property ?string $verantwoordelijkeOrganisatie
  * @property ?\DateTimeImmutable $startdatum
@@ -21,7 +23,7 @@ namespace OWC\ZGW\Entities;
  * @property ?\DateTimeImmutable $publicatiedatum
  * @property ?string $communicatiekanaal
  * @property ?string $productenOfDiensten
- * @property \OWC\ZGW\Entities\Attributes\Confidentiality $vertrouwelijkheidaanduiding
+ * @property Attributes\Confidentiality $vertrouwelijkheidaanduiding
  * @property ?string $betalingsindicatie
  * @property ?string $betalingsindicatieWeergave
  * @property ?\DateTimeImmutable $laatsteBetaaldatum
@@ -29,20 +31,21 @@ namespace OWC\ZGW\Entities;
  * @property ?string $verlenging
  * @property ?string $opschorting
  * @property ?string $selectielijstklasse
- * @property ?\OWC\ZGW\Entities\Zaak $hoofdzaak
- * @property ?\OWC\ZGW\Support\Collection $deelzaken
+ * @property ?Zaak $hoofdzaak
+ * @property ?Collection $deelzaken
  * @property ?string $relevanteAndereZaken
  * @property ?string $eigenschappen
- * @property ?\OWC\ZGW\Entities\Status $status
+ * @property ?Status $status
  * @property ?string $kenmerken
  * @property ?string $archiefnominatie
  * @property ?string $archiefstatus
  * @property ?\DateTimeImmutable $archiefactiedatum
- * @property ?\OWC\ZGW\Entities\Resultaat $resultaat
+ * @property ?Resultaat $resultaat
  * @property ?string $opdrachtgevendeOrganisatie
- * @property ?\OWC\ZGW\Support\Collection $statussen
- * @property ?\OWC\ZGW\Support\Collection $zaakinformatieobjecten
- * @property ?\OWC\ZGW\Support\Collection $rollen
+ * @property ?Collection $statussen
+ * @property ?Collection $zaakinformatieobjecten
+ * @property ?Collection $rollen
+ * @property ?Collection $steps
  */
 class Zaak extends Entity
 {
@@ -85,7 +88,26 @@ class Zaak extends Entity
         'statussen' => Casts\Related\Statussen::class,
         'zaakinformatieobjecten' => Casts\Related\Zaakinformatieobjecten::class,
         'rollen' => Casts\Related\Rollen::class,
+        'steps' => Casts\ZaakSteps::class,
     ];
+
+    /**
+     * When the description is empty the 'Zaak' identification is returned.
+     */
+    public function title(): string
+    {
+        return $this->getValue('omschrijving', $this->getValue('identificatie', ''));
+    }
+
+    public function hasEndDate(): bool
+    {
+        return (bool) $this->getValue('einddatum', false);
+    }
+
+    public function hasPlannedEndDate(): bool
+    {
+        return (bool) $this->getValue('einddatumGepland', false);
+    }
 
     /**
      * Wether or not the current Zaak is initiated by the given BSN.

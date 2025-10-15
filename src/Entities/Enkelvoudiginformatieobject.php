@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace OWC\ZGW\Entities;
 
+use OWC\ZGW\Entities\Attributes\Confidentiality;
+
 class Enkelvoudiginformatieobject extends Entity
 {
     protected array $casts = [
@@ -19,14 +21,14 @@ class Enkelvoudiginformatieobject extends Entity
         // formaat
         // taal
         // versie
-        // beginRegistratie
+        'beginRegistratie' => Casts\NullableDateTime::class,
         // bestandsnaam
         // inhoud
         // bestandsomvang
         // link
         // beschrijving
-        // ontvangstdatum
-        // verzenddatum
+        'ontvangstdatum' => Casts\NullableDate::class,
+        'verzenddatum' => Casts\NullableDate::class,
         // indicatieGebruiksrecht
         // ondertekening
         // integriteit
@@ -34,4 +36,38 @@ class Enkelvoudiginformatieobject extends Entity
         // locked
         // bestandsdelen
     ];
+
+    public function hasFinalStatus(): bool
+    {
+        if ($this->hasReceiptDate()) {
+            return true;
+        }
+
+        return (bool) $this->status?->hasFinalStatus();
+    }
+
+    public function hasReceiptDate(): bool
+    {
+        return (bool) $this->ontvangstdatum;
+    }
+
+    public function isCaseConfidential(): bool
+    {
+        return $this->vertrouwelijkheidaanduiding->is(Confidentiality::ZAAKVERTROUWELIJK);
+    }
+
+    public function isConfidential(): bool
+    {
+        return $this->vertrouwelijkheidaanduiding->is(Confidentiality::VERTROUWELIJK);
+    }
+
+    public function isDisplayAllowed(): bool
+    {
+        return $this->vertrouwelijkheidaanduiding->isDisplayAllowed();
+    }
+
+    public function isClassified(): bool
+    {
+        return $this->vertrouwelijkheidaanduiding->isClassified();
+    }
 }

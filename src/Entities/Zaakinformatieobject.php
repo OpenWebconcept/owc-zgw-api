@@ -17,10 +17,10 @@ class Zaakinformatieobject extends Entity
         'registratiedatum' => Casts\NullableDateTime::class,
     ];
 
-	/**
+    /**
      * @temp
      */
-	public function prepareCreateJsonArgs()
+    public function prepareCreateJsonArgs()
     {
         $args = [
             'informatieobject' => $this->getValue('url', ''),

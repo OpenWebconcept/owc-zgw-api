@@ -15,12 +15,21 @@ class Statustype extends Entity
         // 'volgnummer' => 1,
         // 'isEindstatus' => true,
         // 'informeren' => true
+        // 'processStatus' => "string" // This is a custom added attribute
     ];
 
-    public function volgnummer(): string
+    public function isCurrent(): bool
     {
-        $volgnummer = (string) $this->getValue('volgnummer', '');
+        return (string) $this->processStatus === 'current';
+    }
 
-        return ltrim($volgnummer, '0');
+    public function isPast(): bool
+    {
+        return (string) $this->processStatus === 'past';
+    }
+
+    public function isFuture(): bool
+    {
+        return (string) $this->processStatus === 'future';
     }
 }

@@ -46,4 +46,15 @@ enum Confidentiality: string
         };
     }
 
+    public function isDisplayAllowed(): bool
+    {
+        return match ($this) {
+            self::OPENBAAR,
+            self::BEPERKT_OPENBAAR,
+            self::INTERN,
+            self::ZAAKVERTROUWELIJK => true,
+            default => false,
+        };
+    }
+
 }
