@@ -11,6 +11,7 @@ class SettingsProvider extends ServiceProvider
     public function register(): void
     {
         add_action('cmb2_admin_init', [$this, 'addSettingsFields']);
+        add_action('admin_footer', [$this, 'registerSettingsPageScripts']);
     }
 
     public function addSettingsFields(): void
@@ -114,18 +115,45 @@ class SettingsProvider extends ServiceProvider
             'id' => 'client_secret_zrc',
             'type' => 'text',
             'attributes' => ['type' => 'password'],
-            'show_on_cb' => function (\CMB2_Field $field) {
-                $groups = (array) $field->group->value();
-
-                if (! preg_match('/_(\d+)_client_secret_zrc$/', $field->id(), $matches)) {
-                    return false;
-                }
-
-                $index = (int) $matches[1];
-                $client_type = $groups[$index]['client_type'] ?? '';
-
-                return $client_type === 'decosjoin';
-            },
         ]);
+    }
+
+    public function registerSettingsPageScripts(): void
+    {
+        $screen = get_current_screen();
+
+        if ($screen && $screen->id === 'settings_page_zgw_api_settings') {
+            wp_enqueue_script('jquery');
+
+            wp_register_script('zgw-api-settings', '', [], false, true);
+            wp_enqueue_script('zgw-api-settings');
+
+            wp_add_inline_script('zgw-api-settings', <<<JS
+                (function($) {
+                    'use strict';
+                    
+                    function toggleClientSecretZRC(group) {
+                        const clientType = group.find('[name*="[client_type]"]').val();
+                        const secretRow = group.find('[name*="[client_secret_zrc]"]').closest('.cmb-row');
+                        secretRow.toggle(clientType === 'decosjoin');
+                    }
+                    
+                    function initializeClientSecrets() {
+                        $('.cmb-repeatable-grouping').each(function() {
+                            toggleClientSecretZRC($(this));
+                        });
+                    }
+                    
+                    // Initialize when DOM is ready.
+                    $(document).ready(initializeClientSecrets);
+                    
+                     // Watch for changes to client type fields.
+                    $(document).on('change', '[name*="[client_type]"]', function() {
+                        const group = $(this).closest('.cmb-repeatable-grouping');
+                        toggleClientSecretZRC(group);
+                    });
+                })(jQuery);
+            JS);
+        }
     }
 }
