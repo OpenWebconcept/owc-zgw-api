@@ -104,7 +104,7 @@ return [
      */
     'http.client' => function (Container $container) {
         return $container->get(Http\WordPress\WordPressRequestClient::class);
-    } ,
+    },
     Http\WordPress\WordPressRequestClient::class => function () {
         return new Http\WordPress\WordPressRequestClient(
             new Http\RequestOptions([
@@ -141,7 +141,7 @@ return [
 
         $handler = new \Monolog\Handler\StreamHandler(
             $container->get('message.logger.path'),
-            \Monolog\Logger::DEBUG
+            \Monolog\Level::Debug
         );
 
         $handler->setFormatter(new \Monolog\Formatter\JsonFormatter());
