@@ -24,7 +24,7 @@ class Zaakinformatieobject extends Entity
     {
         $args = [
             'informatieobject' => $this->getValue('url', ''),
-            'zaak' => $this->getValue('zaak', ''),
+            'zaak' => $this->getAttributeValue('zaak', ''),
             'titel' => $this->getValue('titel', ''),
             'beschrijving' => $this->getValue('beschrijving', ''),
         ];
