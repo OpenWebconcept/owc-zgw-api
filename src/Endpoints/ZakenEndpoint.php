@@ -70,7 +70,7 @@ class ZakenEndpoint extends Endpoint
     public function delete(string $identifier): Response
     {
         $response = $this->httpClient->delete(
-            sprintf('%s/%s', $this->endpoint, $identifier),
+            $this->buildUri(sprintf('%s/%s', $this->endpoint, $identifier)),
             $this->buildRequestOptions()
         );
 
