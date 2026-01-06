@@ -37,11 +37,20 @@ class SettingsProvider extends ServiceProvider
             ],
         ]);
 
-        $options->add_group_field($clients, [
-            'name' => 'Register naam (uniek)',
-            'id' => 'name',
-            'type' => 'text',
-        ]);
+		$options->add_group_field($clients, [
+			'name' => 'Register naam (uniek)',
+			'desc' => 'Unieke naam voor dit register. Alleen kleine letters, cijfers en koppeltekens zijn toegestaan.',
+			'id' => 'name',
+			'type' => 'text',
+			'sanitization_cb' => function ( $value ) {
+				$value = strtolower( $value );
+
+				// Only allow lowercase letters, numbers and hyphens.
+				$value = preg_replace( '/[^a-z0-9-]/', '', $value );
+
+				return $value;
+			},
+		]);
 
         $options->add_group_field($clients, [
             'name' => 'Register type',
@@ -131,22 +140,22 @@ class SettingsProvider extends ServiceProvider
             wp_add_inline_script('zgw-api-settings', <<<JS
                 (function($) {
                     'use strict';
-                    
+
                     function toggleClientSecretZRC(group) {
                         const clientType = group.find('[name*="[client_type]"]').val();
                         const secretRow = group.find('[name*="[client_secret_zrc]"]').closest('.cmb-row');
                         secretRow.toggle(clientType === 'decosjoin');
                     }
-                    
+
                     function initializeClientSecrets() {
                         $('.cmb-repeatable-grouping').each(function() {
                             toggleClientSecretZRC($(this));
                         });
                     }
-                    
+
                     // Initialize when DOM is ready.
                     $(document).ready(initializeClientSecrets);
-                    
+
                      // Watch for changes to client type fields.
                     $(document).on('change', '[name*="[client_type]"]', function() {
                         const group = $(this).closest('.cmb-repeatable-grouping');
