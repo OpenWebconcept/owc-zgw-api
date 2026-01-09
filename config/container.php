@@ -83,18 +83,9 @@ return [
         ApiCredentials $credentials,
         ApiUrlCollection $endpoints
     ) {
-        $authentication = $container->make(
-            Clients\Procura\Authenticator::class,
-            compact('credentials')
-        );
-
-        if (! $authentication->hasCertificates()) {
-            throw new \InvalidArgumentException('Missing SSL certificates: the Procura client requires additional SSL certificates.');
-        }
-
-        return new Clients\Procura\Client(
+		return new Clients\Procura\Client(
             $container->make('http.client'),
-            $authentication,
+            $container->make(Clients\Procura\Authenticator::class, compact('credentials')),
             $endpoints
         );
     },
