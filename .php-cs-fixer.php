@@ -36,6 +36,7 @@ $finder = \PhpCsFixer\Finder::create()
                 'default' => 'single_space',
                 'operators' => [
                     '|' => 'no_space',
+					'=>' => 'single_space',
                 ]
             ],
             'return_type_declaration' => [

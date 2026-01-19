@@ -148,7 +148,7 @@ class SettingsProvider extends ServiceProvider
             'id' => 'client_ssl_public_cert_file',
             'type' => 'select',
             'options_cb' => function ($field) {
-                return $this->getCertificateFilesOptions($field, [ 'cer', 'crt' ]);
+                return $this->getCertificateFilesOptions(field: $field, extensions: [ 'cer', 'crt' ]);
             },
         ]);
 
@@ -159,12 +159,12 @@ class SettingsProvider extends ServiceProvider
             'id' => 'client_ssl_private_cert_file',
             'type' => 'select',
             'options_cb' => function ($field) {
-                return $this->getCertificateFilesOptions($field, [ 'key' ]);
+                return $this->getCertificateFilesOptions(field: $field, extensions: [ 'key' ]);
             },
         ]);
     }
 
-    public function getCertificateFilesOptions($field, array $extensions): array
+    private function getCertificateFilesOptions($field, array $extensions): array
     {
         $options = ['' => 'Selecteer een bestand'];
 
@@ -177,18 +177,62 @@ class SettingsProvider extends ServiceProvider
             $path = rtrim($groupValues[ $rowIndex ]['client_ssl_cert_path'], '/\\');
         }
 
-        if ('' === $path || ! is_dir($path) || ! is_readable($path)) {
+        if (! $this->checkCertificatePath($path)) {
             return $options;
         }
 
         foreach ($extensions as $ext) {
             foreach (glob($path . '/*.' . $ext) as $file) {
-                $basename = basename($file);
-                $options[ $file ] = $basename;
+                $parseCert = in_array($ext, ['key'], true) ? false : true;
+
+                if (! $this->isValidCert(file: $file, read: $parseCert)) {
+                    continue;
+                }
+
+                $options[$file] = basename($file);
             }
         }
 
         return $options;
+    }
+
+    /**
+     * Check if the provided path is a valid, readable directory.
+     * Prevents directory traversal by ensuring the real path starts with the provided path.
+     */
+    private function checkCertificatePath(string $path): bool
+    {
+        if ('' === $path) {
+            return false;
+        }
+
+        $real = realpath($path);
+
+        if (false === $real || ! str_starts_with($real, $path)) {
+            return false;
+        }
+
+        return is_dir($real) && is_readable($real);
+    }
+
+    /**
+     * Check if the provided file is a valid SSL certificate.
+     * Set $read to false to skip content validation (for private keys e.g.).
+     */
+    private function isValidCert(string $file, bool $read = true): bool
+    {
+        $content = @file_get_contents($file);
+
+        if ('' === $content || $content === false) {
+            return false;
+        }
+
+        if (false === $read) {
+            return true;
+        }
+
+        // openssl_x509_checkpurpose() fails for PKIoverheid certs due to missing trust chain.
+        return false !== openssl_x509_read($content);
     }
 
     public function registerSettingsPageScripts(): void
