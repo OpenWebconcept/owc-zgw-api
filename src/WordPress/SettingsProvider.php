@@ -219,45 +219,6 @@ class SettingsProvider extends ServiceProvider
         return ! empty($content) && openssl_x509_read($content) !== false;
     }
 
-    /**
-     * Check if the provided path is a valid, readable directory.
-     * Prevents directory traversal by ensuring the real path starts with the provided path.
-     */
-    private function checkCertificatePath(string $path): bool
-    {
-        if ($path === '') {
-            return false;
-        }
-
-        $real = realpath($path);
-
-        if ($real === false || ! str_starts_with($real, $path)) {
-            return false;
-        }
-
-        return is_dir($real) && is_readable($real);
-    }
-
-    /**
-     * Check if the provided file is a valid SSL certificate.
-     * Set $read to false to skip content validation (for private keys e.g.).
-     */
-    private function isValidCert(string $file, bool $read = true): bool
-    {
-        $content = @file_get_contents($file);
-
-        if ('' === $content || $content === false) {
-            return false;
-        }
-
-        if (false === $read) {
-            return true;
-        }
-
-        // openssl_x509_checkpurpose() fails for PKIoverheid certs due to missing trust chain.
-        return false !== openssl_x509_read($content);
-    }
-
     public function registerSettingsPageScripts(): void
     {
         $screen = get_current_screen();
