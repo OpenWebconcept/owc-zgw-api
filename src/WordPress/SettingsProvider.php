@@ -135,104 +135,88 @@ class SettingsProvider extends ServiceProvider
 
         // Is only visible when 'client_ssl_verify_enabled' is checked.
         $options->add_group_field($clients, [
-            'name' => 'Certificaat pad',
-            'desc' => 'Absolute pad naar de locatie van de certificaten',
-            'id' => 'client_ssl_cert_path',
-            'type' => 'text',
-        ]);
-
-        // Is only visible when 'client_ssl_verify_enabled' is checked.
-        $options->add_group_field($clients, [
-            'name' => 'SSL certificaat (.cer/.csr)',
-            'desc' => 'Selecteer het SSL certificaat bestand',
+            'name' => 'SSL certificaat (.cer/.crt)',
+            'desc' => 'Voer het pad in naar het SSL certificaat bestand',
             'id' => 'client_ssl_public_cert_file',
-            'type' => 'select',
-            'options_cb' => function ($field) {
-                return $this->getCertificateFilesOptions(field: $field, extensions: [ 'cer', 'crt' ]);
-            },
+            'type' => 'text',
+            'sanitization_cb'   => function ($value, $fieldProps, \CMB2_Field $field) {
+                if (empty($value)) {
+                    return '';
+                }
+
+                if ($this->fileIsReadable($value) === false) {
+                    $this->generateFieldError($field, 'Het ingevoerde pad naar het SSL certificaat is ongeldig.');
+
+                    return '';
+                }
+
+                if ($this->isValidCertificate($value) === false) {
+                    $this->generateFieldError($field, 'Het ingevoerde SSL certificaat is niet leesbaar of het is geen geldig certificaat bestand.');
+
+                    return '';
+                }
+
+                return realpath($value);
+            }
         ]);
 
         // Is only visible when 'client_ssl_verify_enabled' is checked.
         $options->add_group_field($clients, [
             'name' => 'SSL sleutel (.key)',
-            'desc' => 'Selecteer het SSL sleutel bestand',
+            'desc' => 'Voer het pad in naar het SSL sleutel bestand',
             'id' => 'client_ssl_private_cert_file',
-            'type' => 'select',
-            'options_cb' => function ($field) {
-                return $this->getCertificateFilesOptions(field: $field, extensions: [ 'key' ]);
-            },
-        ]);
-    }
-
-    private function getCertificateFilesOptions($field, array $extensions): array
-    {
-        $options = ['' => 'Selecteer een bestand'];
-
-        $groupValues = $field->group ? $field->group->value : [];
-        $rowIndex = $field->group ? $field->group->index : null;
-
-        $path = '';
-
-        if (is_int($rowIndex) && isset($groupValues[ $rowIndex ]['client_ssl_cert_path'])) {
-            $path = rtrim($groupValues[ $rowIndex ]['client_ssl_cert_path'], '/\\');
-        }
-
-        if (! $this->checkCertificatePath($path)) {
-            return $options;
-        }
-
-        foreach ($extensions as $ext) {
-            foreach (glob($path . '/*.' . $ext) as $file) {
-                $parseCert = in_array($ext, ['key'], true) ? false : true;
-
-                if (! $this->isValidCert(file: $file, read: $parseCert)) {
-                    continue;
+            'type' => 'text',
+            'sanitization_cb' => function ($value, $fieldProps, \CMB2_Field $field) {
+                if (empty($value)) {
+                    return '';
                 }
 
-                $options[$file] = basename($file);
-            }
-        }
+                if ($this->fileIsReadable($value) === false) {
+                    $this->generateFieldError($field, 'Het ingevoerde pad naar het SSL sleutel bestand is ongeldig.');
 
-        return $options;
+                    return '';
+                }
+
+                return realpath($value);
+            }
+        ]);
+
+        add_action('admin_notices', $this->queueAdminNotices(...));
     }
 
     /**
      * Check if the provided path is a valid, readable directory.
      * Prevents directory traversal by ensuring the real path starts with the provided path.
      */
-    private function checkCertificatePath(string $path): bool
+    protected function fileIsReadable(string $path): bool
     {
-        if ($path === '') {
+        if (empty($path)) {
             return false;
         }
 
         $real = realpath($path);
 
-        if ($real === false || ! str_starts_with($real, $path)) {
+        if (empty($real) || $real !== $path) {
             return false;
         }
 
-        return is_dir($real) && is_readable($real);
+        return file_exists($real) && is_readable($real);
     }
 
     /**
      * Check if the provided file is a valid SSL certificate.
-     * Set $read to false to skip content validation (for private keys e.g.).
+     * Does not work with private keys.
      */
-    private function isValidCert(string $file, bool $read = true): bool
+    protected function isValidCertificate(string $file): bool
     {
-        $content = @file_get_contents($file);
-
-        if ('' === $content || $content === false) {
+        if (empty($file)) {
             return false;
         }
 
-        if (false === $read) {
-            return true;
-        }
+        $content = @file_get_contents($file);
 
         // openssl_x509_checkpurpose() fails for PKIoverheid certs due to missing trust chain.
-        return false !== openssl_x509_read($content);
+        return !empty($content) && openssl_x509_read($content) !== false;
     }
 
     public function registerSettingsPageScripts(): void
@@ -263,71 +247,9 @@ class SettingsProvider extends ServiceProvider
                         });
                     }
 
-                    function toggleSslFieldsForGroup(group) {
-                        const checkbox = group.find('input[type="checkbox"][name*="[client_ssl_verify_enabled]"]');
-
-                        if (! checkbox.length) {
-                            return;
-                        }
-
-                        const isChecked = checkbox.is(':checked');
-
-                        const pathRow = group.find('[name*="[client_ssl_cert_path]"]').closest('.cmb-row');
-                        const certRow = group.find('[name*="[client_ssl_public_cert_file]"]').closest('.cmb-row');
-                        const keyRow  = group.find('[name*="[client_ssl_private_cert_file]"]').closest('.cmb-row');
-
-                        pathRow.toggle(isChecked);
-                        certRow.toggle(isChecked);
-                        keyRow.toggle(isChecked);
-                    }
-
-                    function initSslGroups(context) {
-                        const ctx = context || document;
-
-                        $(ctx).find('.cmb-repeatable-grouping').each(function() {
-                            const group = $(this);
-
-                            toggleSslFieldsForGroup(group);
-
-                            group
-                                .find('input[type="checkbox"][name*="[client_ssl_verify_enabled]"]')
-                                .off('change.cbm2SslToggle')
-                                .on('change.cbm2SslToggle', function() {
-                                    toggleSslFieldsForGroup(group);
-                                });
-                        });
-
-                        // Fallback voor non-group scenario (mocht je ssl-fields ooit los gebruiken)
-                        const standaloneCheckbox = $(ctx)
-                            .find('input[type="checkbox"][name*="[client_ssl_verify_enabled]"]')
-                            .not($(ctx).find('.cmb-repeatable-grouping input[type="checkbox"][name*="[client_ssl_verify_enabled]"]'));
-
-                        if (standaloneCheckbox.length) {
-                            const pathRow = $(ctx).find('[name*="[client_ssl_cert_path]"]').closest('.cmb-row');
-                            const certRow = $(ctx).find('[name*="[client_ssl_public_cert_file]"]').closest('.cmb-row');
-                            const keyRow  = $(ctx).find('[name*="[client_ssl_private_cert_file]"]').closest('.cmb-row');
-
-                            const isChecked = standaloneCheckbox.is(':checked');
-
-                            pathRow.toggle(isChecked);
-                            certRow.toggle(isChecked);
-                            keyRow.toggle(isChecked);
-
-                            standaloneCheckbox
-                                .off('change.cbm2SslToggleStandalone')
-                                .on('change.cbm2SslToggleStandalone', function() {
-                                    const c = $(this).is(':checked');
-                                    pathRow.toggle(c);
-                                    certRow.toggle(c);
-                                    keyRow.toggle(c);
-                                });
-                        }
-                    }
-
                     // Initialize when DOM is ready.
                     $(document).ready(function() {
                         initializeClientSecrets(document);
-                        initSslGroups(document);
                     });
 
                     // Watch for changes to client type fields.
@@ -339,10 +261,51 @@ class SettingsProvider extends ServiceProvider
                     // Watch for new rows being added.
                     $(document).on('cmb2_add_row', function(e, newRow) {
                         initializeClientSecrets(newRow);
-                        initSslGroups(newRow);
                     });
                 })(jQuery);
             JS);
         }
+    }
+
+    protected function generateFieldError(\CMB2_Field $field, string $message): void
+    {
+        $transientKey = 'cmb2_errors_' . get_current_user_id();
+        $current = json_decode((string) get_transient($transientKey), true);
+
+        if (empty($current)) {
+            $current = [];
+        }
+
+        $current[] = [
+            'title'     => sprintf('Foutmelding voor veld "%s"', esc_html($field->args['name'])),
+            'message'   => esc_html($message),
+        ];
+
+        set_transient($transientKey, json_encode($current), 45);
+    }
+
+    protected function queueAdminNotices()
+    {
+        $userId = get_current_user_id();
+        $transientKey = 'cmb2_errors_' . $userId;
+        $current = json_decode((string) get_transient($transientKey), true);
+
+        if (empty($current)) {
+            return; // Nothing to do here
+        }
+
+
+        foreach ($current as $error) {
+            printf(
+                '<div class="notice notice-error is-dismissible">
+                    <p style="font-weight: bold;">%s</p>
+                    <p>%s</p>
+                </div>',
+                esc_html($error['title'] ?? ''),
+                esc_html($error['message'] ?? ''),
+            );
+        }
+
+        delete_transient($transientKey);
     }
 }
