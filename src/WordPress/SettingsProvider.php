@@ -225,13 +225,13 @@ class SettingsProvider extends ServiceProvider
      */
     private function checkCertificatePath(string $path): bool
     {
-        if ('' === $path) {
+        if ($path === '') {
             return false;
         }
 
         $real = realpath($path);
 
-        if (false === $real || ! str_starts_with($real, $path)) {
+        if ($real === false || ! str_starts_with($real, $path)) {
             return false;
         }
 
