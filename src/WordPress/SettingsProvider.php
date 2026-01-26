@@ -10,8 +10,8 @@ class SettingsProvider extends ServiceProvider
 {
     public function register(): void
     {
-        add_action('cmb2_admin_init', [$this, 'addSettingsFields']);
-        add_action('admin_footer', [$this, 'registerSettingsPageScripts']);
+        add_action('cmb2_admin_init', $this->addSettingsFields(...));
+        add_action('admin_footer', $this->registerSettingsPageScripts(...));
     }
 
     public function addSettingsFields(): void
@@ -20,7 +20,6 @@ class SettingsProvider extends ServiceProvider
             'id' => 'zgw-api-settings',
             'title' => 'ZGW API instellingen',
             'object_types' => ['options-page'],
-
             'option_key' => 'zgw_api_settings',
             'parent_slug' => 'options-general.php',
             'capability' => 'manage_options',
@@ -37,20 +36,20 @@ class SettingsProvider extends ServiceProvider
             ],
         ]);
 
-		$options->add_group_field($clients, [
-			'name' => 'Register naam (uniek)',
-			'desc' => 'Unieke naam voor dit register. Alleen kleine letters, cijfers en koppeltekens zijn toegestaan.',
-			'id' => 'name',
-			'type' => 'text',
-			'sanitization_cb' => function ( $value ) {
-				$value = strtolower( $value );
+        $options->add_group_field($clients, [
+            'name' => 'Register naam (uniek)',
+            'desc' => 'Unieke naam voor dit register. Alleen kleine letters, cijfers en koppeltekens zijn toegestaan.',
+            'id' => 'name',
+            'type' => 'text',
+            'sanitization_cb' => function ($value) {
+                $value = strtolower($value);
 
-				// Only allow lowercase letters, numbers and hyphens.
-				$value = preg_replace( '/[^a-z0-9-]/', '', $value );
+                // Only allow lowercase letters, numbers and hyphens.
+                $value = preg_replace('/[^a-z0-9-]/', '', $value);
 
-				return $value;
-			},
-		]);
+                return $value;
+            },
+        ]);
 
         $options->add_group_field($clients, [
             'name' => 'Register type',
@@ -125,6 +124,99 @@ class SettingsProvider extends ServiceProvider
             'type' => 'text',
             'attributes' => ['type' => 'password'],
         ]);
+
+        $options->add_group_field($clients, [
+            'name' => 'SSL certificaat verificatie',
+            'desc' => 'Schakel SSL certificaat verificatie in of uit',
+            'id' => 'client_ssl_verify_enabled',
+            'type' => 'checkbox',
+            'default' => 0,
+        ]);
+
+        // Is only visible when 'client_ssl_verify_enabled' is checked.
+        $options->add_group_field($clients, [
+            'name' => 'SSL certificaat (.cer/.crt)',
+            'desc' => 'Voer het pad in naar het SSL certificaat bestand',
+            'id' => 'client_ssl_public_cert_file',
+            'type' => 'text',
+            'sanitization_cb'   => function ($value, $fieldProps, \CMB2_Field $field) {
+                if (empty($value)) {
+                    return '';
+                }
+
+                if ($this->fileIsReadable($value) === false) {
+                    $this->generateFieldError($field, 'Het ingevoerde pad naar het SSL certificaat is ongeldig.');
+
+                    return '';
+                }
+
+                if ($this->isValidCertificate($value) === false) {
+                    $this->generateFieldError($field, 'Het ingevoerde SSL certificaat is niet leesbaar of het is geen geldig certificaat bestand.');
+
+                    return '';
+                }
+
+                return realpath($value);
+            }
+        ]);
+
+        // Is only visible when 'client_ssl_verify_enabled' is checked.
+        $options->add_group_field($clients, [
+            'name' => 'SSL sleutel (.key)',
+            'desc' => 'Voer het pad in naar het SSL sleutel bestand',
+            'id' => 'client_ssl_private_cert_file',
+            'type' => 'text',
+            'sanitization_cb' => function ($value, $fieldProps, \CMB2_Field $field) {
+                if (empty($value)) {
+                    return '';
+                }
+
+                if ($this->fileIsReadable($value) === false) {
+                    $this->generateFieldError($field, 'Het ingevoerde pad naar het SSL sleutel bestand is ongeldig.');
+
+                    return '';
+                }
+
+                return realpath($value);
+            }
+        ]);
+
+        add_action('admin_notices', $this->queueAdminNotices(...));
+    }
+
+    /**
+     * Check if the provided path is a valid, readable directory.
+     * Prevents directory traversal by ensuring the real path starts with the provided path.
+     */
+    protected function fileIsReadable(string $path): bool
+    {
+        if (empty($path)) {
+            return false;
+        }
+
+        $real = realpath($path);
+
+        if (empty($real) || $real !== $path) {
+            return false;
+        }
+
+        return file_exists($real) && is_readable($real);
+    }
+
+    /**
+     * Check if the provided file is a valid SSL certificate.
+     * Does not work with private keys.
+     */
+    protected function isValidCertificate(string $file): bool
+    {
+        if (empty($file)) {
+            return false;
+        }
+
+        $content = @file_get_contents($file);
+
+        // openssl_x509_checkpurpose() fails for PKIoverheid certs due to missing trust chain.
+        return !empty($content) && openssl_x509_read($content) !== false;
     }
 
     public function registerSettingsPageScripts(): void
@@ -143,26 +235,77 @@ class SettingsProvider extends ServiceProvider
 
                     function toggleClientSecretZRC(group) {
                         const clientType = group.find('[name*="[client_type]"]').val();
-                        const secretRow = group.find('[name*="[client_secret_zrc]"]').closest('.cmb-row');
+                        const secretRow  = group.find('[name*="[client_secret_zrc]"]').closest('.cmb-row');
                         secretRow.toggle(clientType === 'decosjoin');
                     }
 
-                    function initializeClientSecrets() {
-                        $('.cmb-repeatable-grouping').each(function() {
+                    function initializeClientSecrets(context) {
+                        const ctx = context || document;
+
+                        $(ctx).find('.cmb-repeatable-grouping').each(function() {
                             toggleClientSecretZRC($(this));
                         });
                     }
 
                     // Initialize when DOM is ready.
-                    $(document).ready(initializeClientSecrets);
+                    $(document).ready(function() {
+                        initializeClientSecrets(document);
+                    });
 
-                     // Watch for changes to client type fields.
+                    // Watch for changes to client type fields.
                     $(document).on('change', '[name*="[client_type]"]', function() {
                         const group = $(this).closest('.cmb-repeatable-grouping');
                         toggleClientSecretZRC(group);
                     });
+
+                    // Watch for new rows being added.
+                    $(document).on('cmb2_add_row', function(e, newRow) {
+                        initializeClientSecrets(newRow);
+                    });
                 })(jQuery);
             JS);
         }
+    }
+
+    protected function generateFieldError(\CMB2_Field $field, string $message): void
+    {
+        $transientKey = 'cmb2_errors_' . get_current_user_id();
+        $current = json_decode((string) get_transient($transientKey), true);
+
+        if (empty($current)) {
+            $current = [];
+        }
+
+        $current[] = [
+            'title'     => sprintf('Foutmelding voor veld "%s"', esc_html($field->args['name'])),
+            'message'   => esc_html($message),
+        ];
+
+        set_transient($transientKey, json_encode($current), 45);
+    }
+
+    protected function queueAdminNotices()
+    {
+        $userId = get_current_user_id();
+        $transientKey = 'cmb2_errors_' . $userId;
+        $current = json_decode((string) get_transient($transientKey), true);
+
+        if (empty($current)) {
+            return; // Nothing to do here
+        }
+
+
+        foreach ($current as $error) {
+            printf(
+                '<div class="notice notice-error is-dismissible">
+                    <p style="font-weight: bold;">%s</p>
+                    <p>%s</p>
+                </div>',
+                esc_html($error['title'] ?? ''),
+                esc_html($error['message'] ?? ''),
+            );
+        }
+
+        delete_transient($transientKey);
     }
 }

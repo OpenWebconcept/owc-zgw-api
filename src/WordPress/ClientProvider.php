@@ -26,7 +26,7 @@ class ClientProvider extends ServiceProvider
 
     public function register(): void
     {
-        add_action('init', [$this, 'initializeClients']);
+        add_action('init', $this->initializeClients(...));
     }
 
     public function initializeClients(): void
@@ -61,12 +61,47 @@ class ClientProvider extends ServiceProvider
         $credentials->setClientId($config['client_id'] ?? '');
         $credentials->setClientSecret($config['client_secret'] ?? '');
 
+        $credentials = $this->handleCertificates($credentials, $config);
+
         $this->apiManager->addClient(
             $config['name'] ?? '',
             $this->getClientFqcn($config['client_type'] ?? ''),
             $credentials,
             $this->getApiUrlCollection($config)
         );
+    }
+
+    private function handleCertificates(ApiCredentials $credentials, array $config): ApiCredentials
+    {
+        if (($config['client_ssl_verify_enabled'] ?? '')  !== 'on') {
+            return $credentials;
+        }
+
+        $clientName = $config['name'] ?? '';
+
+        if (! isset($config['client_ssl_public_cert_file'], $config['client_ssl_private_cert_file'])) {
+            $this->setAdminNoticeError(sprintf('SSL-verificatie is ingeschakeld voor client "%s", maar certificaatbestanden ontbreken.', $clientName));
+
+            return $credentials;
+        }
+
+        if (! file_exists($config['client_ssl_public_cert_file']) || ! file_exists($config['client_ssl_private_cert_file'])) {
+            $this->setAdminNoticeError(sprintf('Een of beide SSL-certificaatbestanden bestaan niet voor client "%s".', $clientName));
+
+            return $credentials;
+        }
+
+        $credentials->setPublicCertificate($config['client_ssl_public_cert_file']);
+        $credentials->setPrivateCertificate($config['client_ssl_private_cert_file']);
+
+        return $credentials;
+    }
+
+    private function setAdminNoticeError(string $message): void
+    {
+        add_action('admin_notices', function () use ($message) {
+            echo '<div class="notice notice-error"><p>' . esc_html($message) . '</p></div>';
+        });
     }
 
     protected function getApiUrlCollection(array $config): ApiUrlCollection
