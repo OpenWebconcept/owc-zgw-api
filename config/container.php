@@ -15,6 +15,31 @@ return [
         return new Support\Collection([]);
     },
 
+	/**
+     * OpenWave
+     */
+    Clients\OpenWave\Client::class => function (
+        Container $container,
+        ApiCredentials $credentials,
+        ApiUrlCollection $endpoints
+    ) {
+		$tokenHttpClient = clone $container->make('http.client');
+
+		if ($credentials->hasCertificates()) {
+			$tokenHttpClient->addSslCertificates(new \OWC\ZGW\Http\SslCertificatesStore(
+				$credentials->getPublicCertificate(),
+				$credentials->getPrivateCertificate()
+			));
+		}
+
+        return new Clients\OpenWave\Client(
+            $container->make('http.client'),
+            $container->make(Clients\OpenWave\Authenticator::class, ['credentials' => $credentials, 'client' => $tokenHttpClient]),
+            $endpoints
+        );
+    },
+
+
     /**
      * OpenZaak
      */
