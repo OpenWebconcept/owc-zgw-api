@@ -21,7 +21,7 @@ composer require owc/zgw-api
 ```
 
 > [!IMPORTANT]
-> Version 2 of this package requires PHP >= 8.1.
+> Version 2 of this package requires PHP >= 8.2.
 
 ## Usage
 
@@ -39,4 +39,4 @@ There are breaking changes compared to the [Zaaksysteem plugin](https://github.c
 
 ### Version 2
 
-The package requires PHP >= 8.1. 
+The package requires PHP >= 8.2.
