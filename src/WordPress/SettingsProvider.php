@@ -139,7 +139,7 @@ class SettingsProvider extends ServiceProvider
             'desc' => 'Voer het pad in naar het SSL certificaat bestand',
             'id' => 'client_ssl_public_cert_file',
             'type' => 'text',
-            'sanitization_cb'   => function ($value, $fieldProps, \CMB2_Field $field) {
+            'sanitization_cb' => function ($value, $fieldProps, \CMB2_Field $field) {
                 if (empty($value)) {
                     return '';
                 }
@@ -216,7 +216,7 @@ class SettingsProvider extends ServiceProvider
         $content = @file_get_contents($file);
 
         // openssl_x509_checkpurpose() fails for PKIoverheid certs due to missing trust chain.
-        return !empty($content) && openssl_x509_read($content) !== false;
+        return ! empty($content) && openssl_x509_read($content) !== false;
     }
 
     public function registerSettingsPageScripts(): void
@@ -277,8 +277,8 @@ class SettingsProvider extends ServiceProvider
         }
 
         $current[] = [
-            'title'     => sprintf('Foutmelding voor veld "%s"', esc_html($field->args['name'])),
-            'message'   => esc_html($message),
+            'title' => sprintf('Foutmelding voor veld "%s"', esc_html($field->args['name'])),
+            'message' => esc_html($message),
         ];
 
         set_transient($transientKey, json_encode($current), 45);

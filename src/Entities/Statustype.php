@@ -32,4 +32,9 @@ class Statustype extends Entity
     {
         return (string) $this->processStatus === 'future';
     }
+
+    public function isNext(): bool
+    {
+        return (string) $this->processStatus === 'next';
+    }
 }

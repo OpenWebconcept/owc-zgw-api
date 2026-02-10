@@ -67,7 +67,7 @@ class ZaakSteps extends AbstractCast
         });
     }
 
-    protected function addProcessStatusses(Collection $statussen, int $currentVolgnummer)
+    protected function addProcessStatusses(Collection $statussen, int $currentVolgnummer): Collection
     {
         return $statussen->map(function ($status) use ($currentVolgnummer) {
             $volgnummer = (int) $status->volgnummer();
@@ -76,6 +76,8 @@ class ZaakSteps extends AbstractCast
                 $status->setValue('processStatus', 'past');
             } elseif ($volgnummer === $currentVolgnummer) {
                 $status->setValue('processStatus', 'current');
+            } elseif (abs($volgnummer - $currentVolgnummer) === 1) {
+                $status->setValue('processStatus', 'next');
             } else {
                 $status->setValue('processStatus', 'future');
             }
