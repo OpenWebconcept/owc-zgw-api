@@ -73,7 +73,7 @@ class ClientProvider extends ServiceProvider
 
     private function handleCertificates(ApiCredentials $credentials, array $config): ApiCredentials
     {
-        if (($config['client_ssl_verify_enabled'] ?? '')  !== 'on') {
+        if (($config['client_ssl_verify_enabled'] ?? '') !== 'on') {
             return $credentials;
         }
 
