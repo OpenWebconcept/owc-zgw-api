@@ -18,7 +18,7 @@
   "require": {
     "php": "^8.2",
     "php-di/php-di": "^7.0",
-    "firebase/php-jwt": "^6.1",
+    "firebase/php-jwt": "^6.1 || ^7.0",
     "monolog/monolog": "^3.0"
   },
   "require-dev": {
