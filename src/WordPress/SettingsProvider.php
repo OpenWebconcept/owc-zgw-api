@@ -57,6 +57,7 @@ class SettingsProvider extends ServiceProvider
             'type' => 'select',
             'default' => 'openzaak',
             'options' => [
+                'openwave' => 'OpenWave',
                 'openzaak' => 'OpenZaak',
                 'xxllnc' => 'XXLLNC',
                 'rxmission' => 'RxMission',
@@ -109,6 +110,18 @@ class SettingsProvider extends ServiceProvider
             'desc' => 'Laat leeg als het register alleen een API key vereist',
             'id' => 'client_id',
             'type' => 'text',
+        ]);
+
+        $options->add_group_field($clients, [
+            'name' => 'Token Endpoint',
+            'desc' => 'OpenWave vereist additionele authenticatie via een token endpoint.',
+            'attributes' => ['placeholder' => 'https://website.nl'],
+            'protocols' => ['https', 'http'],
+            'id' => 'client_token_endpoint',
+            'type' => 'text_url',
+            'sanitization_cb' => function ($value) {
+                return trim($value);
+            }
         ]);
 
         $options->add_group_field($clients, [
@@ -235,8 +248,11 @@ class SettingsProvider extends ServiceProvider
 
                     function toggleClientSecretZRC(group) {
                         const clientType = group.find('[name*="[client_type]"]').val();
-                        const secretRow  = group.find('[name*="[client_secret_zrc]"]').closest('.cmb-row');
-                        secretRow.toggle(clientType === 'decosjoin');
+                        const secretRowSecretZrc  = group.find('[name*="[client_secret_zrc]"]').closest('.cmb-row');
+                        secretRowSecretZrc.toggle(clientType === 'decosjoin');
+
+                        const secretRowTokenEndpoint  = group.find('[name*="[client_token_endpoint]"]').closest('.cmb-row');
+                        secretRowTokenEndpoint.toggle(clientType === 'openwave');
                     }
 
                     function initializeClientSecrets(context) {
@@ -284,7 +300,7 @@ class SettingsProvider extends ServiceProvider
         set_transient($transientKey, json_encode($current), 45);
     }
 
-    protected function queueAdminNotices()
+    protected function queueAdminNotices(): void
     {
         $userId = get_current_user_id();
         $transientKey = 'cmb2_errors_' . $userId;
