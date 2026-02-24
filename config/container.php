@@ -48,8 +48,17 @@ return [
         ApiCredentials $credentials,
         ApiUrlCollection $endpoints
     ) {
+		$client = $container->make('http.client');
+
+		if ($credentials->hasCertificates()) {
+			$client->addSslCertificates(new \OWC\ZGW\Http\SslCertificatesStore(
+				$credentials->getPublicCertificate(),
+				$credentials->getPrivateCertificate()
+			));
+		}
+
         return new Clients\OpenZaak\Client(
-            $container->make('http.client'),
+            $client,
             $container->make(Clients\OpenZaak\Authenticator::class, compact('credentials')),
             $endpoints
         );
@@ -63,8 +72,17 @@ return [
         ApiCredentials $credentials,
         ApiUrlCollection $endpoints
     ) {
+		$client = $container->make('http.client');
+
+		if ($credentials->hasCertificates()) {
+			$client->addSslCertificates(new \OWC\ZGW\Http\SslCertificatesStore(
+				$credentials->getPublicCertificate(),
+				$credentials->getPrivateCertificate()
+			));
+		}
+
         return new Clients\RxMission\Client(
-            $container->make('http.client'),
+            $client,
             $container->make(Clients\RxMission\Authenticator::class, compact('credentials')),
             $endpoints
         );
@@ -78,8 +96,17 @@ return [
         ApiCredentials $credentials,
         ApiUrlCollection $endpoints
     ) {
+		$client = $container->make('http.client');
+
+		if ($credentials->hasCertificates()) {
+			$client->addSslCertificates(new \OWC\ZGW\Http\SslCertificatesStore(
+				$credentials->getPublicCertificate(),
+				$credentials->getPrivateCertificate()
+			));
+		}
+
         return new Clients\DecosJoin\Client(
-            $container->make('http.client'),
+            $client,
             $container->make(Clients\DecosJoin\Authenticator::class, compact('credentials')),
             $endpoints
         );
@@ -93,27 +120,45 @@ return [
         ApiCredentials $credentials,
         ApiUrlCollection $endpoints
     ) {
+		$client = $container->make('http.client');
+
+		if ($credentials->hasCertificates()) {
+			$client->addSslCertificates(new \OWC\ZGW\Http\SslCertificatesStore(
+				$credentials->getPublicCertificate(),
+				$credentials->getPrivateCertificate()
+			));
+		}
+
         return new Clients\Xxllnc\Client(
-            $container->make('http.client'),
+            $client,
             $container->make(Clients\Xxllnc\Authenticator::class, compact('credentials')),
             $endpoints
         );
     },
 
-    /**
-     * Procura
-     */
-    Clients\Procura\Client::class => function (
-        Container $container,
-        ApiCredentials $credentials,
-        ApiUrlCollection $endpoints
-    ) {
+	/**
+	* Procura
+	*/
+	Clients\Procura\Client::class => function (
+		Container $container,
+		ApiCredentials $credentials,
+		ApiUrlCollection $endpoints
+	) {
+		$client = $container->make('http.client');
+
+		if ($credentials->hasCertificates()) {
+			$client->addSslCertificates(new \OWC\ZGW\Http\SslCertificatesStore(
+				$credentials->getPublicCertificate(),
+				$credentials->getPrivateCertificate()
+			));
+		}
+
 		return new Clients\Procura\Client(
-            $container->make('http.client'),
-            $container->make(Clients\Procura\Authenticator::class, compact('credentials')),
-            $endpoints
-        );
-    },
+			$client,
+			$container->make(Clients\Procura\Authenticator::class, compact('credentials')),
+			$endpoints
+		);
+	},
 
     /**
      * HTTP clients
