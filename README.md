@@ -11,6 +11,7 @@ This PHP packages offers an implementation of the 'Zaakgericht Werken' (ZGW) API
 | XXLLNC    | ✅ `unkown version` | ✅ `unkown version` | ✅ `1.5.1` | JWT tokens |
 | DecosJoin | unknown            | unknown            | unknown   | unknown    |
 | Procura   | unknown            | unknown            | unknown   | unknown    |
+| OpenWave  | unknown            | unknown            | unknown   | unknown    |
 
 ## Installation
 
