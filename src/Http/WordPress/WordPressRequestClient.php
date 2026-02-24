@@ -95,14 +95,7 @@ class WordPressRequestClient implements RequestClientInterface
             return $this->options;
         }
 
-        $options = $this->options->clone()->merge($options);
-        $filteredOptions = apply_filters('owc_zgw_api_http_request_options', $options);
-
-        if ($filteredOptions instanceof RequestOptions) {
-            $options = $filteredOptions;
-        }
-
-        return $options;
+        return $this->options->clone()->merge($options);
     }
 
     protected function buildUri(string $uri): string
