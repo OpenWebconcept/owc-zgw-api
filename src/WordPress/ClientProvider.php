@@ -10,6 +10,7 @@ use OWC\ZGW\ApiUrlCollection;
 use OWC\ZGW\Support\ServiceProvider;
 use OWC\ZGW\Clients\Xxllnc\Client as XXLLNC;
 use OWC\ZGW\Clients\Procura\Client as Procura;
+use OWC\ZGW\Clients\OpenWave\Client as OpenWave;
 use OWC\ZGW\Clients\OpenZaak\Client as OpenZaak;
 use OWC\ZGW\Clients\DecosJoin\Client as DecosJoin;
 use OWC\ZGW\Clients\RxMission\Client as RxMission;
@@ -62,6 +63,7 @@ class ClientProvider extends ServiceProvider
         $credentials->setClientSecret($config['client_secret'] ?? '');
 
         $credentials = $this->handleCertificates($credentials, $config);
+        $credentials = $this->handleClientTokenEndpoint($credentials, $config);
 
         $this->apiManager->addClient(
             $config['name'] ?? '',
@@ -97,6 +99,17 @@ class ClientProvider extends ServiceProvider
         return $credentials;
     }
 
+    private function handleClientTokenEndpoint(ApiCredentials $credentials, array $config): ApiCredentials
+    {
+        if ((string) ($config['client_token_endpoint'] ?? '') === '') {
+            return $credentials;
+        }
+
+        $credentials->setClientTokenEndpoint($config['client_token_endpoint'] ?? '');
+
+        return $credentials;
+    }
+
     private function setAdminNoticeError(string $message): void
     {
         add_action('admin_notices', function () use ($message) {
@@ -123,6 +136,8 @@ class ClientProvider extends ServiceProvider
     protected function getClientFqcn(string $clientName): string
     {
         switch ($clientName) {
+            case 'openwave':
+                return OpenWave::class;
             case 'openzaak':
                 return OpenZaak::class;
             case 'xxllnc':

@@ -6,6 +6,7 @@ class ApiCredentials
 {
     protected string $clientId;
     protected string $clientSecret;
+    protected string $clientTokenEndpoint;
 
     protected string $publicCertificate;
     protected string $privateCertificate;
@@ -18,6 +19,11 @@ class ApiCredentials
     public function getClientSecret(): string
     {
         return $this->clientSecret;
+    }
+
+    public function getClientTokenEndpoint(): string
+    {
+        return $this->clientTokenEndpoint;
     }
 
     public function hasCertificates(): bool
@@ -45,6 +51,13 @@ class ApiCredentials
     public function setClientSecret(string $clientSecret): self
     {
         $this->clientSecret = $clientSecret;
+
+        return $this;
+    }
+
+    public function setClientTokenEndpoint(string $url): self
+    {
+        $this->clientTokenEndpoint = $url;
 
         return $this;
     }
