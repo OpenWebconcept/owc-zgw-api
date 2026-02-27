@@ -12,6 +12,7 @@ This PHP packages offers an implementation of the 'Zaakgericht Werken' (ZGW) API
 | DecosJoin | unknown            | unknown            | unknown   | unknown    |
 | Procura   | unknown            | unknown            | unknown   | unknown    |
 | OpenWave  | unknown            | unknown            | unknown   | unknown    |
+| Mozart    | unknown            | unknown            | unknown   | unknown    |
 
 ## Installation
 
