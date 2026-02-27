@@ -190,29 +190,26 @@ return [
     'http.client' => function (Container $container) {
         return $container->get(Http\WordPress\WordPressRequestClient::class);
     },
-    Http\WordPress\WordPressRequestClient::class => function () {
+    Http\WordPress\WordPressRequestClient::class => function (Container $container) {
         return new Http\WordPress\WordPressRequestClient(
-            new Http\RequestOptions([
-                'timeout' => 15,
-                'headers' => [
-                    'Accept-Crs' => 'EPSG:4326',
-                    'Content-Crs' => 'EPSG:4326',
-                    'Content-Type' => 'application/json',
-                ],
-            ])
+            $container->get('http.options')
         );
     },
-    Http\Curl\CurlRequestClient::class => function () {
+    Http\Curl\CurlRequestClient::class => function (Container $container) {
         return new Http\Curl\CurlRequestClient(
-            new Http\RequestOptions([
-                'timeout' => 15,
-                'headers' => [
-                    'Accept-Crs' => 'EPSG:4326',
-                    'Content-Crs' => 'EPSG:4326',
-                    'Content-Type' => 'application/json',
-                ],
-            ])
+            $container->get('http.options')
         );
+    },
+
+    'http.options' => function () {
+        return new Http\RequestOptions([
+            'timeout' => 15,
+            'headers' => [
+                'Accept-Crs' => 'EPSG:4326',
+                'Content-Crs' => 'EPSG:4326',
+                'Content-Type' => 'application/json',
+            ],
+        ]);
     },
 
     /**
