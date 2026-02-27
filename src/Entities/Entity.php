@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace OWC\ZGW\Entities;
 
-use Exception;
+use Throwable;
 use ArrayAccess;
 use JsonSerializable;
 use OWC\ZGW\Contracts\Client;
@@ -38,7 +38,7 @@ abstract class Entity implements
     {
         try {
             return $this->getValue($name);
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             return null; // Returning null is in line with the return types of the methods inside the cast classes.
         }
     }
@@ -73,7 +73,7 @@ abstract class Entity implements
 
             try {
                 $value = $caster->set($this, $name, $value);
-            } catch (Exception $e) {
+            } catch (Throwable $e) {
                 return;
             }
         }

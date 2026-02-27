@@ -8,6 +8,7 @@ use OWC\ZGW\ApiCredentials;
 use OWC\ZGW\ApiClientManager;
 use OWC\ZGW\ApiUrlCollection;
 use OWC\ZGW\Support\ServiceProvider;
+use OWC\ZGW\Clients\Mozart\Client as Mozart;
 use OWC\ZGW\Clients\Xxllnc\Client as XXLLNC;
 use OWC\ZGW\Clients\Procura\Client as Procura;
 use OWC\ZGW\Clients\OpenWave\Client as OpenWave;
@@ -136,6 +137,8 @@ class ClientProvider extends ServiceProvider
     protected function getClientFqcn(string $clientName): string
     {
         switch ($clientName) {
+            case 'mozart':
+                return Mozart::class;
             case 'openwave':
                 return OpenWave::class;
             case 'openzaak':

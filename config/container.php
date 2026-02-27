@@ -16,6 +16,30 @@ return [
     },
 
 	/**
+     * Mozart
+     */
+    Clients\Mozart\Client::class => function (
+        Container $container,
+        ApiCredentials $credentials,
+        ApiUrlCollection $endpoints
+    ) {
+		$tokenHttpClient = clone $container->make('http.client');
+
+		if ($credentials->hasCertificates()) {
+			$tokenHttpClient->addSslCertificates(new \OWC\ZGW\Http\SslCertificatesStore(
+				$credentials->getPublicCertificate(),
+				$credentials->getPrivateCertificate()
+			));
+		}
+
+        return new Clients\Mozart\Client(
+            $container->make('http.client'),
+            $container->make(Clients\Mozart\Authenticator::class, ['credentials' => $credentials, 'client' => $tokenHttpClient]),
+            $endpoints
+        );
+    },
+
+	/**
      * OpenWave
      */
     Clients\OpenWave\Client::class => function (
