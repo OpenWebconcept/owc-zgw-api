@@ -44,6 +44,13 @@ abstract class AbstractClient implements Client
         return $this->client;
     }
 
+    public function setRequestClient(RequestClientInterface $client): self
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
     public function getAuthenticator(): TokenAuthenticator
     {
         return $this->authenticator;
