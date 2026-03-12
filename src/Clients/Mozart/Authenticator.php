@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OWC\ZGW\Clients\OpenWave;
+namespace OWC\ZGW\Clients\Mozart;
 
 use RuntimeException;
 use OWC\ZGW\ApiCredentials;
@@ -12,7 +12,7 @@ use OWC\ZGW\Contracts\AbstractTokenAuthenticator;
 
 class Authenticator extends AbstractTokenAuthenticator
 {
-    protected const tokenTransientKey = 'owc_gravityforms_zgw_auth_token_openwave';
+    protected const tokenTransientKey = 'owc_gravityforms_zgw_auth_token_mozart';
     protected const tokenExpirationFallback = 1800; // 30 minutes.
 
     public function __construct(
@@ -31,12 +31,12 @@ class Authenticator extends AbstractTokenAuthenticator
 
         $response = $this->client->post(
             $this->credentials->getClientTokenEndpoint(),
-            $this->prepareRequestBody(),
+            json_encode($this->prepareRequestBody()),
             $this->prepareRequestOptions()
         );
 
         $body = $response->getParsedJson();
-        $token = $body['token'] ?? '';
+        $token = $body['authorization'] ?? '';
 
         if (! is_string($token) || 1 > strlen($token)) {
             throw new RuntimeException('Invalid JWT token received');
@@ -57,7 +57,7 @@ class Authenticator extends AbstractTokenAuthenticator
     {
         return [
             'client_id' => $this->credentials->getClientId(),
-            'client_secret' => $this->credentials->getClientSecret(),
+            'secret' => $this->credentials->getClientSecret(),
         ];
     }
 

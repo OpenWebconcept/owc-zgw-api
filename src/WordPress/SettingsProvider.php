@@ -57,6 +57,7 @@ class SettingsProvider extends ServiceProvider
             'type' => 'select',
             'default' => 'openzaak',
             'options' => [
+                'mozart' => 'Mozart',
                 'openwave' => 'OpenWave',
                 'openzaak' => 'OpenZaak',
                 'xxllnc' => 'XXLLNC',
@@ -114,7 +115,7 @@ class SettingsProvider extends ServiceProvider
 
         $options->add_group_field($clients, [
             'name' => 'Token Endpoint',
-            'desc' => 'OpenWave vereist additionele authenticatie via een token endpoint.',
+            'desc' => 'Wanneer de leverancier additionele authenticatie vereist via een token endpoint.',
             'attributes' => ['placeholder' => 'https://website.nl'],
             'protocols' => ['https', 'http'],
             'id' => 'client_token_endpoint',
@@ -252,7 +253,7 @@ class SettingsProvider extends ServiceProvider
                         secretRowSecretZrc.toggle(clientType === 'decosjoin');
 
                         const secretRowTokenEndpoint  = group.find('[name*="[client_token_endpoint]"]').closest('.cmb-row');
-                        secretRowTokenEndpoint.toggle(clientType === 'openwave');
+                        secretRowTokenEndpoint.toggle(clientType === 'openwave' || clientType === 'mozart');
                     }
 
                     function initializeClientSecrets(context) {
