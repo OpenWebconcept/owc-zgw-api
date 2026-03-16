@@ -10,6 +10,7 @@ class ApiCredentials
 
     protected string $publicCertificate;
     protected string $privateCertificate;
+    protected string $supplierCertificate;
 
     public function getClientId(): string
     {
@@ -39,6 +40,11 @@ class ApiCredentials
     public function getPrivateCertificate(): string
     {
         return $this->privateCertificate;
+    }
+
+    public function getSupplierCertificate(): string
+    {
+        return $this->supplierCertificate;
     }
 
     public function setClientId(string $clientId): self
@@ -72,6 +78,13 @@ class ApiCredentials
     public function setPrivateCertificate(string $path): self
     {
         $this->privateCertificate = $path;
+
+        return $this;
+    }
+
+    public function setSupplierCertificate(string $path): self
+    {
+        $this->supplierCertificate = $path;
 
         return $this;
     }
