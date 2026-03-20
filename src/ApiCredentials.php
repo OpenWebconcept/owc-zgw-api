@@ -88,4 +88,16 @@ class ApiCredentials
 
         return $this;
     }
+
+    public function __debugInfo(): array
+    {
+        return [
+            'clientId'              => '',
+            'clientSecret'          => '',
+            'clientTokenEndpoint'   => '',
+            'publicCertificate'     => '',
+            'privateCertificate'    => '',
+            'supplierCertificate'   => '',
+        ];
+    }
 }
