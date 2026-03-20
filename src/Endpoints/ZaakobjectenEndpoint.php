@@ -42,4 +42,15 @@ class ZaakobjectenEndpoint extends Endpoint
 
         return $this->getPagedCollection($this->handleResponse($response));
     }
+
+	public function create(Zaakobject $model): Zaakobject
+	{
+		$response = $this->httpClient->post(
+			$this->buildUri($this->endpoint),
+			$model->toJson(),
+			$this->buildRequestOptions()
+		);
+
+		return $this->getSingleEntity($this->handleResponse($response));
+	}
 }
