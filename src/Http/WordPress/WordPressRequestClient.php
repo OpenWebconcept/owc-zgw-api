@@ -61,19 +61,67 @@ class WordPressRequestClient implements RequestClientInterface
         return $this;
     }
 
-    public function addSslCertificates(SslCertificatesStore $store): self
-    {
-        if ($store->isIncomplete()) {
-            throw new InvalidArgumentException('Missing SSL certificates: both public and private certificates are required for WordPressRequestClient configuration.');
-        }
+	public function addSslCertificates(SslCertificatesStore $store): self
+	{
+		if ($store->isIncomplete()) {
+			throw new InvalidArgumentException(
+				'Missing SSL certificates: both public and private certificates are required for WordPressRequestClient configuration.'
+			);
+		}
 
-        add_action('http_api_curl', function ($handle) use ($store) {
-            curl_setopt($handle, CURLOPT_SSLCERT, $store->getPublicCertificatePath());
-            curl_setopt($handle, CURLOPT_SSLKEY, $store->getPrivateCertificatePath());
-        });
+		add_filter('http_request_args', $this->getHttpRequestArgsSslCertificatesCallback($store), 10, 1);
+		add_action('http_api_curl', $this->getHttpApiCurlSslCertificatesCallback($store), 10, 2);
 
-        return $this;
-    }
+		return $this;
+	}
+
+	/**
+	 * Configure the WordPress HTTP API trust store for supplier certificate validation.
+	 */
+	protected function getHttpRequestArgsSslCertificatesCallback(SslCertificatesStore $store): \Closure
+	{
+		return function (array $parsedArgs) use ($store): array {
+			// Validate that the request is initiated by this package.
+			if (! isset($parsedArgs['headers']['_owc_request_logging'])) {
+				return $parsedArgs;
+			}
+
+			$supplierCertificatePath = $store->getSupplierCertificatePath();
+
+			if ('' === trim($supplierCertificatePath)) {
+				return $parsedArgs;
+			}
+
+			$parsedArgs['sslverify']       = true;
+			$parsedArgs['sslcertificates'] = $supplierCertificatePath;
+
+			return $parsedArgs;
+		};
+	}
+
+	/**
+	 * Configure the cURL client certificate and private key for mTLS authentication.
+	 */
+	protected function getHttpApiCurlSslCertificatesCallback(SslCertificatesStore $store): \Closure
+	{
+		return function ($handle, $parsedArgs) use ($store): void {
+			// Validate that the request is initiated by this package.
+			if (! isset($parsedArgs['headers']['_owc_request_logging'])) {
+				return;
+			}
+
+			curl_setopt($handle, CURLOPT_SSLCERT, $store->getPublicCertificatePath());
+			curl_setopt($handle, CURLOPT_SSLKEY, $store->getPrivateCertificatePath());
+
+			$supplierCertificatePath = $store->getSupplierCertificatePath();
+
+			if ('' === trim($supplierCertificatePath)) {
+				return;
+			}
+
+			curl_setopt($handle, CURLOPT_CAINFO, $supplierCertificatePath);
+		};
+	}
 
     /**
      * @param \WP_Error|array<mixed> $response

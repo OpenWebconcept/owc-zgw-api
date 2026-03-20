@@ -96,6 +96,7 @@ class ClientProvider extends ServiceProvider
 
         $credentials->setPublicCertificate($config['client_ssl_public_cert_file']);
         $credentials->setPrivateCertificate($config['client_ssl_private_cert_file']);
+		$credentials->setSupplierCertificate($config['client_ssl_supplier_cert_file'] ?? '');
 
         return $credentials;
     }

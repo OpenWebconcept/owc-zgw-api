@@ -195,6 +195,33 @@ class SettingsProvider extends ServiceProvider
             }
         ]);
 
+		// Is only visible when 'client_ssl_verify_enabled' is checked.
+		$options->add_group_field($clients, [
+			'name' => 'SSL leverancier certificaat (.cer/.crt)',
+			'desc' => 'Voer het pad in naar het SSL certificaat bestand van de leverancier',
+			'id' => 'client_ssl_supplier_cert_file',
+			'type' => 'text',
+			'sanitization_cb' => function ($value, $fieldProps, \CMB2_Field $field) {
+				if (empty($value)) {
+					return '';
+				}
+
+				if ($this->fileIsReadable($value) === false) {
+					$this->generateFieldError($field, 'Het ingevoerde pad naar het SSL certificaat van de leverancier is ongeldig.');
+
+					return '';
+				}
+
+				if ($this->isValidCertificate($value) === false) {
+					$this->generateFieldError($field, 'Het ingevoerde SSL certificaat van de leverancier is niet leesbaar of het is geen geldig certificaat bestand.');
+
+					return '';
+				}
+
+				return realpath($value);
+			}
+		]);
+
         add_action('admin_notices', $this->queueAdminNotices(...));
     }
 

@@ -8,7 +8,8 @@ class SslCertificatesStore
 {
     public function __construct(
         protected string $publicKeyPath,
-        protected string $privateKeyPath
+        protected string $privateKeyPath,
+		protected string $supplierCertificatePath
     ) {
     }
 
@@ -21,6 +22,11 @@ class SslCertificatesStore
     {
         return $this->privateKeyPath;
     }
+
+	public function getSupplierCertificatePath(): string
+	{
+		return $this->supplierCertificatePath;
+	}
 
     public function isEmpty(): bool
     {
