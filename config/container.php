@@ -28,7 +28,8 @@ return [
 		if ($credentials->hasCertificates()) {
 			$tokenHttpClient->addSslCertificates(new \OWC\ZGW\Http\SslCertificatesStore(
 				$credentials->getPublicCertificate(),
-				$credentials->getPrivateCertificate()
+				$credentials->getPrivateCertificate(),
+				$credentials->getSupplierCertificate()
 			));
 		}
 
@@ -52,7 +53,8 @@ return [
 		if ($credentials->hasCertificates()) {
 			$tokenHttpClient->addSslCertificates(new \OWC\ZGW\Http\SslCertificatesStore(
 				$credentials->getPublicCertificate(),
-				$credentials->getPrivateCertificate()
+				$credentials->getPrivateCertificate(),
+				$credentials->getSupplierCertificate()
 			));
 		}
 
@@ -77,7 +79,8 @@ return [
 		if ($credentials->hasCertificates()) {
 			$client->addSslCertificates(new \OWC\ZGW\Http\SslCertificatesStore(
 				$credentials->getPublicCertificate(),
-				$credentials->getPrivateCertificate()
+				$credentials->getPrivateCertificate(),
+				$credentials->getSupplierCertificate()
 			));
 		}
 
@@ -101,7 +104,8 @@ return [
 		if ($credentials->hasCertificates()) {
 			$client->addSslCertificates(new \OWC\ZGW\Http\SslCertificatesStore(
 				$credentials->getPublicCertificate(),
-				$credentials->getPrivateCertificate()
+				$credentials->getPrivateCertificate(),
+				$credentials->getSupplierCertificate()
 			));
 		}
 
@@ -125,7 +129,8 @@ return [
 		if ($credentials->hasCertificates()) {
 			$client->addSslCertificates(new \OWC\ZGW\Http\SslCertificatesStore(
 				$credentials->getPublicCertificate(),
-				$credentials->getPrivateCertificate()
+				$credentials->getPrivateCertificate(),
+				$credentials->getSupplierCertificate()
 			));
 		}
 
@@ -149,7 +154,8 @@ return [
 		if ($credentials->hasCertificates()) {
 			$client->addSslCertificates(new \OWC\ZGW\Http\SslCertificatesStore(
 				$credentials->getPublicCertificate(),
-				$credentials->getPrivateCertificate()
+				$credentials->getPrivateCertificate(),
+				$credentials->getSupplierCertificate()
 			));
 		}
 
@@ -173,7 +179,8 @@ return [
 		if ($credentials->hasCertificates()) {
 			$client->addSslCertificates(new \OWC\ZGW\Http\SslCertificatesStore(
 				$credentials->getPublicCertificate(),
-				$credentials->getPrivateCertificate()
+				$credentials->getPrivateCertificate(),
+				$credentials->getSupplierCertificate()
 			));
 		}
 
