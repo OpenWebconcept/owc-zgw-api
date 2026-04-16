@@ -11,6 +11,7 @@ use OWC\ZGW\Endpoints\RollenEndpoint;
 use OWC\ZGW\Endpoints\RoltypenEndpoint;
 use OWC\ZGW\Endpoints\StatussenEndpoint;
 use OWC\ZGW\Endpoints\ZaaktypenEndpoint;
+use OWC\ZGW\Endpoints\ResultatenEndpoint;
 use OWC\ZGW\Endpoints\StatustypenEndpoint;
 use OWC\ZGW\Endpoints\EigenschappenEndpoint;
 use OWC\ZGW\Endpoints\ObjectinformatieEndpoint;
@@ -44,6 +45,7 @@ class Client extends AbstractClient
         'zaken' => [ZakenEndpoint::class, 'zaken'],
         'statussen' => [StatussenEndpoint::class, 'zaken'],
         'rollen' => [RollenEndpoint::class, 'zaken'],
+		'resultaten' => [ResultatenEndpoint::class, 'zaken'],
         'zaakeigenschappen' => [ZaakeigenschappenEndpoint::class, 'zaken'],
         'zaakinformatieobjecten' => [ZaakinformatieobjectenEndpoint::class, 'zaken'],
 
