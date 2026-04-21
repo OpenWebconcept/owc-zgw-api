@@ -13,18 +13,18 @@ enum Status: string
 
     public function is(Status $status): bool
     {
-        return $this->value === $status;
+        return $this === $status;
     }
 
     public function isnt(Status $status): bool
     {
-        return $this->value !== $status;
+        return $this !== $status;
     }
 
     public function hasFinalStatus(): bool
     {
         return match ($this->value) {
-            self::DEFINITIEF, self::GEARCHIVEERD => true,
+            self::DEFINITIEF->value, self::GEARCHIVEERD->value => true,
             default => false,
         };
     }
