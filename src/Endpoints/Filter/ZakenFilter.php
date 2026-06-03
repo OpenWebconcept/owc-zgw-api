@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace OWC\ZGW\Endpoints\Filter;
 
 use DateTimeInterface;
@@ -43,6 +45,12 @@ class ZakenFilter extends AbstractFilter
             'archiefactiedatum',
             'registratiedatum',
             'identificatie',
+            '-startdatum',
+            '-einddatum',
+            '-publicatiedatum',
+            '-archiefactiedatum',
+            '-registratiedatum',
+            '-identificatie',
         ];
 
         if (! in_array($orderBy, $orderByParams)) {
