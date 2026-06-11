@@ -17,7 +17,7 @@ class Zaakinformatieobjecten extends ResourceCollection
     public function resolveRelatedResourceCollection(Entity $entity): Collection
     {
         if (! $entity instanceof Zaak) {
-            throw new InvalidArgumentException("A Zaak entity is required to resolve Rollen");
+            throw new InvalidArgumentException('A Zaak entity is required to resolve Rollen');
         }
 
         $filter = new ZaakinformatieobjectenFilter();
@@ -28,8 +28,9 @@ class Zaakinformatieobjecten extends ResourceCollection
                 return false;
             }
 
+			// Only include objects that are not classified and have a final status (if status is available).
             return ! $object->informatieobject->vertrouwelijkheidaanduiding->isClassified()
-                && $object->informatieobject->status->hasFinalStatus();
+                && ($object->informatieobject?->status?->hasFinalStatus() ?? true);
         });
     }
 }

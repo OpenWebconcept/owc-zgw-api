@@ -45,7 +45,7 @@ class Client extends AbstractClient
         'zaken' => [ZakenEndpoint::class, 'zaken'],
         'statussen' => [StatussenEndpoint::class, 'zaken'],
         'rollen' => [RollenEndpoint::class, 'zaken'],
-		'resultaten' => [ResultatenEndpoint::class, 'zaken'],
+        'resultaten' => [ResultatenEndpoint::class, 'zaken'],
         'zaakeigenschappen' => [ZaakeigenschappenEndpoint::class, 'zaken'],
         'zaakinformatieobjecten' => [ZaakinformatieobjectenEndpoint::class, 'zaken'],
 
