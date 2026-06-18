@@ -92,12 +92,12 @@ class ApiCredentials
     public function __debugInfo(): array
     {
         return [
-            'clientId'              => '',
-            'clientSecret'          => '',
-            'clientTokenEndpoint'   => '',
-            'publicCertificate'     => '',
-            'privateCertificate'    => '',
-            'supplierCertificate'   => '',
+            'clientId' => '',
+            'clientSecret' => '',
+            'clientTokenEndpoint' => '',
+            'publicCertificate' => '',
+            'privateCertificate' => '',
+            'supplierCertificate' => '',
         ];
     }
 }
