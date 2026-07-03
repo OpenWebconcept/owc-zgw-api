@@ -11,4 +11,14 @@ enum SubjectType: string
     case VESTIGING = 'vestiging';
     case ORGANISATORISCHE_EENHEID = 'organisatorische_eenheid';
     case MEDEWERKER = 'medewerker';
+
+    public function is(SubjectType $type): bool
+    {
+        return $this === $type;
+    }
+
+    public function isnt(SubjectType $type): bool
+    {
+        return $this !== $type;
+    }
 }

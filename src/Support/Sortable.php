@@ -8,7 +8,7 @@ use Closure;
 
 trait Sortable
 {
-    public function sort(?Closure $callback = null, bool $reverse = false)
+    public function sort(?Closure $callback = null, bool $reverse = false): static
     {
         if ($callback) {
             usort($this->data, $callback);
@@ -22,7 +22,7 @@ trait Sortable
         return $this;
     }
 
-    public function asort(?Closure $callback = null, bool $reverse = false)
+    public function asort(?Closure $callback = null, bool $reverse = false): static
     {
         if ($callback) {
             uasort($this->data, $callback);
@@ -36,7 +36,7 @@ trait Sortable
         return $this;
     }
 
-    public function ksort(?Closure $callback = null, bool $reverse = false)
+    public function ksort(?Closure $callback = null, bool $reverse = false): static
     {
         if ($callback) {
             uksort($this->data, $callback);
@@ -50,7 +50,7 @@ trait Sortable
         return $this;
     }
 
-    public function sortByAttribute(string $attribute, bool $reverse = false)
+    public function sortByAttribute(string $attribute, bool $reverse = false): static
     {
         return $this->sort(function ($themeA, $themeB) use ($attribute) {
             if ($themeA->$attribute == $themeB->$attribute) {

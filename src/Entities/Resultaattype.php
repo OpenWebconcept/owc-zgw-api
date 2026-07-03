@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace OWC\ZGW\Entities;
 
+/**
+ * @property ?string $url
+ */
 class Resultaattype extends Entity
 {
     protected array $casts = [

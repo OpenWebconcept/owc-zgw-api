@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace OWC\ZGW\Entities;
 
 use OWC\ZGW\Support\Collection;
+use OWC\ZGW\Entities\Attributes\SubjectType;
 
 /**
  * @property ?string $url
@@ -116,7 +117,7 @@ class Zaak extends Entity
     {
         $validRollen = $this->rollen->filter(function (Rol $rol) use ($bsn) {
             return $rol->isInitiator()
-                && $rol->betrokkeneType->is('natuurlijk_persoon')
+                && $rol->betrokkeneType->is(SubjectType::NATUURLIJK_PERSOON)
                 && $rol->betrokkeneIdentificatie['inpBsn'] === $bsn;
         });
 

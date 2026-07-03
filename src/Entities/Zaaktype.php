@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace OWC\ZGW\Entities;
 
+/**
+ * @property ?string $url
+ * @property ?string $identificatie
+ * @property ?string $uuid
+ * @property ?\OWC\ZGW\Support\Collection $statustypen
+ */
 class Zaaktype extends Entity
 {
     protected array $casts = [

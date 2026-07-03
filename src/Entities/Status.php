@@ -4,6 +4,14 @@ declare(strict_types=1);
 
 namespace OWC\ZGW\Entities;
 
+/**
+ * @property ?string $url
+ * @property ?string $uuid
+ * @property ?Zaak $zaak
+ * @property ?Statustype $statustype
+ * @property ?\DateTimeImmutable $datumStatusGezet
+ * @property ?string $statustoelichting
+ */
 class Status extends Entity
 {
     protected array $casts = [

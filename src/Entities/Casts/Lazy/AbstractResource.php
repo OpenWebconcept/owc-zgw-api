@@ -35,7 +35,7 @@ abstract class AbstractResource extends AbstractCast
         ));
     }
 
-    public function get(Entity $model, string $key, $value): ?Entity
+    public function get(Entity $model, string $key, mixed $value): ?Entity
     {
         if (! is_string($value)) {
             return $value; // Nullable or Entity

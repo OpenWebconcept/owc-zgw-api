@@ -1,7 +1,16 @@
 parameters:
     level: 6
-    phpVersion: 70400
+    phpVersion: 80200
     paths:
         - src
+    ignoreErrors:
+        -
+            message: '#(CMB2_Field|new_cmb2_box)#'
+            path: src/WordPress/SettingsProvider.php
+    excludePaths:
+        - src/Http/Logger/FilterBsnProcessor.php
+        - src/Http/Logger/LogDetailProcessor.php
+        - src/Http/Logger/WordPressLoggerService.php
 includes:
     - vendor/szepeviktor/phpstan-wordpress/extension.neon
+    - phpstan-baseline.neon

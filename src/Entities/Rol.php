@@ -4,6 +4,14 @@ declare(strict_types=1);
 
 namespace OWC\ZGW\Entities;
 
+/**
+ * @property ?Zaak $zaak
+ * @property ?Attributes\SubjectType $betrokkeneType
+ * @property ?Roltype $roltype
+ * @property ?\DateTimeImmutable $registratiedatum
+ * @property ?string $omschrijvingGeneriek
+ * @property ?array<mixed> $betrokkeneIdentificatie
+ */
 class Rol extends Entity
 {
     protected array $casts = [

@@ -10,6 +10,7 @@ class PagedCollection extends Collection
 {
     protected PageMeta $pageMeta;
 
+    /** @param iterable<int|string, mixed> $data */
     public function __construct(iterable $data, PageMeta $pageMeta)
     {
         parent::__construct($data);

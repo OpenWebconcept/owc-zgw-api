@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace OWC\ZGW\Entities\Casts;
 
-use UnitEnum;
 use OWC\ZGW\Entities\Entity;
 use InvalidArgumentException;
 use OWC\ZGW\Entities\Attributes\Status as StatusAttribute;
@@ -27,6 +26,6 @@ class Status extends AbstractCast
 
     public function serialize(string $name, mixed $value): string
     {
-        return (is_object($value) && $value instanceof UnitEnum) ? $value->value : $value;
+        return ($value instanceof StatusAttribute) ? $value->value : $value;
     }
 }

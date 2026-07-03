@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace OWC\ZGW\Entities;
 
+/**
+ * @property ?string $url
+ * @property ?string $omschrijving
+ * @property ?Zaaktype $zaaktype
+ * @property ?string $processStatus Custom attribute set by `Casts\ZaakSteps`; not part of the ZGW spec.
+ */
 class Statustype extends Entity
 {
     protected array $casts = [

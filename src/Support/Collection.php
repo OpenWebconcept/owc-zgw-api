@@ -12,46 +12,48 @@ class Collection extends Enumerable implements CollectionInterface
 
     public const SORT_REVERSE = true;
 
-    public static function collect(iterable $data): CollectionInterface
+    public static function collect(iterable $data): self
     {
         return new self($data);
     }
 
-    public function get($key, $default = null)
+    public function get(int|string $key, mixed $default = null): mixed
     {
         return $this->has($key) ? $this->data[$key] : $default;
     }
 
-    public function set($key, $value)
+    public function set(int|string $key, mixed $value): static
     {
         $this->data[$key] = $value;
 
         return $this;
     }
 
-    public function has($key)
+    public function has(int|string $key): bool
     {
         return isset($this->data[$key]);
     }
 
+    /** @return array<int|string, mixed> */
     public function all(): iterable
     {
         return $this->data;
     }
 
-    public function take($limit): iterable
+    /** @return array<int|string, mixed> */
+    public function take(int $limit): iterable
     {
         return array_slice($this->data, 0, $limit);
     }
 
-    public function push($item): CollectionInterface
+    public function push(mixed $item): static
     {
         $this->data[] = $item;
 
         return $this;
     }
 
-    public function count()
+    public function count(): int
     {
         return count($this->data);
     }
@@ -66,12 +68,12 @@ class Collection extends Enumerable implements CollectionInterface
         return $this->isEmpty() === false;
     }
 
-    public function nth(int $index, $default)
+    public function nth(int $index, mixed $default): mixed
     {
         return $this->get($index, $default);
     }
 
-    public function first(?Closure $callback = null)
+    public function first(?Closure $callback = null): mixed
     {
         if (! $callback) {
             return reset($this->data);
@@ -88,44 +90,44 @@ class Collection extends Enumerable implements CollectionInterface
         return null;
     }
 
-    public function last()
+    public function last(): mixed
     {
         return end($this->data);
     }
 
-    public function keys(): CollectionInterface
+    public function keys(): self
     {
         return static::collect(array_keys($this->data));
     }
 
-    public function filter(Closure $predicate): CollectionInterface
+    public function filter(Closure $predicate): self
     {
         return static::collect(array_filter($this->data, $predicate));
     }
 
-    public function map(Closure $callback): CollectionInterface
+    public function map(Closure $callback): self
     {
         return static::collect(array_map($callback, $this->data));
     }
 
-    public function mapWithKeys(Closure $callback): CollectionInterface
+    public function mapWithKeys(Closure $callback): self
     {
         return static::collect(array_map($callback, array_keys($this->data), $this->data));
     }
 
-    public function flatten(Closure $callback, $initial = null)
+    public function flatten(Closure $callback, mixed $initial = null): mixed
     {
         return array_reduce($this->data, $callback, $initial);
     }
 
-    public function flattenAndAssign(Closure $callback, $initial = null)
+    public function flattenAndAssign(Closure $callback, mixed $initial = null): static
     {
         $this->data = array_reduce($this->data, $callback, $initial);
 
         return $this;
     }
 
-    public function groupBy(Closure $callback): CollectionInterface
+    public function groupBy(Closure $callback): self
     {
         $results = [];
 

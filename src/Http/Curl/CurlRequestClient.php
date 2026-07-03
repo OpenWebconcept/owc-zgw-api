@@ -73,12 +73,16 @@ class CurlRequestClient implements RequestClientInterface
         return $this;
     }
 
-    /** @return resource */
-    protected function buildHandle(string $uri, RequestOptions $options)
+    protected function buildHandle(string $uri, RequestOptions $options): \CurlHandle
     {
         $options = $this->mergeRequestOptions($options);
 
         $handle = curl_init();
+
+        if ($handle === false) {
+            throw new CurlRequestError('Unable to initialize a cURL handle.');
+        }
+
         curl_setopt($handle, CURLOPT_URL, $this->buildUri($uri));
         curl_setopt($handle, CURLOPT_HTTPHEADER, $this->buildHeaders($options));
         curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
@@ -86,10 +90,7 @@ class CurlRequestClient implements RequestClientInterface
         return $this->applyCertificates($handle);
     }
 
-    /**
-     * @param resource $handle
-     */
-    protected function handleResponse(string $response, $handle): Response
+    protected function handleResponse(string $response, \CurlHandle $handle): Response
     {
         $error = curl_error($handle);
 
@@ -133,12 +134,7 @@ class CurlRequestClient implements RequestClientInterface
         return $formatted;
     }
 
-    /**
-     * @param resource $handle
-     *
-     * @return resource
-     */
-    protected function applyCertificates($handle)
+    protected function applyCertificates(\CurlHandle $handle): \CurlHandle
     {
         if (isset($this->certificates)) {
             curl_setopt($handle, CURLOPT_SSLCERT, $this->certificates->getPublicCertificatePath());

@@ -45,7 +45,8 @@ class ClientProvider extends ServiceProvider
         }
     }
 
-    protected function registerClient(array $config)
+    /** @param array<string, mixed> $config */
+    protected function registerClient(array $config): void
     {
         switch ($config['client_type'] ?? '') {
             case 'decosjoin':
@@ -74,6 +75,7 @@ class ClientProvider extends ServiceProvider
         );
     }
 
+    /** @param array<string, mixed> $config */
     private function handleCertificates(ApiCredentials $credentials, array $config): ApiCredentials
     {
         if (($config['client_ssl_verify_enabled'] ?? '') !== 'on') {
@@ -101,6 +103,7 @@ class ClientProvider extends ServiceProvider
         return $credentials;
     }
 
+    /** @param array<string, mixed> $config */
     private function handleClientTokenEndpoint(ApiCredentials $credentials, array $config): ApiCredentials
     {
         if ((string) ($config['client_token_endpoint'] ?? '') === '') {
@@ -119,6 +122,7 @@ class ClientProvider extends ServiceProvider
         });
     }
 
+    /** @param array<string, mixed> $config */
     protected function getApiUrlCollection(array $config): ApiUrlCollection
     {
         $urlCollection = new ApiUrlCollection();

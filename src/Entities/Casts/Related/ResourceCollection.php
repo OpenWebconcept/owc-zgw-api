@@ -15,7 +15,7 @@ abstract class ResourceCollection extends AbstractCast
         return null; // Don't allow setting related models.
     }
 
-    public function get(Entity $model, string $key, $value): ?Collection
+    public function get(Entity $model, string $key, mixed $value): ?Collection
     {
         if (! empty($value)) {
             return $value;
