@@ -14,6 +14,7 @@ use OWC\ZGW\Endpoints\ZaaktypenEndpoint;
 use OWC\ZGW\Endpoints\ResultatenEndpoint;
 use OWC\ZGW\Endpoints\StatustypenEndpoint;
 use OWC\ZGW\Endpoints\EigenschappenEndpoint;
+use OWC\ZGW\Endpoints\ZaakverzoekenEndpoint;
 use OWC\ZGW\Endpoints\ObjectinformatieEndpoint;
 use OWC\ZGW\Endpoints\ZaakeigenschappenEndpoint;
 use OWC\ZGW\Endpoints\InformatieobjecttypenEndpoint;
@@ -35,6 +36,7 @@ use OWC\ZGW\Endpoints\EnkelvoudiginformatieobjectenEndpoint;
  * @method \OWC\ZGW\Endpoints\ZaakeigenschappenEndpoint zaakeigenschappen()
  * @method \OWC\ZGW\Endpoints\ZaakinformatieobjectenEndpoint zaakinformatieobjecten()
  * @method \OWC\ZGW\Endpoints\ZaakobjectenEndpoint zaakobjecten()
+ * @method \OWC\ZGW\Endpoints\ZaakverzoekenEndpoint zaakverzoeken()
  * @method \OWC\ZGW\Endpoints\ZaaktypenEndpoint zaaktypen()
  * @method \OWC\ZGW\Endpoints\ZakenEndpoint zaken()
  */
@@ -48,6 +50,7 @@ class Client extends AbstractClient
         'resultaten' => [ResultatenEndpoint::class, 'zaken'],
         'zaakeigenschappen' => [ZaakeigenschappenEndpoint::class, 'zaken'],
         'zaakinformatieobjecten' => [ZaakinformatieobjectenEndpoint::class, 'zaken'],
+        'zaakverzoeken' => [ZaakverzoekenEndpoint::class, 'zaken'],
 
         // Catalogi API.
         'zaaktypen' => [ZaaktypenEndpoint::class, 'catalogi'],
@@ -69,7 +72,6 @@ class Client extends AbstractClient
         // 'zgw.zaakcontactmomenten' => Endpoint::class,
         // 'zgw.zaakinformatieobjecten' => Endpoint::class,
         // 'zgw.zaakobjecten' => Endpoint::class,
-        // 'zgw.zaakverzoeken' => Endpoint::class,
     ];
 
     protected function fetchFromContainer(string $key): Endpoint
