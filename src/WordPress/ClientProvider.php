@@ -10,6 +10,7 @@ use OWC\ZGW\ApiUrlCollection;
 use OWC\ZGW\Support\ServiceProvider;
 use OWC\ZGW\Clients\Mozart\Client as Mozart;
 use OWC\ZGW\Clients\Xxllnc\Client as XXLLNC;
+use OWC\ZGW\Clients\EnableU\Client as EnableU;
 use OWC\ZGW\Clients\Procura\Client as Procura;
 use OWC\ZGW\Clients\OpenWave\Client as OpenWave;
 use OWC\ZGW\Clients\OpenZaak\Client as OpenZaak;
@@ -156,6 +157,8 @@ class ClientProvider extends ServiceProvider
                 return DecosJoin::class;
             case 'procura':
                 return Procura::class;
+            case 'enable-u':
+                return EnableU::class;
         }
 
         throw new \InvalidArgumentException("Unknown client name");

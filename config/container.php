@@ -117,6 +117,31 @@ return [
     },
 
     /**
+     * EnableU
+     */
+    Clients\EnableU\Client::class => function (
+        Container $container,
+        ApiCredentials $credentials,
+        ApiUrlCollection $endpoints
+    ) {
+		$client = $container->make('http.client');
+
+		if ($credentials->hasCertificates()) {
+			$client->addSslCertificates(new \OWC\ZGW\Http\SslCertificatesStore(
+				$credentials->getPublicCertificate(),
+				$credentials->getPrivateCertificate(),
+				$credentials->getSupplierCertificate()
+			));
+		}
+
+        return new Clients\EnableU\Client(
+            $client,
+            $container->make(Clients\EnableU\Authenticator::class, compact('credentials')),
+            $endpoints
+        );
+    },
+
+    /**
      * Decos JOIN
      */
     Clients\DecosJoin\Client::class => function (
