@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace OWC\ZGW\Entities;
 
+/**
+ * @property ?Enkelvoudiginformatieobject $informatieobject
+ * @property ?Zaak $zaak
+ * @property ?\DateTimeImmutable $registratiedatum
+ */
 class Zaakinformatieobject extends Entity
 {
     protected array $casts = [
@@ -20,7 +25,7 @@ class Zaakinformatieobject extends Entity
     /**
      * @temp
      */
-    public function prepareCreateJsonArgs()
+    public function prepareCreateJsonArgs(): string|false
     {
         $args = [
             'informatieobject' => $this->getValue('url', ''),

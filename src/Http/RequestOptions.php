@@ -48,6 +48,7 @@ class RequestOptions
         return $this->options['headers'][$name] ?? $default;
     }
 
+    /** @return array<mixed> */
     public function getHeaders(): array
     {
         return $this->options['headers'];
@@ -70,7 +71,7 @@ class RequestOptions
      */
     public function getCookies(): array
     {
-        return $this->options['headers'];
+        return $this->options['cookies'];
     }
 
     public function merge(RequestOptions $options): self

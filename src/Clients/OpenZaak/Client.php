@@ -15,6 +15,7 @@ use OWC\ZGW\Endpoints\StatustypenEndpoint;
 use OWC\ZGW\Endpoints\CatalogussenEndpoint;
 use OWC\ZGW\Endpoints\ZaakobjectenEndpoint;
 use OWC\ZGW\Endpoints\EigenschappenEndpoint;
+use OWC\ZGW\Endpoints\ZaakverzoekenEndpoint;
 use OWC\ZGW\Endpoints\ResultaattypenEndpoint;
 use OWC\ZGW\Endpoints\ObjectinformatieEndpoint;
 use OWC\ZGW\Endpoints\ZaakeigenschappenEndpoint;
@@ -37,6 +38,7 @@ use OWC\ZGW\Endpoints\EnkelvoudiginformatieobjectenEndpoint;
  * @method \OWC\ZGW\Endpoints\ZaakeigenschappenEndpoint zaakeigenschappen()
  * @method \OWC\ZGW\Endpoints\ZaakinformatieobjectenEndpoint zaakinformatieobjecten()
  * @method \OWC\ZGW\Endpoints\ZaakobjectenEndpoint zaakobjecten()
+ * @method \OWC\ZGW\Endpoints\ZaakverzoekenEndpoint zaakverzoeken()
  * @method \OWC\ZGW\Endpoints\ZaaktypenEndpoint zaaktypen()
  * @method \OWC\ZGW\Endpoints\ZakenEndpoint zaken()
  */
@@ -51,12 +53,12 @@ class Client extends AbstractClient
         'zaakeigenschappen' => [ZaakeigenschappenEndpoint::class, 'zaken'],
         'zaakinformatieobjecten' => [ZaakinformatieobjectenEndpoint::class, 'zaken'],
         'zaakobjecten' => [ZaakobjectenEndpoint::class, 'zaken'],
+        'zaakverzoeken' => [ZaakverzoekenEndpoint::class, 'zaken'],
 
         /**
          * Not yet implemented
          */
         // 'zaakcontactmomenten' => Endpoint::class,
-        // 'zaakverzoeken' => Endpoint::class,
 
         // Catalogi API
         'zaaktypen' => [ZaaktypenEndpoint::class, 'catalogi'],

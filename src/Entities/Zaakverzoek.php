@@ -8,18 +8,14 @@ namespace OWC\ZGW\Entities;
  * @property ?string $url
  * @property ?string $uuid
  * @property ?Zaak $zaak
- * @property ?Statustype $statustype
- * @property ?\DateTimeImmutable $datumStatusGezet
- * @property ?string $statustoelichting
+ * @property ?string $verzoek URI into the Klantinteracties API, which this library does not implement. Exposed as a plain string, not a resolved relation.
  */
-class Status extends Entity
+class Zaakverzoek extends Entity
 {
     protected array $casts = [
         // 'url' => "http://example.com",
         // 'uuid' => "095be615-a8ad-4c33-8e9c-c7612fbf6c9f",
         'zaak' => Casts\Lazy\Zaak::class,
-        'statustype' => Casts\Lazy\Statustype::class,
-        'datumStatusGezet' => Casts\NullableDateTime::class,
-        // 'statustoelichting' => "string"
+        // 'verzoek' => "http://example.com",
     ];
 }

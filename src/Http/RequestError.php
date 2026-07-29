@@ -10,7 +10,7 @@ class RequestError extends Exception
 {
     protected ?Response $response = null;
 
-    public static function fromResponse(Response $response): self
+    public static function fromResponse(Response $response): static
     {
         try {
             $json = $response->getParsedJson();

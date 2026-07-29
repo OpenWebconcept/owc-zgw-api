@@ -6,6 +6,12 @@ namespace OWC\ZGW\Entities;
 
 use OWC\ZGW\Entities\Attributes\Confidentiality;
 
+/**
+ * @property ?Confidentiality $vertrouwelijkheidaanduiding
+ * @property ?Attributes\Status $status
+ * @property ?Zaak $zaak
+ * @property ?string $ontvangstdatum
+ */
 class Zaakeigenschap extends Entity
 {
     protected array $casts = [
@@ -25,9 +31,7 @@ class Zaakeigenschap extends Entity
             return true;
         }
 
-        $finalStatusses = ['definitief', 'gearchiveerd'];
-
-        return in_array((string) $this->status, $finalStatusses);
+        return (bool) $this->status?->hasFinalStatus();
     }
 
     public function hasReceiptDate(): bool

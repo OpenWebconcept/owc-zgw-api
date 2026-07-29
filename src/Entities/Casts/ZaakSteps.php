@@ -48,9 +48,9 @@ class ZaakSteps extends AbstractCast
         return $this->addProcessStatusses($statussen, (int) $filtered->first()->volgnummer());
     }
 
-    protected function getSortedStatussen(Entity $model): Collection
+    protected function getSortedStatussen(Zaak $model): Collection
     {
-        $statusTypen = $model?->zaaktype?->statustypen;
+        $statusTypen = $model->zaaktype?->statustypen;
 
         if (! $statusTypen) {
             return Collection::collect([]);

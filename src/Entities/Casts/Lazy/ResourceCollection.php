@@ -38,7 +38,7 @@ abstract class ResourceCollection extends AbstractCast
         });
     }
 
-    public function get(Entity $model, string $key, $value): ?Collection
+    public function get(Entity $model, string $key, mixed $value): ?Collection
     {
         if (! is_iterable($value)) {
             throw new InvalidResourceValue(sprintf(

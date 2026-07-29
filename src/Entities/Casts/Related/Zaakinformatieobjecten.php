@@ -28,7 +28,7 @@ class Zaakinformatieobjecten extends ResourceCollection
                 return false;
             }
 
-			// Only include objects that are not classified and have a final status (if status is available).
+            // Only include objects that are not classified and have a final status (if status is available).
             return ! $object->informatieobject->vertrouwelijkheidaanduiding->isClassified()
                 && ($object->informatieobject?->status?->hasFinalStatus() ?? true);
         });

@@ -6,6 +6,12 @@ namespace OWC\ZGW\Http;
 
 class Response
 {
+    /**
+     * @param array<mixed> $headers
+     * @param array<mixed> $response
+     * @param array<mixed> $cookies
+     * @param array<mixed> $json
+     */
     public function __construct(
         protected array $headers,
         protected array $response,

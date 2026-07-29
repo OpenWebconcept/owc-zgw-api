@@ -53,6 +53,7 @@ class Authenticator extends AbstractTokenAuthenticator
         return $token;
     }
 
+    /** @return array<string, string> */
     private function prepareRequestBody(): array
     {
         return [

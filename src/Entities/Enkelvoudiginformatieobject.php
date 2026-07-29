@@ -6,6 +6,11 @@ namespace OWC\ZGW\Entities;
 
 use OWC\ZGW\Entities\Attributes\Confidentiality;
 
+/**
+ * @property ?Confidentiality $vertrouwelijkheidaanduiding
+ * @property ?Attributes\Status $status
+ * @property ?\DateTimeImmutable $ontvangstdatum
+ */
 class Enkelvoudiginformatieobject extends Entity
 {
     protected array $casts = [

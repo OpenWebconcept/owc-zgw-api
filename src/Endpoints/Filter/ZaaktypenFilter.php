@@ -11,7 +11,11 @@ class ZaaktypenFilter extends AbstractFilter
         return $this->add('catalogus', $catalogus->url);
     }
 
-    // Does not seem to work?
+    /**
+     * @param array<string> $keywords
+     *
+     * @todo Does not seem to work?
+     */
     public function byKeywords(array $keywords): parent
     {
         return $this->add('trefwoorden', array_filter($keywords, 'is_string'));

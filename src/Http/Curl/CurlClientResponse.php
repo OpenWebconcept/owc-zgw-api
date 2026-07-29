@@ -8,10 +8,7 @@ use OWC\ZGW\Http\Response;
 
 class CurlClientResponse extends Response
 {
-    /**
-     * @param resource $handle
-     */
-    public static function fromResponse(string $response, $handle): self
+    public static function fromResponse(string $response, \CurlHandle $handle): self
     {
         return new self(
             [], // No headers

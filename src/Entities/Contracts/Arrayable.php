@@ -4,6 +4,6 @@ namespace OWC\ZGW\Entities\Contracts;
 
 interface Arrayable
 {
-    /** @var array<mixed> */
+    /** @return array<mixed> */
     public function toArray(): array;
 }

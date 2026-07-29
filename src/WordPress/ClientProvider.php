@@ -10,6 +10,7 @@ use OWC\ZGW\ApiUrlCollection;
 use OWC\ZGW\Support\ServiceProvider;
 use OWC\ZGW\Clients\Mozart\Client as Mozart;
 use OWC\ZGW\Clients\Xxllnc\Client as XXLLNC;
+use OWC\ZGW\Clients\EnableU\Client as EnableU;
 use OWC\ZGW\Clients\Procura\Client as Procura;
 use OWC\ZGW\Clients\OpenWave\Client as OpenWave;
 use OWC\ZGW\Clients\OpenZaak\Client as OpenZaak;
@@ -45,7 +46,8 @@ class ClientProvider extends ServiceProvider
         }
     }
 
-    protected function registerClient(array $config)
+    /** @param array<string, mixed> $config */
+    protected function registerClient(array $config): void
     {
         switch ($config['client_type'] ?? '') {
             case 'decosjoin':
@@ -74,6 +76,7 @@ class ClientProvider extends ServiceProvider
         );
     }
 
+    /** @param array<string, mixed> $config */
     private function handleCertificates(ApiCredentials $credentials, array $config): ApiCredentials
     {
         if (($config['client_ssl_verify_enabled'] ?? '') !== 'on') {
@@ -101,6 +104,7 @@ class ClientProvider extends ServiceProvider
         return $credentials;
     }
 
+    /** @param array<string, mixed> $config */
     private function handleClientTokenEndpoint(ApiCredentials $credentials, array $config): ApiCredentials
     {
         if ((string) ($config['client_token_endpoint'] ?? '') === '') {
@@ -119,6 +123,7 @@ class ClientProvider extends ServiceProvider
         });
     }
 
+    /** @param array<string, mixed> $config */
     protected function getApiUrlCollection(array $config): ApiUrlCollection
     {
         $urlCollection = new ApiUrlCollection();
@@ -152,6 +157,8 @@ class ClientProvider extends ServiceProvider
                 return DecosJoin::class;
             case 'procura':
                 return Procura::class;
+            case 'enable-u':
+                return EnableU::class;
         }
 
         throw new \InvalidArgumentException("Unknown client name");

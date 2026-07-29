@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace OWC\ZGW\Clients\DecosJoin;
+namespace OWC\ZGW\Clients\EnableU;
 
-use OWC\ZGW\Endpoints\Endpoint;
 use OWC\ZGW\Endpoints\ZakenEndpoint;
 use OWC\ZGW\Contracts\AbstractClient;
 use OWC\ZGW\Endpoints\RollenEndpoint;
@@ -13,8 +12,11 @@ use OWC\ZGW\Endpoints\StatussenEndpoint;
 use OWC\ZGW\Endpoints\ZaaktypenEndpoint;
 use OWC\ZGW\Endpoints\ResultatenEndpoint;
 use OWC\ZGW\Endpoints\StatustypenEndpoint;
+use OWC\ZGW\Endpoints\CatalogussenEndpoint;
+use OWC\ZGW\Endpoints\ZaakobjectenEndpoint;
 use OWC\ZGW\Endpoints\EigenschappenEndpoint;
 use OWC\ZGW\Endpoints\ZaakverzoekenEndpoint;
+use OWC\ZGW\Endpoints\ResultaattypenEndpoint;
 use OWC\ZGW\Endpoints\ObjectinformatieEndpoint;
 use OWC\ZGW\Endpoints\ZaakeigenschappenEndpoint;
 use OWC\ZGW\Endpoints\InformatieobjecttypenEndpoint;
@@ -43,62 +45,44 @@ use OWC\ZGW\Endpoints\EnkelvoudiginformatieobjectenEndpoint;
 class Client extends AbstractClient
 {
     public const AVAILABLE_ENDPOINTS = [
-        // Zaken API.
+        // Zaken API
         'zaken' => [ZakenEndpoint::class, 'zaken'],
         'statussen' => [StatussenEndpoint::class, 'zaken'],
         'rollen' => [RollenEndpoint::class, 'zaken'],
         'resultaten' => [ResultatenEndpoint::class, 'zaken'],
         'zaakeigenschappen' => [ZaakeigenschappenEndpoint::class, 'zaken'],
         'zaakinformatieobjecten' => [ZaakinformatieobjectenEndpoint::class, 'zaken'],
+        'zaakobjecten' => [ZaakobjectenEndpoint::class, 'zaken'],
         'zaakverzoeken' => [ZaakverzoekenEndpoint::class, 'zaken'],
-
-        // Catalogi API.
-        'zaaktypen' => [ZaaktypenEndpoint::class, 'catalogi'],
-        'statustypen' => [StatustypenEndpoint::class, 'catalogi'],
-        'roltypen' => [RoltypenEndpoint::class, 'catalogi'],
-        'informatieobjecttypen' => [InformatieobjecttypenEndpoint::class, 'catalogi'],
-        'eigenschappen' => [EigenschappenEndpoint::class, 'catalogi'],
-
-        // Documenten API
-        'objectinformatieobjecten' => [ObjectinformatieEndpoint::class, 'documenten'],
-        'enkelvoudiginformatieobjecten' => [EnkelvoudiginformatieobjectenEndpoint::class, 'documenten'],
 
         /**
          * Not yet implemented
          */
-        // 'zgw.klantcontacten' => Endpoint::class,
-        // 'zgw.resultaten' => Endpoint::class,
-        // 'zgw.rollen' => Endpoint::class,
-        // 'zgw.zaakcontactmomenten' => Endpoint::class,
-        // 'zgw.zaakinformatieobjecten' => Endpoint::class,
-        // 'zgw.zaakobjecten' => Endpoint::class,
+        // 'zaakcontactmomenten' => Endpoint::class,
+
+        // Catalogi API
+        'zaaktypen' => [ZaaktypenEndpoint::class, 'catalogi'],
+        'statustypen' => [StatustypenEndpoint::class, 'catalogi'],
+        'roltypen' => [RoltypenEndpoint::class, 'catalogi'],
+        'catalogussen' => [CatalogussenEndpoint::class, 'catalogi'],
+        'resultaattypen' => [ResultaattypenEndpoint::class, 'catalogi'],
+        'informatieobjecttypen' => [InformatieobjecttypenEndpoint::class, 'catalogi'],
+        'eigenschappen' => [EigenschappenEndpoint::class, 'catalogi'],
+
+        /**
+         * Not yet implemented
+         */
+        // 'besluittypen' => Endpoint::class,
+        // 'zaaktype-informatieobjecttypen' => Endpoint::class,
+
+        // Documenten API
+        'objectinformatieobjecten' => [ObjectinformatieEndpoint::class, 'documenten'],
+        'enkelvoudiginformatieobjecten' => [EnkelvoudiginformatieobjectenEndpoint::class, 'documenten'],
+        /**
+         * Not yet implemented
+         */
+        // 'gebruiksrechten' => Endpoint::class,
+        // 'objectinformatieobjecten' => Endpoint::class,
+        // 'bestandsdelen' => Endpoint::class,
     ];
-
-    protected function fetchFromContainer(string $key): Endpoint
-    {
-        if (! isset($this->container[$key]) || empty($this->container[$key])) {
-            $endpoint = $this->validateEndpoint($key); // Throws exception when validation fails.
-
-            [$class, $type] = $endpoint;
-
-            // Decos requires a different client secret when accessing the ZRC.
-            $this->setClientSecretByType($type);
-
-            $endpoint = new $class($this);
-            $this->container[$key] = $endpoint;
-        }
-
-        return $this->container[$key];
-    }
-
-    protected function setClientSecretByType(string $type): self
-    {
-        if ('zaken' === $type || 'documenten' === $type) {
-            $this->authenticator->useZrcClientSecret();
-        } else {
-            $this->authenticator->useDefaultClientSecret();
-        }
-
-        return $this;
-    }
 }

@@ -182,6 +182,17 @@ foreach ($statustypen->sortByAttribute('volgnummer') as $statustype) {
 
 Additional calls to loaded entities will not cause additional HTTP requests. The loaded resource is set on the Entity model.
 
+### Unresolvable references
+
+Not every URL reference points to a resource this library implements (at this time). `OWC\ZGW\Entities\Zaakverzoek::$verzoek` for example is a URI from a separate "Klantinteracties API" that isn't implemented. 
+
+```php
+$zaakverzoek = $zaakverzoekenEndpoint->get('aabbbccddeeff');
+
+var_dump($zaakverzoek->zaak); // Lazy loaded Zaak entity, resolved on access.
+var_dump($zaakverzoek->verzoek); // (string) plain URI, not resolved.
+```
+
 ## Expand
 
 In some cases it might be more efficient to preload connected resources. Since ZGW version 1.5.0 this is possible on select endpoints. Not all connected resources can be expanded.

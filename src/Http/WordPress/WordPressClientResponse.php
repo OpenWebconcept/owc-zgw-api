@@ -8,6 +8,7 @@ use OWC\ZGW\Http\Response;
 
 class WordPressClientResponse extends Response
 {
+    /** @param array<mixed> $response */
     public static function fromResponse(array $response): self
     {
         return new self(

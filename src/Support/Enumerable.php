@@ -7,21 +7,27 @@ namespace OWC\ZGW\Support;
 use Iterator;
 use ArrayAccess;
 
+/**
+ * @implements ArrayAccess<int|string, mixed>
+ * @implements Iterator<int|string, mixed>
+ */
 abstract class Enumerable implements ArrayAccess, Iterator
 {
+    /** @var array<int|string, mixed> */
     protected iterable $data;
 
+    /** @param array<int|string, mixed>|iterable<int|string, mixed> $data */
     public function __construct(iterable $data)
     {
         $this->hydrate($data);
     }
 
-    public function __get(string $key)
+    public function __get(string $key): mixed
     {
         return $this->data[$key];
     }
 
-    public function __set(string $key, $value)
+    public function __set(string $key, mixed $value): void
     {
         $this->data[$key] = $value;
     }
@@ -87,12 +93,14 @@ abstract class Enumerable implements ArrayAccess, Iterator
         return key($this->data) !== null;
     }
 
+    /** @return array<int|string, mixed> */
     public function toArray(): iterable
     {
         return $this->data;
     }
 
-    protected function hydrate($data)
+    /** @param iterable<int|string, mixed> $data */
+    protected function hydrate(iterable $data): void
     {
         $this->data = is_array($data) ? $data : iterator_to_array($data);
     }

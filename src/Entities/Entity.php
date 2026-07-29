@@ -9,6 +9,11 @@ use ArrayAccess;
 use JsonSerializable;
 use OWC\ZGW\Contracts\Client;
 
+/**
+ * @property ?string $url
+ *
+ * @implements ArrayAccess<string, mixed>
+ */
 abstract class Entity implements
     ArrayAccess,
     JsonSerializable,
@@ -81,6 +86,7 @@ abstract class Entity implements
         $this->setAttributeValue($name, $value);
     }
 
+    /** @return array<string, mixed> */
     public function toArray(): array
     {
         $data = [];
@@ -91,6 +97,7 @@ abstract class Entity implements
         return $data;
     }
 
+    /** @return array<string, mixed> */
     public function attributesToArray(): array
     {
         return $this->data;
@@ -120,6 +127,7 @@ abstract class Entity implements
         return $this->getCaster($name)->serialize($name, $this->getAttributeValue($name));
     }
 
+    /** @param array<string, mixed> $data */
     protected function hydrate(array $data): void
     {
         foreach ($data as $name => $value) {

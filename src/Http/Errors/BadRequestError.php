@@ -12,7 +12,7 @@ class BadRequestError extends RequestError
     /** @var array<mixed> */
     protected array $invalidParameters = [];
 
-    public static function fromResponse(Response $response): parent
+    public static function fromResponse(Response $response): static
     {
         $error = parent::fromResponse($response);
 

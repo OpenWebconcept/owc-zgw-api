@@ -6,21 +6,24 @@ namespace OWC\ZGW\Support;
 
 use RuntimeException;
 
+/**
+ * @implements \IteratorAggregate<string, mixed>
+ */
 class ParameterBag implements \IteratorAggregate, \Countable
 {
+    /** @var array<string, mixed> */
     protected array $parameters;
 
+    /** @param array<string, mixed> $parameters */
     public function __construct(array $parameters = [])
     {
         $this->parameters = $parameters;
     }
 
     /**
-     * Returns the parameters.
+     * Returns the parameters. Pass a key to get a single (array-typed) parameter instead of all of them.
      *
-     * @param string|null $key The name of the parameter to return or null to get them all
-     *
-     * @return array
+     * @return array<mixed>
      */
     public function all(/*string $key = null*/)
     {
@@ -44,7 +47,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
     /**
      * Returns the parameter keys.
      *
-     * @return array
+     * @return array<int, string>
      */
     public function keys(): array
     {
@@ -53,6 +56,8 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Replaces the current parameters by a new set.
+     *
+     * @param array<string, mixed> $parameters
      */
     public function replace(array $parameters = []): void
     {
@@ -61,6 +66,8 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Adds parameters.
+     *
+     * @param array<string, mixed> $parameters
      */
     public function add(array $parameters = []): void
     {
@@ -191,7 +198,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
     /**
      * Returns an iterator for parameters.
      *
-     * @return \ArrayIterator
+     * @return \ArrayIterator<string, mixed>
      */
     public function getIterator(): \ArrayIterator
     {

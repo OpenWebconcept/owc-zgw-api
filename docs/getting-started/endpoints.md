@@ -26,6 +26,7 @@ At the time of writing, the following endpoints are available to most (but not a
 | zaakeigenschappen | resultaattypen |  |
 | zaakinformatieobjecten | informatieobjecttypen |  |
 | zaakobjecten | eigenschappen |  |
+| zaakverzoeken |  |  |
 
 All of these endpoints are callable as a method on your client. It will return an subtype of the `OWC\ZGW\Endpoints\Endpoint` class.
 
@@ -114,6 +115,32 @@ $zakenByBsnNumber = $zakenEndpoint->filter($filter);
 ### Other methods
 
 Other endpoints might support different methods. Check the [technical docs]() to see which endpoint supports what method.
+
+For example, `zaakverzoeken` (links a Zaak to an external "verzoek" from the Klantinteracties API) also supports `create()` and `delete()`:
+
+```php
+use OWC\ZGW\Entities\Zaakverzoek;
+use OWC\ZGW\Endpoints\Filter\ZaakverzoekenFilter;
+
+$zaakverzoekenEndpoint = $openzaakClient->zaakverzoeken();
+
+$zaak = $openzaakClient->zaken()->get('aabbbccddeeff');
+
+// Filter by the related Zaak.
+$filter = (new ZaakverzoekenFilter())->byZaak($zaak);
+$zaakverzoeken = $zaakverzoekenEndpoint->filter($filter);
+
+// Create a new link.
+$zaakverzoek = new Zaakverzoek([
+    'zaak' => $zaak->url,
+    'verzoek' => 'https://klantinteracties.example.com/verzoeken/1234',
+], $openzaakClient);
+
+$created = $zaakverzoekenEndpoint->create($zaakverzoek);
+
+// Delete an existing link.
+$zaakverzoekenEndpoint->delete($created->uuid);
+```
 
 ## Collections and entities
 
