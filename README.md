@@ -4,15 +4,16 @@ This PHP packages offers an implementation of the 'Zaakgericht Werken' (ZGW) API
 
 ## Registry support
 
-| Client    | 📥 ZRC             | 🗂️ ZTC            | 📄 DRC    | 🔐 Auth    |
-|-----------|--------------------|--------------------|-----------|------------|
+| Client    | 📥 ZRC              | 🗂️ ZTC              | 📄 DRC     | 🔐 Auth    |
+| --------- | ------------------- | ------------------- | ---------- | ---------- |
 | OpenZaak  | ✅ `1.5.1`          | ✅ `1.5.1`          | ✅ `1.5.1` | JWT tokens |
 | RxMission | ✅ `1.5.1`          | ✅ `1.5.1`          | ✅ `1.5.1` | JWT tokens |
 | XXLLNC    | ✅ `unkown version` | ✅ `unkown version` | ✅ `1.5.1` | JWT tokens |
-| DecosJoin | unknown            | unknown            | unknown   | unknown    |
-| Procura   | unknown            | unknown            | unknown   | unknown    |
-| OpenWave  | unknown            | unknown            | unknown   | unknown    |
-| Mozart    | unknown            | unknown            | unknown   | unknown    |
+| DecosJoin | unknown             | unknown             | unknown    | unknown    |
+| Procura   | unknown             | unknown             | unknown    | unknown    |
+| OpenWave  | unknown             | unknown             | unknown    | unknown    |
+| Mozart    | unknown             | unknown             | unknown    | unknown    |
+| EnableU   | unknown             | unknown             | unknown    | unknown    |
 
 ## Installation
 

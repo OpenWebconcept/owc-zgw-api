@@ -64,6 +64,7 @@ class SettingsProvider extends ServiceProvider
                 'rxmission' => 'RxMission',
                 'decosjoin' => 'Decos JOIN',
                 'procura' => 'Procura',
+                'enable-u' => 'EnableU',
             ]
         ]);
 
