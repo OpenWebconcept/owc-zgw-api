@@ -12,7 +12,8 @@ use function OWC\ZGW\apiClientManager;
 
 abstract class AbstractResource extends AbstractCast
 {
-    protected string $registryType = 'registry';
+    use ResolvesClientFromUrl;
+
     protected string $resourceType = Entity::class;
 
     public function set(Entity $model, string $key, mixed $value): mixed
@@ -44,7 +45,9 @@ abstract class AbstractResource extends AbstractCast
         $client = $model->client();
 
         if ($this->isUrl($value)) {
-            $client = apiClientManager()->clientFromUrl($value, $this->registryType);
+            if (! $this->belongsToClient($value, $client)) {
+                $client = apiClientManager()->clientFromUrl($value, $this->registryType);
+            }
 
             $value = $this->getUuidFromUrl($value);
         }
@@ -79,15 +82,5 @@ abstract class AbstractResource extends AbstractCast
     protected function buildResource(array $itemData, Entity $model): Entity
     {
         return new $this->resourceType($itemData, $model->client());
-    }
-
-    protected function isUrl(string $value): bool
-    {
-        return (bool) filter_var($value, FILTER_VALIDATE_URL);
-    }
-
-    protected function getUuidFromUrl(string $url): string
-    {
-        return substr($url, strrpos($url, '/') + 1);
     }
 }
