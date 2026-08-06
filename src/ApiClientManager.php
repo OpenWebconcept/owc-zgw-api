@@ -29,15 +29,26 @@ class ApiClientManager
     {
         $endpoints = $this->container->get('api.endpoints');
 
+        $matchedClientName = null;
+        $matchedEndpointLength = -1;
+
         foreach ($endpoints as $clientName => $urlCollection) {
             $endpoint = $urlCollection->get($registry);
 
-            if (strpos($url, $endpoint) === 0) {
-                return $this->getClient($clientName);
+            if (empty($endpoint) || strpos($url, $endpoint) !== 0) {
+                continue;
+            }
+
+            // Multiple registered clients can share the same host/prefix
+            // (e.g. two registers with the same supplier). Prefer the
+            // longest matching endpoint, since it is the most specific one.
+            if (strlen($endpoint) > $matchedEndpointLength) {
+                $matchedClientName = $clientName;
+                $matchedEndpointLength = strlen($endpoint);
             }
         }
 
-        return null;
+        return $matchedClientName ? $this->getClient($matchedClientName) : null;
     }
 
     public function addClient(

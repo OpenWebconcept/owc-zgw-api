@@ -44,7 +44,9 @@ abstract class AbstractResource extends AbstractCast
         $client = $model->client();
 
         if ($this->isUrl($value)) {
-            $client = apiClientManager()->clientFromUrl($value, $this->registryType);
+            if (! $this->belongsToClient($value, $client)) {
+                $client = apiClientManager()->clientFromUrl($value, $this->registryType);
+            }
 
             $value = $this->getUuidFromUrl($value);
         }
@@ -84,6 +86,23 @@ abstract class AbstractResource extends AbstractCast
     protected function isUrl(string $value): bool
     {
         return (bool) filter_var($value, FILTER_VALIDATE_URL);
+    }
+
+    /**
+     * A model's own client already targets the correct register, so it
+     * must be preferred over a global URL-based lookup, which cannot
+     * disambiguate between multiple registered clients of the same
+     * supplier (e.g. two registers sharing the same host).
+     */
+    protected function belongsToClient(string $url, ?Client $client): bool
+    {
+        if (! $client) {
+            return false;
+        }
+
+        $endpoint = $client->getEndpointUrlByType($this->registryType);
+
+        return ! empty($endpoint) && strpos($url, $endpoint) === 0;
     }
 
     protected function getUuidFromUrl(string $url): string
