@@ -13,10 +13,12 @@ use OWC\ZGW\Http\RequestClientInterface;
 class WordPressRequestClient implements RequestClientInterface
 {
     protected RequestOptions $options;
+    protected string $instanceId;
 
     public function __construct(?RequestOptions $options = null)
     {
         $this->options = $options ?: new RequestOptions([]);
+        $this->instanceId = uniqid('owc_client_', true);
     }
 
     public function get(string $uri, ?RequestOptions $options = null): Response
@@ -81,8 +83,10 @@ class WordPressRequestClient implements RequestClientInterface
     protected function getHttpRequestArgsSslCertificatesCallback(SslCertificatesStore $store): \Closure
     {
         return function (array $parsedArgs) use ($store): array {
-            // Validate that the request is initiated by this package.
-            if (! isset($parsedArgs['headers']['_owc_request_logging'])) {
+            // Validate that the request is initiated by this specific client instance. WordPress
+            // hooks are global, so without this check certificates from another register (client
+            // instance) sharing the same "http_request_args" filter would leak into this request.
+            if (($parsedArgs['headers']['_owc_client_instance'] ?? null) !== $this->instanceId) {
                 return $parsedArgs;
             }
 
@@ -105,8 +109,10 @@ class WordPressRequestClient implements RequestClientInterface
     protected function getHttpApiCurlSslCertificatesCallback(SslCertificatesStore $store): \Closure
     {
         return function ($handle, $parsedArgs) use ($store): void {
-            // Validate that the request is initiated by this package.
-            if (! isset($parsedArgs['headers']['_owc_request_logging'])) {
+            // Validate that the request is initiated by this specific client instance. WordPress
+            // hooks are global, so without this check certificates from another register (client
+            // instance) sharing the same "http_api_curl" action would leak into this request.
+            if (($parsedArgs['headers']['_owc_client_instance'] ?? null) !== $this->instanceId) {
                 return;
             }
 
@@ -138,6 +144,7 @@ class WordPressRequestClient implements RequestClientInterface
     protected function mergeRequestOptions(?RequestOptions $options = null): RequestOptions
     {
         $this->options->addHeader('_owc_request_logging', microtime(true));
+        $this->options->addHeader('_owc_client_instance', $this->instanceId);
 
         if (! $options) {
             return $this->options;

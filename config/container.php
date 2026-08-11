@@ -219,8 +219,11 @@ return [
     /**
      * HTTP clients
      */
+    // Every register needs its own transport instance: WordPressRequestClient::addSslCertificates()
+    // registers global WordPress hooks scoped to this instance, which would otherwise leak
+    // between registers if the same instance were shared.
     'http.client' => function (Container $container) {
-        return $container->get(Http\WordPress\WordPressRequestClient::class);
+        return $container->make(Http\WordPress\WordPressRequestClient::class);
     },
     Http\WordPress\WordPressRequestClient::class => function (Container $container) {
         return new Http\WordPress\WordPressRequestClient(
