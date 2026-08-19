@@ -23,10 +23,10 @@ return [
         ApiCredentials $credentials,
         ApiUrlCollection $endpoints
     ) {
-		$tokenHttpClient = clone $container->make('http.client');
+		$client = $container->make('http.client');
 
 		if ($credentials->hasCertificates()) {
-			$tokenHttpClient->addSslCertificates(new \OWC\ZGW\Http\SslCertificatesStore(
+			$client->addSslCertificates(new \OWC\ZGW\Http\SslCertificatesStore(
 				$credentials->getPublicCertificate(),
 				$credentials->getPrivateCertificate(),
 				$credentials->getSupplierCertificate()
@@ -34,8 +34,8 @@ return [
 		}
 
         return new Clients\Mozart\Client(
-            $container->make('http.client'),
-            $container->make(Clients\Mozart\Authenticator::class, ['credentials' => $credentials, 'client' => $tokenHttpClient]),
+            $client,
+            $container->make(Clients\Mozart\Authenticator::class, ['credentials' => $credentials, 'client' => clone $client]),
             $endpoints
         );
     },
@@ -48,10 +48,10 @@ return [
         ApiCredentials $credentials,
         ApiUrlCollection $endpoints
     ) {
-		$tokenHttpClient = clone $container->make('http.client');
+		$client = $container->make('http.client');
 
 		if ($credentials->hasCertificates()) {
-			$tokenHttpClient->addSslCertificates(new \OWC\ZGW\Http\SslCertificatesStore(
+			$client->addSslCertificates(new \OWC\ZGW\Http\SslCertificatesStore(
 				$credentials->getPublicCertificate(),
 				$credentials->getPrivateCertificate(),
 				$credentials->getSupplierCertificate()
@@ -59,8 +59,8 @@ return [
 		}
 
         return new Clients\OpenWave\Client(
-            $container->make('http.client'),
-            $container->make(Clients\OpenWave\Authenticator::class, ['credentials' => $credentials, 'client' => $tokenHttpClient]),
+            $client,
+            $container->make(Clients\OpenWave\Authenticator::class, ['credentials' => $credentials, 'client' => clone $client]),
             $endpoints
         );
     },
