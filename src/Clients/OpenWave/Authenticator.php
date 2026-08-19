@@ -66,7 +66,7 @@ class Authenticator extends AbstractTokenAuthenticator
     {
         return new RequestOptions([
             'headers' => [
-                'Authorization' => 'Basic ' . base64_encode($this->credentials->getClientId() . ':' . $this->credentials->getClientSecret())
+                'Authorization' => 'Basic ' . base64_encode($this->credentials->getClientId() . ':' . $this->credentials->getClientSecret()),
             ],
         ]);
     }
